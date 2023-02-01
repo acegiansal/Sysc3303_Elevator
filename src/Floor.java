@@ -1,10 +1,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.Scanner;
 
 public class Floor implements Runnable{
 
     private Scheduler scheduler;
+    URL url = getClass().getResource("elevatorFile");
+    File file = new File(url.getPath());
 
     public Floor(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -50,7 +53,7 @@ public class Floor implements Runnable{
 
     @Override
     public void run() {
-        readFromFile("/Users/robbiekuhn/Library/Mobile Documents/com~apple~CloudDocs/ENG/ENG Year 3/SEM 1/SYSC 3110/Sysc3303_Elevator/src/elevatorFile");
+        readFromFile(file.toString());
         while (true){
             this.recieveFromSched();
         }
