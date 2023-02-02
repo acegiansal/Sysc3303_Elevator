@@ -6,17 +6,14 @@ import java.util.Scanner;
 public class Floor implements Runnable{
 
     private Scheduler scheduler;
-    URL url = getClass().getResource("elevatorFile");
-    File file = new File(url.getPath());
 
     public Floor(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
 
-    private void readFromFile(String file){
+    private void readFromFile(File file){
         try {
-            File myObj = new File(file);
-            Scanner myReader = new Scanner(myObj);
+            Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] splitData = data.split(" ");
@@ -53,7 +50,8 @@ public class Floor implements Runnable{
 
     @Override
     public void run() {
-        readFromFile(file.toString());
+        File file = new File("src/elevatorFile");
+        readFromFile(file);
         while (true){
             this.recieveFromSched();
         }
