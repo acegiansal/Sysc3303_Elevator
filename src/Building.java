@@ -1,8 +1,15 @@
 import java.util.ArrayList;
 
+/**
+ * Building class that creates the Elevator system
+ */
 public class Building {
 
 
+    /**
+     * Creates and runs elevator system
+     * @param args Arguments passed upon program launch
+     */
     public static void main(String[] args){
         ArrayList<ElevatorInfo> floorMessages;
         ArrayList<ElevatorInfo> elevatorMessages;
@@ -18,6 +25,7 @@ public class Building {
         Thread elevator = new Thread(elevator1);
         Thread scheduler = new Thread(schedy);
 
+        //Start threads
         floor.start();
         elevator.start();
         scheduler.start();
