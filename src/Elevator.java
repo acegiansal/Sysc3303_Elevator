@@ -6,10 +6,10 @@ public class Elevator implements Runnable{
         this.scheduler = scheduler;
     }
 
-    private void recieveFromSched(){
+    private ElevatorInfo receiveFromSched(){
         ElevatorInfo info = scheduler.getFloorMessages();
         System.out.println("Elevator Receiving " + info);
-        send(info);
+        return info;
     }
 
     private void send(ElevatorInfo info){
@@ -30,8 +30,8 @@ public class Elevator implements Runnable{
 
     @Override
     public void run() {
-        while (true){
-            this.recieveFromSched();
+        while (true) {
+            send(this.receiveFromSched());
         }
     }
 }
