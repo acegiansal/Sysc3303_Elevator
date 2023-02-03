@@ -21,12 +21,7 @@ public class Floor implements Runnable{
                     System.out.println("INPUT DATA INVALID!!");
                     break;
                 }else {
-                    boolean direction;
-                    if (splitData[2].equals("Down")){
-                        direction = false;
-                    }else {
-                        direction = true;
-                    }
+                    boolean direction = splitData[2].equals("Up");
                     send(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
                 }
             }
@@ -37,13 +32,19 @@ public class Floor implements Runnable{
         }
     }
 
-    private void recieveFromSched(){
+    private ElevatorInfo receiveFromSched(){
        ElevatorInfo info = scheduler.getElevatorMessages();
        System.out.println("Floor Receiving " + info);
+       return info;
     }
 
     private void send(String time, int floorNumber, boolean direction, int carButton){
         ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
+        System.out.println("Floor Sending " + info);
+        scheduler.addFloorMessage(info);
+    }
+
+    private void send(ElevatorInfo info){
         System.out.println("Floor Sending " + info);
         scheduler.addFloorMessage(info);
     }
@@ -53,7 +54,7 @@ public class Floor implements Runnable{
         File file = new File("src/elevatorFile");
         readFromFile(file);
         while (true){
-            this.recieveFromSched();
+            this.send(this.receiveFromSched());
         }
     }
 }
