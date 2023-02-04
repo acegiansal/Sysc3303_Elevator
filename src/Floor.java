@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Floor implements Runnable{
 
     private Scheduler scheduler;
+    private String testString;
 
     public Floor(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -40,12 +41,28 @@ public class Floor implements Runnable{
     private void recieveFromSched(){
        ElevatorInfo info = scheduler.getElevatorMessages();
        System.out.println("Floor Receiving " + info);
+       testString = info.toString();
     }
 
     private void send(String time, int floorNumber, boolean direction, int carButton){
         ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
         System.out.println("Floor Sending " + info);
         scheduler.addFloorMessage(info);
+    }
+
+    void testReceiveFromSched(){
+        ElevatorInfo info = scheduler.getElevatorMessages();
+        System.out.println("Floor Receiving " + info);
+        testString = info.toString();
+    }
+
+    void testSend(String time, int floorNumber, boolean direction, int carButton){
+        ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
+        System.out.println("Floor Sending " + info);
+        scheduler.addFloorMessage(info);
+    }
+    String getTestString(){
+        return testString;
     }
 
     @Override

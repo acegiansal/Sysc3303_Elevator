@@ -17,6 +17,17 @@ public class Elevator implements Runnable{
         scheduler.addElevatorMessage(info);
     }
 
+    void testReceiveFromSched(){
+        ElevatorInfo info = scheduler.getFloorMessages();
+        System.out.println("Elevator Receiving " + info);
+        send(info);
+    }
+
+    void testSend(ElevatorInfo info){
+        System.out.println("Elevator Sending " + info);
+        scheduler.addElevatorMessage(info);
+    }
+
     @Override
     public void run() {
         while (true){
