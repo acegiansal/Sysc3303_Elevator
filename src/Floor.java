@@ -1,12 +1,21 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Class that represents a floor in an elevator system
  */
 public class Floor implements Runnable{
+
+    /**
+     * Logger for Floor class
+     */
+    private static final Logger LOGGER = Logger.getLogger(Floor.class.getName());
 
     /** The scheduler responsible for the floor */
     private Scheduler scheduler;
@@ -33,7 +42,8 @@ public class Floor implements Runnable{
                 String[] splitData = data.split(" ");
                 //Data must be 4 items long
                 if (splitData.length != 4){
-                    System.out.println("INPUT DATA INVALID!!");
+                    LOGGER.warning("INPUT DATA INVALID!!");
+                    //System.out.println("INPUT DATA INVALID!!");
                     break;
                 }else {
                     //Direction is true if 'Up' is selected
@@ -44,7 +54,8 @@ public class Floor implements Runnable{
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            LOGGER.warning("An error occurred while reading the input file" + e.getMessage());
+            //System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
@@ -55,7 +66,8 @@ public class Floor implements Runnable{
      */
     private ElevatorInfo receiveFromSched(){
        ElevatorInfo info = scheduler.getElevatorMessages();
-       System.out.println("Floor Receiving " + info);
+       LOGGER.info("Floor Receiving" + info);
+       //System.out.println("Floor Receiving " + info);
        return info;
     }
 
@@ -68,7 +80,8 @@ public class Floor implements Runnable{
      */
     private void send(String time, int floorNumber, boolean direction, int carButton){
         ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
-        System.out.println("Floor Sending " + info);
+        LOGGER.info("Floor Sending" + info);
+        //System.out.println("Floor Sending " + info);
         scheduler.addFloorMessage(info);
     }
 
@@ -77,7 +90,8 @@ public class Floor implements Runnable{
      * @param info Existing ElevatorInfo object to send
      */
     private void send(ElevatorInfo info){
-        System.out.println("Floor Sending " + info);
+        LOGGER.info("Floor Sending" + info);
+        //System.out.println("Floor Sending " + info);
         scheduler.addFloorMessage(info);
     }
 
@@ -113,7 +127,7 @@ public class Floor implements Runnable{
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.warning("Thread sleep was interrupted: " + e.getMessage());
             }
         }
     }

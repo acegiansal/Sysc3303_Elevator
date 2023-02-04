@@ -1,7 +1,17 @@
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger ;
+import java.util.logging.SimpleFormatter;
+
 /**
  * Class meant to represent info about an elevator system
  */
 public class ElevatorInfo {
+
+    /**
+     * Logger for elevator class
+     */
+    private static final Logger LOGGER = Logger.getLogger(ElevatorInfo.class.getName());
 
     /** The direction of the elevator */
     private boolean direction;
@@ -20,6 +30,9 @@ public class ElevatorInfo {
      * @param carButton The destination floor
      */
     public ElevatorInfo(boolean direction, int floorNumber, String time, int carButton) {
+
+
+        LOGGER.info("Creating an ElevatorInfo object with parameters: direction=" + direction+ ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
         this.direction = direction;
         this.floorNumber = floorNumber;
         this.time = time;

@@ -1,7 +1,17 @@
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
+
 /**
  * Class meant to represent an elevator
  */
 public class Elevator implements Runnable{
+
+    /**
+     * Logger for elevator class
+     */
+    private static final Logger LOGGER = Logger.getLogger(Elevator.class.getName());
 
     /** The scheduler for the elevator */
     private Scheduler scheduler;
@@ -12,6 +22,7 @@ public class Elevator implements Runnable{
      */
     public Elevator(Scheduler scheduler) {
         this.scheduler = scheduler;
+
     }
 
     /**
@@ -20,7 +31,7 @@ public class Elevator implements Runnable{
      */
     private ElevatorInfo receiveFromSched(){
         ElevatorInfo info = scheduler.getFloorMessages();
-        System.out.println("Elevator Receiving " + info);
+        LOGGER.info("Floor Receiving" + info);
         return info;
     }
 
@@ -29,7 +40,7 @@ public class Elevator implements Runnable{
      * @param info ElevatorInfo containing information about the elevator
      */
     private void send(ElevatorInfo info){
-        System.out.println("Elevator Sending " + info);
+        LOGGER.info("Floor Sending" + info);
         scheduler.addElevatorMessage(info);
     }
 
@@ -56,8 +67,9 @@ public class Elevator implements Runnable{
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.warning("Thread sleep was interrupted: " + e.getMessage());
             }
         }
     }
+
 }

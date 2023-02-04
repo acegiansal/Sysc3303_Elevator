@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 
+
 /**
  * Building class that creates the Elevator system
  */
 public class Building {
+
 
 
     /**
@@ -11,6 +13,9 @@ public class Building {
      * @param args Arguments passed upon program launch
      */
     public static void main(String[] args){
+
+        System.setProperty("java.util.logging.config.file", "logging.properties");
+        LogConfigurator.configureLogger();
         ArrayList<ElevatorInfo> floorMessages;
         ArrayList<ElevatorInfo> elevatorMessages;
 
