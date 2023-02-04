@@ -33,6 +33,19 @@ public class Elevator implements Runnable{
         scheduler.addElevatorMessage(info);
     }
 
+    //Created for only testing purposes
+    void testReceiveFromSched(){
+        ElevatorInfo info = scheduler.getFloorMessages();
+        System.out.println("Elevator Receiving " + info);
+        send(info);
+    }
+
+    //Created for only testing purposes
+    void testSend(ElevatorInfo info){
+        System.out.println("Elevator Sending " + info);
+        scheduler.addElevatorMessage(info);
+    }
+
     @Override
     public void run() {
         //Continuously run until manual input terminates the code (due to the real time expectations of an elevator)
