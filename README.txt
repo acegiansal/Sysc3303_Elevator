@@ -45,3 +45,6 @@ This class contains all of the unit tests for the class
 - Import Project into IDE of choice
 - Select TestingElevator Class and click
 - watch as all the tests are passed in the console :)
+
+#Known issues
+- You may need to clean the project in order to run, if the console is telling you it cant find the classes. Select project -> clean
