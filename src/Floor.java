@@ -1,11 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Scanner;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Class that represents a floor in an elevator system
@@ -23,7 +19,7 @@ public class Floor implements Runnable{
 
     /**
      * Creates a floor object
-     * @param scheduler The scheduler object repsonsible for the floor
+     * @param scheduler The scheduler object responsible for the floor
      */
     public Floor(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -43,7 +39,7 @@ public class Floor implements Runnable{
                 //Data must be 4 items long
                 if (splitData.length != 4){
                     LOGGER.warning("INPUT DATA INVALID!!");
-                    //System.out.println("INPUT DATA INVALID!!");
+                    System.out.println("INPUT DATA INVALID!!");
                     break;
                 }else {
                     //Direction is true if 'Up' is selected
