@@ -1,0 +1,24 @@
+Feb. 09, 2023 2:30:34 P.M. ElevatorInfo <init>
+INFO: Creating an ElevatorInfo object with parameters: direction=true, floorNumber=3, time=14:05:15.0, carButton=6
+Feb. 09, 2023 2:30:34 P.M. Floor send
+INFO: Floor SendingElevatorInfo{direction=true, floorNumber=3, time='14:05:15.0', carButton=6}
+Feb. 09, 2023 2:30:34 P.M. ElevatorInfo <init>
+INFO: Creating an ElevatorInfo object with parameters: direction=false, floorNumber=6, time=14:06:15.0, carButton=1
+Feb. 09, 2023 2:30:34 P.M. Floor send
+INFO: Floor SendingElevatorInfo{direction=false, floorNumber=6, time='14:06:15.0', carButton=1}
+Feb. 09, 2023 2:30:34 P.M. Elevator receiveFromSched
+INFO: Floor ReceivingElevatorInfo{direction=true, floorNumber=3, time='14:05:15.0', carButton=6}
+Feb. 09, 2023 2:30:34 P.M. ElevatorInfo <init>
+INFO: Creating an ElevatorInfo object with parameters: direction=true, floorNumber=1, time=14:07:15.0, carButton=5
+Feb. 09, 2023 2:30:34 P.M. Elevator send
+INFO: Floor SendingElevatorInfo{direction=true, floorNumber=3, time='14:05:15.0', carButton=6}
+Feb. 09, 2023 2:30:34 P.M. Floor send
+INFO: Floor SendingElevatorInfo{direction=true, floorNumber=1, time='14:07:15.0', carButton=5}
+Feb. 09, 2023 2:30:34 P.M. Floor receiveFromSched
+INFO: Floor ReceivingElevatorInfo{direction=true, floorNumber=3, time='14:05:15.0', carButton=6}
+Feb. 09, 2023 2:30:34 P.M. Floor send
+INFO: Floor SendingElevatorInfo{direction=true, floorNumber=3, time='14:05:15.0', carButton=6}
+Feb. 09, 2023 2:30:34 P.M. Elevator receiveFromSched
+INFO: Floor ReceivingElevatorInfo{direction=false, floorNumber=6, time='14:06:15.0', carButton=1}
+Feb. 09, 2023 2:30:34 P.M. Elevator send
+INFO: Floor SendingElevatorInfo{direction=false, floorNumber=6, time='14:06:15.0', carButton=1}

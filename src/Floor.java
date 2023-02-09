@@ -125,6 +125,8 @@ public class Floor implements Runnable{
             } catch (InterruptedException e) {
                 LOGGER.warning("Thread sleep was interrupted: " + e.getMessage());
             }
+            break;
         }
+        System.exit(0);
     }
 }
