@@ -116,17 +116,8 @@ public class Floor implements Runnable{
         File file = new File("src/elevatorFile");
         readFromFile(file);
 
-        //Continuously run until manual input terminates the code (due to the real time expectations of an elevator)
-        while (true){
-            this.send(this.receiveFromSched());
-            //Pause to show message
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                LOGGER.warning("Thread sleep was interrupted: " + e.getMessage());
-            }
-            break;
-        }
+//        this.receiveFromSched();
+
         System.exit(0);
     }
 }

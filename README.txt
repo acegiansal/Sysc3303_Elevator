@@ -39,7 +39,7 @@ This class contains all of the unit tests for the class
 #Setup Instructions
 - Import Project into IDE of choice
 - Select the Building class and click run
-- Once the code is stopped a log file called SYSC3303_ITER1_LOG.txt will be created with information. The file will be located in the Project folder.
+- Once the code is stopped a log file called SYSC3303_ITER1_LOG.txt will be created with information. The file will be located in the Project folder. (If in eclipse, refresh the package explorer to see the files)
 
 #Testing
 - Import Project into IDE of choice
