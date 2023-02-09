@@ -71,6 +71,7 @@ public class Scheduler implements Runnable{
 
     @Override
     public void run() {
+        // TODO should continuously check then send requests to elevator(s)
         //No functionality for the scheduler thread as of this iteration
 
     }

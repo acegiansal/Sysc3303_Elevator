@@ -15,7 +15,7 @@ public class Elevator implements Runnable{
     private Scheduler scheduler;
     private ElevatorInfo currentRequest;
     private int startingFloor;
-    private static final int LOAD_TIME = 153;
+    private static final int LOAD_TIME = 1530;
 
     /**
      * Creates the elevator object
@@ -76,14 +76,12 @@ public class Elevator implements Runnable{
     private void doorOpen(){
         System.out.println("Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
 
-//        try {
-//            System.out.println("Trying to sleep");
-//            Thread.sleep(LOAD_TIME);
-//            System.out.println("SLEEP DONE");
-//        } catch (Exception e) {
-//            System.out.print("Broke");
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(LOAD_TIME);
+        } catch (Exception e) {
+            System.out.print("Broke");
+            e.printStackTrace();
+        }
 
         handleEvent(ElevatorEvent.DOORS_CLOSE);
     }
@@ -152,17 +150,7 @@ public class Elevator implements Runnable{
         this.receiveFromSched();
         send(this.currentRequest);
 
-        //Pause to show message
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            LOGGER.warning("Thread sleep was interrupted: " + e.getMessage());
-        }
-
     }
 
-//    public static void main(String[] args) {
-//
-//    }
 
 }

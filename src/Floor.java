@@ -116,8 +116,7 @@ public class Floor implements Runnable{
         File file = new File("src/elevatorFile");
         readFromFile(file);
 
-//        this.receiveFromSched();
+        this.receiveFromSched();
 
-        System.exit(0);
     }
 }
