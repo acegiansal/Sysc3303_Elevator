@@ -1,5 +1,3 @@
-import java.lang.module.ModuleDescriptor;
-
 public enum ElevatorState {
     IDLE,
     CHECK_FLOOR,

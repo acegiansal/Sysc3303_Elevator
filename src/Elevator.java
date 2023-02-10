@@ -57,13 +57,13 @@ public class Elevator implements Runnable{
             case FINISH_REQUEST -> {
                 this.state = ElevatorState.IDLE;
                 send(this.currentRequest);
-                receiveFromSched();
             }
         }
 
     }
 
     private void checkFloor(){
+        System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
             System.out.println("Elevator does not need to move to process request");
             handleEvent(ElevatorEvent.DOORS_OPEN);
@@ -147,8 +147,9 @@ public class Elevator implements Runnable{
 
     @Override
     public void run() {
-        this.receiveFromSched();
-        send(this.currentRequest);
+        while(true) {
+            this.receiveFromSched();
+        }
 
     }
 

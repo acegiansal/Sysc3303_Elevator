@@ -6,6 +6,17 @@ public class Scheduler implements Runnable{
     private ArrayList<ElevatorInfo> floorMessages;
     /** The ElevatorInfo messages sent by the elevator */
     private ArrayList<ElevatorInfo> elevatorMessages;
+    private SchedulerState state;
+
+    private enum SchedulerState {
+        IDLE,
+        RECEIVING
+    }
+
+    private enum SchedulerEvent {
+        REQUEST,
+        RECEIVING_RESPONSE
+    }
 
     /**
      * Creates a scheduler object
@@ -15,6 +26,21 @@ public class Scheduler implements Runnable{
     public Scheduler(ArrayList<ElevatorInfo> floorMessages, ArrayList<ElevatorInfo> elevatorMessages) {
         this.floorMessages = floorMessages;
         this.elevatorMessages = elevatorMessages;
+        this.state = SchedulerState.IDLE;
+    }
+
+    private void handleEvent(SchedulerEvent event) {
+
+        switch (event) {
+            case REQUEST -> {
+                System.out.println("Scheduler receiving request!");
+                this.state = SchedulerState.RECEIVING;
+            }
+            case RECEIVING_RESPONSE -> {
+                System.out.println("Scheduler received response");
+                this.state = SchedulerState.IDLE;
+            }
+        }
     }
 
     /**
@@ -39,6 +65,7 @@ public class Scheduler implements Runnable{
      * @param floorMessage ElevatorInfo message sent by the floor
      */
     public synchronized void addFloorMessage(ElevatorInfo floorMessage) {
+        handleEvent(SchedulerEvent.REQUEST);
         this.floorMessages.add(floorMessage);
         notifyAll();
     }
@@ -65,6 +92,7 @@ public class Scheduler implements Runnable{
      * @param elevatorMessage ElevatorInfo message sent by the elevator
      */
     public synchronized void addElevatorMessage(ElevatorInfo elevatorMessage) {
+        handleEvent(SchedulerEvent.RECEIVING_RESPONSE);
         this.elevatorMessages.add(elevatorMessage);
         notifyAll();
     }
