@@ -14,8 +14,6 @@ public class Building {
      */
     public static void main(String[] args){
 
-        //System.setProperty("java.util.logging.config.file", "logging.properties");
-        //LogConfigurator.configureLogger();
         ArrayList<ElevatorInfo> floorMessages;
         ArrayList<ElevatorInfo> elevatorMessages;
 

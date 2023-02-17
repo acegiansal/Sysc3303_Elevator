@@ -3,10 +3,6 @@
  */
 public class ElevatorInfo {
 
-    /**
-     * Logger for elevator class
-     */
-
 
     /** The direction of the elevator */
     private boolean direction;
@@ -27,7 +23,7 @@ public class ElevatorInfo {
     public ElevatorInfo(boolean direction, int floorNumber, String time, int carButton) {
 
 
-        Logger.info("Elevator 1", "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction+ ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
+        logging.info( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction+ ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
         this.direction = direction;
         this.floorNumber = floorNumber;
         this.time = time;
@@ -37,10 +33,10 @@ public class ElevatorInfo {
     @Override
     public String toString() {
         return "ElevatorInfo{" +
-                "direction=" + direction +
-                ", floorNumber=" + floorNumber +
-                ", time='" + time + '\'' +
-                ", carButton=" + carButton +
+                "Direction is " + direction +
+                ", Floor Number is " + floorNumber +
+                ", Time ='" + time + '\'' +
+                ", Car Button = " + carButton +
                 '}';
     }
 

@@ -7,9 +7,7 @@ import java.util.Scanner;
  */
 public class Floor implements Runnable{
 
-    /**
-     * Logger for Floor class
-     */
+
 
 
     /** The scheduler responsible for the floor */
@@ -37,7 +35,7 @@ public class Floor implements Runnable{
                 String[] splitData = data.split(" ");
                 //Data must be 4 items long
                 if (splitData.length != 4){
-                    Logger.warning("ELEVATOR 1", "Floor", "INPUT DATA INVALID!!");
+                    logging.warning( "Floor", "INPUT DATA INVALID!!");
                     System.out.println("INPUT DATA INVALID!!");
                     break;
                 }else {
@@ -49,7 +47,7 @@ public class Floor implements Runnable{
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            Logger.warning("ELEVATOR 1", "Floor", "An error occurred while reading the input file" + e.getMessage());
+            logging.warning( "Floor", "An error occurred while reading the input file" + e.getMessage());
             //System.out.println("An error occurred.");
             e.printStackTrace();
         }
@@ -61,7 +59,7 @@ public class Floor implements Runnable{
      */
     private ElevatorInfo receiveFromSched(){
        ElevatorInfo info = scheduler.getElevatorMessages();
-       Logger.info("ELEVATOR 1", "Floor", "Floor Receiving" + info);
+       logging.info( "Floor", "Floor Receiving" + info);
        //System.out.println("Floor Receiving " + info);
        return info;
     }
@@ -75,7 +73,7 @@ public class Floor implements Runnable{
      */
     private void send(String time, int floorNumber, boolean direction, int carButton){
         ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
-        Logger.info("ELEVATOR 1", "Floor", "Floor Sending" + info);
+        logging.info( "Floor", "Floor Sending" + info);
         //System.out.println("Floor Sending " + info);
         scheduler.addFloorMessage(info);
     }
@@ -85,7 +83,7 @@ public class Floor implements Runnable{
      * @param info Existing ElevatorInfo object to send
      */
     private void send(ElevatorInfo info){
-        Logger.info("ELEVATOR 1", "Floor", "Floor Sending" + info);
+        logging.info( "Floor", "Floor Sending" + info);
         //System.out.println("Floor Sending " + info);
         scheduler.addFloorMessage(info);
     }

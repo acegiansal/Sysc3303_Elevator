@@ -43,11 +43,11 @@ public class Scheduler implements Runnable{
 
         switch (event) {
             case REQUEST -> {
-                System.out.println("Scheduler receiving request!");
+                logging.info("Scheduler", "Scheduler receiving request!");
                 this.state = SchedulerState.RECEIVING;
             }
             case RECEIVING_RESPONSE -> {
-                System.out.println("Scheduler received response");
+                logging.info("Scheduler", "Scheduler received response");
                 this.state = SchedulerState.IDLE;
             }
         }
