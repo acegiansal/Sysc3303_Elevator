@@ -8,7 +8,7 @@ public class Scheduler implements Runnable{
     private ArrayList<ElevatorInfo> elevatorMessages;
     private SchedulerState state;
 
-    private enum SchedulerState {
+    enum SchedulerState {
         IDLE,
         RECEIVING
     }
@@ -95,6 +95,10 @@ public class Scheduler implements Runnable{
         handleEvent(SchedulerEvent.RECEIVING_RESPONSE);
         this.elevatorMessages.add(elevatorMessage);
         notifyAll();
+    }
+
+    public SchedulerState getState(){
+        return state;
     }
 
     @Override

@@ -16,6 +16,7 @@ public class Elevator implements Runnable{
     private ElevatorInfo currentRequest;
     private int startingFloor;
     private static final int LOAD_TIME = 1530;
+    private boolean testing[] = {false, false, false, false};
 
     /**
      * Creates the elevator object
@@ -36,7 +37,9 @@ public class Elevator implements Runnable{
         switch (event) {
             case CALL -> {
                 this.state = ElevatorState.CHECK_FLOOR;
-                checkFloor();
+                if (!testing[0]) {
+                    checkFloor();
+                }
             }
             case DOORS_OPEN -> {
                 if (this.state == ElevatorState.IDLE) {
@@ -48,11 +51,15 @@ public class Elevator implements Runnable{
             }
             case DOORS_CLOSE -> {
                 this.state = ElevatorState.DOOR_CLOSED;
-                doorClosed();
+                if (!testing[3]) {
+                    doorClosed();
+                }
             }
             case PROCESS_REQUEST -> {
                 this.state = ElevatorState.MOVING;
-                moveElevator();
+                if (!testing[1]) {
+                    moveElevator();
+                }
             }
             case FINISH_REQUEST -> {
                 this.state = ElevatorState.IDLE;
@@ -82,8 +89,9 @@ public class Elevator implements Runnable{
             System.out.print("Broke");
             e.printStackTrace();
         }
-
-        handleEvent(ElevatorEvent.DOORS_CLOSE);
+        if (!testing[2]) {
+            handleEvent(ElevatorEvent.DOORS_CLOSE);
+        }
     }
 
     private void doorClosed(){
@@ -134,15 +142,19 @@ public class Elevator implements Runnable{
 
     //Created for only testing purposes
     void testReceiveFromSched(){
-        ElevatorInfo info = scheduler.getFloorMessages();
-        System.out.println("Elevator Receiving " + info);
-        send(info);
+        currentRequest = scheduler.getFloorMessages();
+        System.out.println("Elevator Receiving " + currentRequest);
+        handleEvent(ElevatorEvent.CALL);
     }
 
     //Created for only testing purposes
     void testSend(ElevatorInfo info){
         System.out.println("Elevator Sending " + info);
         scheduler.addElevatorMessage(info);
+    }
+
+    void setTesting(boolean[] t){
+        testing = t;
     }
 
     @Override
