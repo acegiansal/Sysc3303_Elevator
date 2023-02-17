@@ -47,8 +47,8 @@ public class Elevator implements Runnable{
                 doorOpen();
             }
             case DOORS_CLOSE -> {
-                doorClosed();
                 this.state = ElevatorState.DOOR_CLOSED;
+                doorClosed();
             }
             case PROCESS_REQUEST -> {
                 this.state = ElevatorState.MOVING;
