@@ -1,14 +1,12 @@
-import java.util.logging.Logger;
+import java.util.ArrayList;
+
 
 /**
  * Class meant to represent an elevator
  */
 public class Elevator implements Runnable{
 
-    /**
-     * Logger for elevator class
-     */
-    private static final Logger LOGGER = Logger.getLogger(Elevator.class.getName());
+
 
     private ElevatorState state;
     /** The scheduler for the elevator */
@@ -87,10 +85,10 @@ public class Elevator implements Runnable{
     private void checkFloor(){
         System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
-            System.out.println("Elevator does not need to move to process request");
+            Logger.info("Elevator 1", "Elevator", "Elevator does not need to move to process request");
             handleEvent(ElevatorEvent.DOORS_OPEN);
         } else {
-            System.out.println("Elevator needs to move to process request");
+            Logger.info("Elevator 1", "Elevator", "Elevator needs to move to process request");
             handleEvent(ElevatorEvent.PROCESS_REQUEST);
         }
     }
@@ -99,7 +97,7 @@ public class Elevator implements Runnable{
      * Simulates opening elevator doors
      */
     private void doorOpen(){
-        System.out.println("Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
+        Logger.info("Elevator 1", "Elevator", "Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
 
         try {
             Thread.sleep(LOAD_TIME);
@@ -117,6 +115,7 @@ public class Elevator implements Runnable{
      */
     private void doorClosed(){
         System.out.println("Door closing on floor " + startingFloor);
+        Logger.info("Elevator 1", "Elevator", "Door closing on floor " + startingFloor);
         //If car is at the destination floor
         if (this.startingFloor == currentRequest.getCarButton()){
             handleEvent(ElevatorEvent.FINISH_REQUEST);
@@ -140,7 +139,7 @@ public class Elevator implements Runnable{
         }
 
         String direction = this.startingFloor < destination ? "Up" : "Down";
-        System.out.println("Elevator is moving " + direction);
+        Logger.info("Elevator 1", "Elevator", "Elevator is moving " + direction);
         this.startingFloor = destination;
         handleEvent(ElevatorEvent.DOORS_OPEN);
     }
@@ -151,7 +150,7 @@ public class Elevator implements Runnable{
      */
     private void receiveFromSched(){
         currentRequest = scheduler.getFloorMessages();
-        LOGGER.info("Floor Receiving" + currentRequest);
+        Logger.info("Elevator 1", "Elevator", "Floor Receiving" + currentRequest);
         handleEvent(ElevatorEvent.CALL);
     }
 
@@ -160,7 +159,7 @@ public class Elevator implements Runnable{
      * @param info ElevatorInfo containing information about the elevator
      */
     private void send(ElevatorInfo info){
-        LOGGER.info("Floor Sending" + info);
+        Logger.info("Elevator 1", "Elevator", "Floor Sending" + info);
         scheduler.addElevatorMessage(info);
     }
 
