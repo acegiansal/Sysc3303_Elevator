@@ -13,9 +13,13 @@ public class Elevator implements Runnable{
     private ElevatorState state;
     /** The scheduler for the elevator */
     private Scheduler scheduler;
+    /** Represents request currently being processed */
     private ElevatorInfo currentRequest;
+    /** The floor that the elevator started before moving */
     private int startingFloor;
+    /** The loading time for the elevator (doors open and close) */
     private static final int LOAD_TIME = 1530;
+    /** Testing array */
     private boolean testing[] = {false, false, false, false};
 
     /**
@@ -28,10 +32,18 @@ public class Elevator implements Runnable{
         this.state = ElevatorState.IDLE;
     }
 
+    /**
+     * Getter for state of elevator
+     * @return Current state of elevator
+     */
     public ElevatorState getState(){
         return this.state;
     }
 
+    /**
+     * handles event
+     * @param event The incoming event for the elevator
+     */
     private void handleEvent(ElevatorEvent event){
 
         switch (event) {
@@ -69,6 +81,9 @@ public class Elevator implements Runnable{
 
     }
 
+    /**
+     * Checks if the elevator is already at the starting floor
+     */
     private void checkFloor(){
         System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
@@ -80,6 +95,9 @@ public class Elevator implements Runnable{
         }
     }
 
+    /**
+     * Simulates opening elevator doors
+     */
     private void doorOpen(){
         System.out.println("Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
 
@@ -94,6 +112,9 @@ public class Elevator implements Runnable{
         }
     }
 
+    /**
+     * Simulates closing doors
+     */
     private void doorClosed(){
         System.out.println("Door closing on floor " + startingFloor);
         //If car is at the destination floor
@@ -104,6 +125,9 @@ public class Elevator implements Runnable{
         }
     }
 
+    /**
+     * Simulates moving to the elevator
+     */
     private void moveElevator(){
 
         int destination;
@@ -153,6 +177,7 @@ public class Elevator implements Runnable{
         scheduler.addElevatorMessage(info);
     }
 
+    //Created for testing purposes
     void setTesting(boolean[] t){
         testing = t;
     }

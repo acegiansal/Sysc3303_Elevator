@@ -1,3 +1,6 @@
+/**
+ * Enum meant to represent elevator events
+ */
 public enum ElevatorEvent {
     CALL,
     DOORS_OPEN,

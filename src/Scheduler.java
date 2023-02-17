@@ -8,11 +8,17 @@ public class Scheduler implements Runnable{
     private ArrayList<ElevatorInfo> elevatorMessages;
     private SchedulerState state;
 
+    /**
+     * Enum meant to represent scheduler states
+     */
     enum SchedulerState {
         IDLE,
         RECEIVING
     }
 
+    /**
+     * Enum meant to represent scheduler events
+     */
     private enum SchedulerEvent {
         REQUEST,
         RECEIVING_RESPONSE
@@ -29,6 +35,10 @@ public class Scheduler implements Runnable{
         this.state = SchedulerState.IDLE;
     }
 
+    /**
+     * Handles incoming event for the scheduler
+     * @param event Incoming event for the scheduler
+     */
     private void handleEvent(SchedulerEvent event) {
 
         switch (event) {
@@ -97,13 +107,16 @@ public class Scheduler implements Runnable{
         notifyAll();
     }
 
+    /**
+     * Getter for the state
+     * @return The current state of the scheduler
+     */
     public SchedulerState getState(){
         return state;
     }
 
     @Override
     public void run() {
-        // TODO should continuously check then send requests to elevator(s)
         //No functionality for the scheduler thread as of this iteration
 
     }
