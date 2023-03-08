@@ -12,6 +12,8 @@ public class ElevatorInfo {
     private String time;
     /** The destination floor */
     private int carButton;
+    private ElevatorState currentState;
+    private int elevatorID;
 
     /**
      * Creates an ElevatorInfo object
@@ -20,15 +22,21 @@ public class ElevatorInfo {
      * @param time The time that the input was received
      * @param carButton The destination floor
      */
-    public ElevatorInfo(boolean direction, int floorNumber, String time, int carButton) {
+    public ElevatorInfo(boolean direction, int floorNumber, String time, int carButton, int elevatorID) {
 
 
-        logging.info( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction+ ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
+        logging.info( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction + ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
         this.direction = direction;
         this.floorNumber = floorNumber;
         this.time = time;
         this.carButton = carButton;
+        this.currentState = ElevatorState.IDLE;
+        this.elevatorID = elevatorID;
     }
+    public int getElevatorID() {
+        return elevatorID;
+    }
+
 
     @Override
     public String toString() {
@@ -38,6 +46,22 @@ public class ElevatorInfo {
                 ", Time ='" + time + '\'' +
                 ", Car Button = " + carButton +
                 '}';
+    }
+
+    /**
+     * Getter for state
+     * @return state
+     */
+    public ElevatorState getState() {
+        return currentState;
+    }
+
+    /**
+     *
+     * @param state
+     */
+    public void setCurrentState(ElevatorState state) {
+        this.currentState = state;
     }
 
     /**

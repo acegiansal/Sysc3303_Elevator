@@ -1,12 +1,16 @@
+import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.*;
 import java.util.ArrayList;
 
-public class Scheduler implements Runnable{
+public class Scheduler {
 
-    /** The ElevatorInfo messages sent by the floor */
-    private ArrayList<ElevatorInfo> floorMessages;
-    /** The ElevatorInfo messages sent by the elevator */
-    private ArrayList<ElevatorInfo> elevatorMessages;
     private SchedulerState state;
+    private ElevatorBox databox;
+    private int schedulerPort;
+    /** A socket that sends and receives data */
+    private DatagramSocket sendReceiveSocket;
+
 
     /**
      * Enum meant to represent scheduler states
@@ -26,13 +30,28 @@ public class Scheduler implements Runnable{
 
     /**
      * Creates a scheduler object
-     * @param floorMessages An arraylist to store messages sent by the floor
-     * @param elevatorMessages An arraylist to store messages sent by the elevator
      */
-    public Scheduler(ArrayList<ElevatorInfo> floorMessages, ArrayList<ElevatorInfo> elevatorMessages) {
-        this.floorMessages = floorMessages;
-        this.elevatorMessages = elevatorMessages;
+    public Scheduler(int schedulerPort) {
         this.state = SchedulerState.IDLE;
+        this.schedulerPort = schedulerPort;
+
+        this.databox = new ElevatorBox(2);
+        // Create elevator intermediates
+        ElevatorIntermediate mediate1 = new ElevatorIntermediate(databox, 0, Config.ELEVATOR_HOST_1);
+        ElevatorIntermediate mediate2 = new ElevatorIntermediate(databox, 1, Config.ELEVATOR_HOST_2);
+
+        try {
+            sendReceiveSocket = new DatagramSocket(schedulerPort);
+        } catch (SocketException se) {
+            se.printStackTrace();
+            System.exit(1);
+        }
+
+        // Start elevator intermediates
+        Thread med1 = new Thread(mediate1, "med1");
+        Thread med2 = new Thread(mediate2, "med2");
+        med1.start();
+        med2.start();
     }
 
     /**
@@ -54,58 +73,40 @@ public class Scheduler implements Runnable{
     }
 
     /**
-     * Returns a message sent by the floor (FIFO)
-     * @return ElevatorInfo sent from the floor
+     * Only receives from Floor
      */
-    public synchronized ElevatorInfo getFloorMessages() {
-        while(floorMessages.size() <= 0){
-            try {
-                wait();
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
+    public void handleRpcRequest() {
+        // Read out information
+        byte[] data = new byte[50];
+        DatagramPacket receivePacket = new DatagramPacket(data, data.length);
+
+        // Block until a datagram packet is received from receiveSocket.
+        try {
+            System.out.println("\n SCHEDULER Waiting..."); // so we know we're waiting
+            sendReceiveSocket.receive(receivePacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
-        ElevatorInfo temp = floorMessages.remove(0);
-        notifyAll();
-        return temp;
-    }
 
-    /**
-     * Adds a floor message
-     * @param floorMessage ElevatorInfo message sent by the floor
-     */
-    public synchronized void addFloorMessage(ElevatorInfo floorMessage) {
-        handleEvent(SchedulerEvent.REQUEST);
-        this.floorMessages.add(floorMessage);
-        notifyAll();
-    }
+        //Get request
+        if(data[0] == 1) {
+            //Figure out which elevator to get reply from
+            //Send reply
+            System.out.println("Get request");
+        } else { //Put request
+            //Does algorithm
+            // chosenElevator = algorithm();
+            int chosenElevator = 0;
 
-    /**
-     * Get messages sent by the elevator (FIFO)
-     * @return ElevatorInfo message sent by the elevator
-     */
-    public synchronized ElevatorInfo getElevatorMessages() {
-        while(elevatorMessages.size() <= 0){
-            try {
-                wait();
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
+            //Puts into box
+            databox.putRequestData(data, chosenElevator);
+
+            //Sends reply to floor
         }
-        ElevatorInfo temp = elevatorMessages.remove(0);
-        notifyAll();
-        return temp;
+
     }
 
-    /**
-     * Adds a message sent by the elevator
-     * @param elevatorMessage ElevatorInfo message sent by the elevator
-     */
-    public synchronized void addElevatorMessage(ElevatorInfo elevatorMessage) {
-        handleEvent(SchedulerEvent.RECEIVING_RESPONSE);
-        this.elevatorMessages.add(elevatorMessage);
-        notifyAll();
-    }
 
     /**
      * Getter for the state
@@ -115,9 +116,12 @@ public class Scheduler implements Runnable{
         return state;
     }
 
-    @Override
-    public void run() {
-        //No functionality for the scheduler thread as of this iteration
 
+    public static void main(String[] args) {
+        Scheduler mainSched = new Scheduler(Config.SCHEDULER_PORT);
+
+        while(true) {
+            mainSched.handleRpcRequest();
+        }
     }
 }
