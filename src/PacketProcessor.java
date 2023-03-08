@@ -17,6 +17,24 @@ public class PacketProcessor {
         return request;
     }
 
+    public static ElevatorInfo translateRequest(byte[] data){
+
+        int floorNumber = (int)data[1];
+        String direction = new String(data, 3, 4);
+        int carButton = (int)data[5];
+        int lengthOfTime = 7;
+        for(int i=7; i<data.length; i++){
+            if(data[i] == 0){
+                break;
+            }
+            lengthOfTime++;
+        }
+        String time = new String(data, 7, lengthOfTime);
+
+        return new ElevatorInfo(direction, floorNumber, time, carButton);
+
+    }
+
     private static byte[] combineByteArr(int start, byte[] subject, byte[] toAdd) {
         byte[] combinedByteArr = new byte[subject.length];
 

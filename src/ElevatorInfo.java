@@ -5,7 +5,7 @@ public class ElevatorInfo {
 
 
     /** The direction of the elevator */
-    private boolean direction;
+    private String direction;
     /** The original floor number of the elevator */
     private int floorNumber;
     /** The time that the input was received*/
@@ -22,7 +22,7 @@ public class ElevatorInfo {
      * @param time The time that the input was received
      * @param carButton The destination floor
      */
-    public ElevatorInfo(boolean direction, int floorNumber, String time, int carButton, int elevatorID) {
+    public ElevatorInfo(String direction, int floorNumber, String time, int carButton, int elevatorID) {
 
 
         logging.info( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction + ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
@@ -33,6 +33,14 @@ public class ElevatorInfo {
         this.currentState = ElevatorState.IDLE;
         this.elevatorID = elevatorID;
     }
+
+    public ElevatorInfo(String direction,  int floorNumber, String time, int carButton){
+        this.direction = direction;
+        this.floorNumber = floorNumber;
+        this.time = time;
+        this.carButton = carButton;
+    }
+
     public int getElevatorID() {
         return elevatorID;
     }
@@ -60,7 +68,7 @@ public class ElevatorInfo {
      *
      * @param state
      */
-    public void setCurrentState(ElevatorState state) {
+    public void setState(ElevatorState state) {
         this.currentState = state;
     }
 
@@ -68,7 +76,7 @@ public class ElevatorInfo {
      * Getter for direction
      * @return True if going up, false otherwise
      */
-    public boolean getDirection() {
+    public String getDirection() {
         return direction;
     }
 
@@ -76,7 +84,7 @@ public class ElevatorInfo {
      * Setter for direction
      * @param direction The direction of the elevator
      */
-    public void setDirection(boolean direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 

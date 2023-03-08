@@ -93,30 +93,6 @@ public class Floor {
         sendRpcRequest(request);
     }
 
-    /**
-     * Sends the data using a preexisting ElevatorInfo object
-     * @param info Existing ElevatorInfo object to send
-     */
-//    private void send(ElevatorInfo info){
-//        logging.info( "Floor", "Floor Sending" + info);
-//        //System.out.println("Floor Sending " + info);
-//        scheduler.addFloorMessage(info);
-//    }
-
-//    //Created for only testing purposes
-//    void testReceiveFromSched(){
-//        ElevatorInfo info = scheduler.getElevatorMessages();
-//        System.out.println("Floor Receiving " + info);
-//        testString = info.toString();
-//    }
-//
-//    //Created for only testing purposes
-//    void testSend(String time, int floorNumber, boolean direction, int carButton){
-//        ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
-//        System.out.println("Floor Sending " + info);
-//        scheduler.addFloorMessage(info);
-//    }
-
     //Created for only testing purposes
     String getTestString(){
         return testString;

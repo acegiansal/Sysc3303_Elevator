@@ -26,7 +26,7 @@ public class Elevator implements Runnable{
         this.intermediatePort = intermediatePort;
         this.startingFloor = 1;
         this.elevatorID = id;
-        this.currentRequest = new ElevatorInfo(false, startingFloor, "", 1, id);
+        this.currentRequest = new ElevatorInfo("d", startingFloor, "", 1, id);
 
         try {
             sendReceiveSocket = new DatagramSocket();
@@ -52,6 +52,25 @@ public class Elevator implements Runnable{
             System.exit(1);
         }
         System.out.println(Thread.currentThread().getName() + " GOT: " + Arrays.toString(received));
+
+        // If data is get request
+        if(data[0] == 1) {
+            //Translate request
+            translateRequest(received);
+            handleEvent(ElevatorEvent.CALL);
+        } else {
+            System.out.println("PUT REQUEST");
+            // Get basic reply
+        }
+        
+    }
+
+    private void translateRequest(byte[] data){
+        ElevatorInfo translated = PacketProcessor.translateRequest(data);
+        this.currentRequest.setDirection(translated.getDirection());
+        this.currentRequest.setTime(translated.getTime());
+        this.currentRequest.setCarButton(translated.getCarButton());
+        this.currentRequest.setFloorNumber(translated.getFloorNumber());
     }
 
     /**
@@ -86,34 +105,37 @@ public class Elevator implements Runnable{
 
         switch (event) {
             case CALL -> {
-                this.state = ElevatorState.CHECK_FLOOR;
+                currentRequest.setState(ElevatorState.CHECK_FLOOR);
                 if (!testing[0]) {
                     checkFloor();
                 }
             }
             case DOORS_OPEN -> {
                 if (this.state == ElevatorState.IDLE) {
-                    this.state = ElevatorState.DOOR_OPENED;
+                    currentRequest.setState(ElevatorState.DOOR_OPENED);
                 } else if (this.state == ElevatorState.MOVING) {
-                    this.state = ElevatorState.DOOR_OPENED;
+                    currentRequest.setState(ElevatorState.DOOR_OPENED);
                 }
                 doorOpen();
             }
             case DOORS_CLOSE -> {
-                this.state = ElevatorState.DOOR_CLOSED;
+                currentRequest.setState(ElevatorState.DOOR_CLOSED);
                 if (!testing[3]) {
                     doorClosed();
                 }
             }
             case PROCESS_REQUEST -> {
-                this.state = ElevatorState.MOVING;
+                currentRequest.setState(ElevatorState.MOVING);
                 if (!testing[1]) {
                     moveElevator();
                 }
             }
             case FINISH_REQUEST -> {
-                this.state = ElevatorState.IDLE;
-                byte[] response = {0, 1};
+                currentRequest.setState(ElevatorState.IDLE);
+//                byte[] response = {0, 1};
+
+                //DEBUG PURPOSES
+                byte[] response = {1};
                 sendRpcRequest(response);
             }
         }
