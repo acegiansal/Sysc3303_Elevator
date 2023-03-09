@@ -28,6 +28,11 @@ public class Elevator implements Runnable{
     /** Testing array */
     private boolean testing[] = {false, false, false, false};
 
+    /**
+     * Constructor for Elevator
+     * @param intermediatePort port for the Elevator class
+     * @param id the id of the elevator
+     */
     public Elevator(int intermediatePort, int id) {
         this.intermediatePort = intermediatePort;
         this.startingFloor = 1;
@@ -43,7 +48,11 @@ public class Elevator implements Runnable{
         }
     }
 
-
+    /**
+     * Function to send an RPC request
+     * @param data the data to be sent in a byte array
+     * @return a byte array, the data received
+     */
     public byte[] sendRpcRequest(byte[] data){
         sendData(data, intermediatePort);
 
@@ -70,6 +79,10 @@ public class Elevator implements Runnable{
         return received;
     }
 
+    /**
+     * Translates the request from the Floor
+     * @param data the data received
+     */
     private void translateRequest(byte[] data){
         ElevatorInfo translated = PacketProcessor.translateRequest(data);
         this.currentRequest.setDirection(translated.getDirection());
@@ -226,43 +239,6 @@ public class Elevator implements Runnable{
         //TODO: WAIT TO SIMULATE ELEVATOR MOVING
 
         handleEvent(ElevatorEvent.DOORS_OPEN);
-    }
-
-//    /**
-//     * Receives information sent from the floor through the scheduler
-//     * ElevatorInfo containing floor information
-//     */
-//    private void receiveFromSched(){
-//        currentRequest = scheduler.getFloorMessages();
-//        logging.info( "Elevator", "Floor Receiving" + currentRequest);
-//        handleEvent(ElevatorEvent.CALL);
-//    }
-
-//    /**
-//     * Sends Information to the scheduler
-//     * @param info ElevatorInfo containing information about the elevator
-//     */
-//    private void send(ElevatorInfo info){
-//        logging.info( "Elevator", "Floor Sending" + info);
-//        scheduler.addElevatorMessage(info);
-//    }
-//
-//    //Created for only testing purposes
-//    void testReceiveFromSched(){
-//        currentRequest = scheduler.getFloorMessages();
-//        System.out.println("Elevator Receiving " + currentRequest);
-//        handleEvent(ElevatorEvent.CALL);
-//    }
-//
-//    //Created for only testing purposes
-//    void testSend(ElevatorInfo info){
-//        System.out.println("Elevator Sending " + info);
-//        scheduler.addElevatorMessage(info);
-//    }
-
-    //Created for testing purposes
-    void setTesting(boolean[] t){
-        testing = t;
     }
 
     @Override

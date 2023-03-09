@@ -112,6 +112,11 @@ public class Scheduler {
 
     }
 
+    /**
+     * The algorithm to determine which elevator should service a request
+     * @param data the request data
+     * @return the id of the elevator that should service the request
+     */
     public int algorithm(byte[] data){
         ElevatorInfo req = PacketProcessor.translateRequest(data);
         if (databox.getElevatorData().get("el1State") == 0 && databox.getElevatorData().get("el2State") ==0){
