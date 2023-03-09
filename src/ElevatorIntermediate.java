@@ -56,10 +56,11 @@ public class ElevatorIntermediate implements Runnable {
 
     private void extractStatus(byte[] data){
         int delimiter = PacketProcessor.findDelimiter(data, 1);
-        int stateDelim = PacketProcessor.findDelimiter(data, delimiter);
-        int floorDelim = PacketProcessor.findDelimiter(data, stateDelim);
+        int stateDelim = PacketProcessor.findDelimiter(data, delimiter+1);
+        int floorDelim = PacketProcessor.findDelimiter(data, stateDelim+1);
 
-        ElevatorState state = ElevatorState.valueOf(new String(data, delimiter, stateDelim-delimiter));
+        String enumVal = new String(data, delimiter+1, stateDelim-delimiter-1);
+        ElevatorState state = ElevatorState.valueOf(enumVal);
         int floorNumber = data[floorDelim - 1];
 
         int stateValue = (state == ElevatorState.IDLE) ? 0 : 1;
