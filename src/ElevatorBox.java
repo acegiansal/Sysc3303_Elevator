@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ElevatorBox {
 
@@ -12,6 +13,17 @@ public class ElevatorBox {
     private ArrayList<byte[]> responseData;
     /** If there is something in serverData */
     private ArrayList<Boolean> hasResponseData;
+    /** map of the 2 elevators state and floor */
+    private HashMap<String, Integer> elevatorData= new HashMap<>();
+
+
+    public HashMap<String, Integer> getElevatorData() {
+        return elevatorData;
+    }
+
+    public void setElevatorData(String key, int val) {
+        this.elevatorData.put(key, val);
+    }
 
     /**
      * Creates basic databox object
@@ -21,6 +33,11 @@ public class ElevatorBox {
         this.responseData = new ArrayList<>();
         this.hasRequestData = new ArrayList<>();
         this.hasResponseData = new ArrayList<>();
+
+        this.elevatorData.put("el1State", 0);
+        this.elevatorData.put("el2State", 0);
+        this.elevatorData.put("el1Floor", 0);
+        this.elevatorData.put("el2Floor", 0);
 
         for (int i=0; i<elevatorNum; i++){
             this.requestData.add(new byte[1]);

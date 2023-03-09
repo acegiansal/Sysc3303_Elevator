@@ -16,9 +16,15 @@ public class Elevator implements Runnable{
     private int startingFloor;
     /** The loading time for the elevator (doors open and close) */
     private static final int LOAD_TIME = 1530;
+    /** The moving time for one floor of the elevator */
+    private static final int MOVE_TIME = 7060;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
     private int elevatorID;
+    /** arrival sensor for the elevator approaching a floor */
+    private boolean arrivalSensor;
+    /** Direction lamp indicating the direction an elevator will go */
+    private boolean directionLamp;
     /** Testing array */
     private boolean testing[] = {false, false, false, false};
 
@@ -27,6 +33,7 @@ public class Elevator implements Runnable{
         this.startingFloor = 1;
         this.elevatorID = id;
         this.currentRequest = new ElevatorInfo("d", startingFloor, "", 1, id);
+        this.arrivalSensor = false;
 
         try {
             sendReceiveSocket = new DatagramSocket();
@@ -130,7 +137,7 @@ public class Elevator implements Runnable{
             }
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
-                byte[] response = {0, 1};
+                byte[] response = {0, 1, (byte) this.startingFloor};
                 System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
                 byte[] reply = sendRpcRequest(response);
                 System.out.println(Thread.currentThread().getName() + " GOT REPLY: " + Arrays.toString(reply));
@@ -175,6 +182,7 @@ public class Elevator implements Runnable{
      */
     private void doorClosed(){
         logging.info("Elevator","Door closing on floor " + startingFloor );
+        this.arrivalSensor = false;
         //If car is at the destination floor
         if (this.startingFloor == currentRequest.getCarButton()){
             handleEvent(ElevatorEvent.FINISH_REQUEST);
@@ -199,6 +207,15 @@ public class Elevator implements Runnable{
 
         String direction = this.startingFloor < destination ? "Up" : "Down";
         logging.info( "Elevator", "Elevator is moving " + direction);
+        try {
+            Thread.sleep((long) MOVE_TIME * Math.abs(currentRequest.getFloorNumber() - startingFloor) - (MOVE_TIME/2));
+            this.arrivalSensor = true;
+            this.directionLamp = direction.equals("Up");
+            Thread.sleep(MOVE_TIME/2);
+        } catch (Exception e) {
+            logging.warning("Elevator", "Broke");
+            e.printStackTrace();
+        }
         this.startingFloor = destination;
 
         //TODO: WAIT TO SIMULATE ELEVATOR MOVING
