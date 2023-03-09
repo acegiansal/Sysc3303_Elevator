@@ -35,16 +35,18 @@ public class ElevatorIntermediate implements Runnable {
         }
 
         //Get request
-        if(data[0] == 1) {
-            System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has get request...");
+        if(PacketProcessor.isGetRequest(data)) {
+            System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has GET request...");
             byte[] requestData = databox.getRequestData(elevatorID);
             sendData(requestData, receivePacket.getPort());
         } else { //Put request
-
+            System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has PUT request...");
             //Puts into box
             databox.putResponseData(data, elevatorID);
 
             //Sends reply to floor
+            byte[] reply = PacketProcessor.createOkReply();
+            sendData(reply, receivePacket.getPort());
         }
     }
 
@@ -52,12 +54,12 @@ public class ElevatorIntermediate implements Runnable {
      * Sends data to the given port
      * @param data The data to be sent
      */
-    public void sendData(byte[] data, int elevatorPort) {
+    public void sendData(byte[] data, int port) {
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
         // port
         try {
-            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), elevatorPort);
+            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), port);
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);

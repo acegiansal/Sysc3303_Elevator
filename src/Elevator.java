@@ -54,13 +54,12 @@ public class Elevator implements Runnable{
         System.out.println(Thread.currentThread().getName() + " GOT: " + Arrays.toString(received));
 
         // If data is get request
-        if(data[0] == 1) {
+        if(PacketProcessor.isGetRequest(data)) {
             //Translate request
             translateRequest(received);
             handleEvent(ElevatorEvent.CALL);
         } else {
-            System.out.println("PUT REQUEST");
-            // Get basic reply
+            System.out.println("PUT REQUEST SENT (" + Arrays.toString(data) + ")");
         }
         
     }
@@ -132,10 +131,8 @@ public class Elevator implements Runnable{
             }
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
-//                byte[] response = {0, 1};
-
-                //DEBUG PURPOSES
-                byte[] response = {1};
+                byte[] response = {0, 1};
+                System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
                 sendRpcRequest(response);
             }
         }
@@ -249,8 +246,9 @@ public class Elevator implements Runnable{
         // Send get request
         // Receive request
         // Process request
-        byte[] getRequest = {1};
+        byte[] getRequest = PacketProcessor.createGetRequest();
         while(true) {
+            System.out.println(Thread.currentThread().getName() + " is sending GET request!");
             sendRpcRequest(getRequest);
         }
     }

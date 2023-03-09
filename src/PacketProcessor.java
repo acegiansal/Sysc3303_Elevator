@@ -2,6 +2,9 @@ import java.nio.charset.StandardCharsets;
 
 public class PacketProcessor {
 
+    public static final byte GET_BYTE = 1;
+    public static final byte REPLY = 2;
+
     public static byte[] createRequestPacket(String time, int floorNumber, String direction, int carButton){
         byte[] request = new byte[50];
 
@@ -19,9 +22,9 @@ public class PacketProcessor {
 
     public static ElevatorInfo translateRequest(byte[] data){
 
-        int floorNumber = (int)data[1];
+        int floorNumber = data[1];
         String direction = new String(data, 3, 4);
-        int carButton = (int)data[5];
+        int carButton = data[5];
         int lengthOfTime = 7;
         for(int i=7; i<data.length; i++){
             if(data[i] == 0){
@@ -32,7 +35,22 @@ public class PacketProcessor {
         String time = new String(data, 7, lengthOfTime);
 
         return new ElevatorInfo(direction, floorNumber, time, carButton);
+    }
 
+    public static byte[] createGetRequest(){
+        return new byte[]{GET_BYTE};
+    }
+
+    public static boolean isGetRequest(byte[] data){
+        return data[0] == GET_BYTE;
+    }
+
+    public static byte[] createOkReply(){
+        return new byte[]{REPLY};
+    }
+
+    public static boolean isOkReply(byte[] data){
+        return data[0] == REPLY;
     }
 
     private static byte[] combineByteArr(int start, byte[] subject, byte[] toAdd) {

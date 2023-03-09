@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.*;
-import java.util.ArrayList;
 
 public class Scheduler {
 
@@ -10,6 +9,7 @@ public class Scheduler {
     private int schedulerPort;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
+    int DEBUGCOUNTER;
 
 
     /**
@@ -32,6 +32,8 @@ public class Scheduler {
      * Creates a scheduler object
      */
     public Scheduler(int schedulerPort) {
+        DEBUGCOUNTER = 0;
+
         this.state = SchedulerState.IDLE;
         this.schedulerPort = schedulerPort;
 
@@ -66,7 +68,7 @@ public class Scheduler {
                 this.state = SchedulerState.RECEIVING;
             }
             case RECEIVING_RESPONSE -> {
-                logging.info("Scheduler", "Scheduler received response");
+                logging.info("Scheduler", "Scheduler sending reply");
                 this.state = SchedulerState.IDLE;
             }
         }
@@ -90,23 +92,68 @@ public class Scheduler {
         }
 
         //Get request
-        if(data[0] == 1) {
+        if(PacketProcessor.isGetRequest(data)) {
             //Figure out which elevator to get reply from
             //Send reply
-            System.out.println("Get request");
+            logging.info("Scheduler", "Scheduler got GET request, sending reply");
+            byte[] response = databox.getSomeResponseData();
+            sendData(response, receivePacket.getPort());
+
         } else { //Put request
+            this.handleEvent(SchedulerEvent.REQUEST);
             //Does algorithm
             // chosenElevator = algorithm();
+//            int chosenElevator = (DEBUGCOUNTER++%2);
             int chosenElevator = 0;
-
-            //Puts into box
-            databox.putRequestData(data, chosenElevator);
-
+            Thread helper = new Thread(new BoxHelper(data, chosenElevator, receivePacket));
+            helper.start();
             //Sends reply to floor
+            logging.info("Scheduler", "Scheduler got PUT request, adding to queue and sending reply");
+            byte[] reply = PacketProcessor.createOkReply();
+            sendData(reply, receivePacket.getPort());
         }
 
     }
 
+    public void sendData(byte[] data, int port) {
+        DatagramPacket sendPacket = null;
+        // Create a packet that sends to the same computer at the previously specified
+        // port
+        try {
+            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Send the datagram packet to the server via the send/receive socket.
+        try {
+            sendReceiveSocket.send(sendPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private class BoxHelper implements Runnable {
+        byte[] data;
+        int chosenElevator;
+        DatagramPacket receivePacket;
+
+        public BoxHelper(byte[] data, int chosenElevator, DatagramPacket receivePacket) {
+            this.data = data;
+            this.chosenElevator = chosenElevator;
+            this.receivePacket = receivePacket;
+        }
+
+        @Override
+        public void run() {
+
+            System.out.println("HELPER SENDING PUT REQUEST");
+            //Puts into box
+            databox.putRequestData(data, chosenElevator);
+        }
+    }
 
     /**
      * Getter for the state
@@ -115,6 +162,8 @@ public class Scheduler {
     public SchedulerState getState(){
         return state;
     }
+
+
 
 
     public static void main(String[] args) {

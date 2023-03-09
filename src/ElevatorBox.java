@@ -55,12 +55,13 @@ public class ElevatorBox {
     public synchronized void putRequestData(byte[] data, int elevatorID) {
         while(hasRequestData.get(elevatorID)) {
             try {
+                System.out.println("SOMETHING INSIDE REQUEST: " +  elevatorID + ": " +  Arrays.toString(requestData.get(elevatorID)));
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Putting request into box: + " + Arrays.toString(data));
+        System.out.println("Putting request into box: " + Arrays.toString(data));
         hasRequestData.set(elevatorID, true);
         requestData.set(elevatorID, data);
         notifyAll();
@@ -85,18 +86,54 @@ public class ElevatorBox {
     }
 
     /**
+     * Protected getter for server data
+     * @return The data the server has sent
+     */
+    public synchronized byte[] getSomeResponseData() {
+        int responseIndex = getResponseIndex();
+        while(responseIndex==-1) {
+            try {
+                System.out.println("Waiting");
+                wait();
+                responseIndex = getResponseIndex();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        hasResponseData.set(responseIndex, false);
+        notifyAll();
+        return responseData.get(responseIndex);
+    }
+
+    /**
+     * Gets the index of an elevator that is ready (if it exists)
+     * @return
+     */
+    private int getResponseIndex(){
+        for(int i=0; i<hasResponseData.size(); i++){
+            System.out.println("Checking elevator " + i + " for item");
+            if(hasResponseData.get(i)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Protected setter for server data
      * @param data The data that the server has sent
      */
     public synchronized void putResponseData(byte[] data, int elevatorID) {
         while(hasResponseData.get(elevatorID)) {
             try {
+                //DEBUG
+                System.out.println("SOMETHING INSIDE RESPONSE: " + elevatorID + ": " + Arrays.toString(responseData.get(elevatorID)));
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Putting response into box: + " + Arrays.toString(data));
+        System.out.println("Putting response into box: " + Arrays.toString(data));
         hasResponseData.set(elevatorID, true);
         responseData.set(elevatorID, data);
         notifyAll();

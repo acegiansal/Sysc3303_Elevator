@@ -59,15 +59,42 @@ public class Floor {
 
 
     private void sendRpcRequest(byte[] data){
+
+        System.out.println("Floor sending: " + Arrays.toString(data));
+        sendData(data, schedulerPort);
+
+        //Receive reply
+        byte[] reply = new byte[50];
+        DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
+
+        try {
+            // Block until a datagram is received via sendReceiveSocket.
+            System.out.println("Floor Waiting for reply");
+            sendReceiveSocket.receive(receivePacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        System.out.println("Floor got reply: " + Arrays.toString(reply));
+
+    }
+
+    /**
+     * Sends data to the given port
+     * @param data The data to be sent
+     */
+    public void sendData(byte[] data, int port) {
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
         // port
         try {
-            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), schedulerPort);
+            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), port);
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.exit(1);
         }
+
         // Send the datagram packet to the server via the send/receive socket.
         try {
             sendReceiveSocket.send(sendPacket);
@@ -75,9 +102,6 @@ public class Floor {
             e.printStackTrace();
             System.exit(1);
         }
-
-        //Receive reply
-
     }
 
     /**
@@ -104,6 +128,11 @@ public class Floor {
         //Read information from selected file
         File file = new File("src/elevatorFile");
         floorControl.readFromFile(file);
+
+        while(true){
+            byte[] getRequest = PacketProcessor.createGetRequest();
+            floorControl.sendRpcRequest(getRequest);
+        }
 
     }
 }
