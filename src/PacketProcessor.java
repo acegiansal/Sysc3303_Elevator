@@ -1,21 +1,21 @@
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class PacketProcessor {
 
     public static final byte GET_BYTE = 1;
     public static final byte REPLY = 2;
+    public static final byte DELIMITER = 0;
 
     public static byte[] createRequestPacket(String time, int floorNumber, String direction, int carButton){
         byte[] request = new byte[50];
 
         request[0] = 0; //Put request
         request[1] = (byte)floorNumber;
-        request[2] = 0;
-        request = combineByteArr(3, request, direction.getBytes());
-        request[direction.getBytes().length + 3] = 0;
-        request[direction.getBytes().length + 4] = (byte) carButton;
-        request[direction.getBytes().length + 5] = 0;
-        request = combineByteArr(direction.getBytes().length + 6, request, time.getBytes(StandardCharsets.UTF_8));
+        request = combineByteArr(2, request, direction.getBytes());
+        request[direction.getBytes().length + 2] = (byte) carButton;
+        request = combineByteArr(direction.getBytes().length + 3, request, time.getBytes());
+        request[direction.getBytes().length + time.getBytes().length + 4] = DELIMITER;
 
         return request;
     }
@@ -23,22 +23,50 @@ public class PacketProcessor {
     public static ElevatorInfo translateRequest(byte[] data){
 
         int floorNumber = data[1];
-        String direction = new String(data, 3, 4);
-        int carButton = data[5];
-        int lengthOfTime = 7;
-        for(int i=7; i<data.length; i++){
+        String direction = new String(data, 2, 1);
+        int carButton = data[3];
+        int lengthOfTime = 0;
+        for(int i=4; i<data.length; i++){
             if(data[i] == 0){
                 break;
             }
             lengthOfTime++;
         }
-        String time = new String(data, 7, lengthOfTime);
+        String time = new String(data, 4, lengthOfTime);
 
         return new ElevatorInfo(direction, floorNumber, time, carButton);
     }
 
+    public static byte[] addElevatorStatus(ElevatorInfo info, byte[] data){
+        int dIndex = findDelimiter(data, 1);
+        if(dIndex == -1){
+            System.out.println("CAN'T FIND THE DELIMETER IN DATA: " + Arrays.toString(data));
+            System.exit(1);
+        }
+
+        byte[] stateBytes = info.getState().toString().getBytes();
+
+        byte[] destDelim = {0, (byte)info.getCarButton(), 0};
+
+        byte[] withStatus =  combineByteArr(dIndex+1, data, stateBytes);
+
+        return combineByteArr(dIndex + stateBytes.length + 1, withStatus, destDelim);
+
+    }
+
+    public static int findDelimiter(byte[] data, int start){
+        int dIndex = -1;
+        for (int i=start; i<50; i++){
+            if(data[i] == DELIMITER){
+                dIndex = i;
+                break;
+            }
+        }
+        return dIndex;
+    }
+
     public static byte[] createGetRequest(){
-        return new byte[]{GET_BYTE};
+        return new byte[]{GET_BYTE, 0};
     }
 
     public static boolean isGetRequest(byte[] data){
@@ -68,4 +96,15 @@ public class PacketProcessor {
         return combinedByteArr;
     }
 
+
+    public static void main(String[] args){
+        byte[] tester = PacketProcessor.createRequestPacket("10:15", 3, "u", 6);
+        System.out.println(Arrays.toString(tester));
+
+        ElevatorInfo testInfo = new ElevatorInfo("u", 5, "12:00", 5, 1);
+
+        byte[] result = addElevatorStatus(testInfo, tester);
+        System.out.println(Arrays.toString(result));
+        System.out.println(translateRequest(result));
+    }
 }

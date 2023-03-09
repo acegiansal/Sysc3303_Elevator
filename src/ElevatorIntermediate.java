@@ -4,7 +4,6 @@ import java.net.*;
 public class ElevatorIntermediate implements Runnable {
 
     private int elevatorID;
-    private int intermediatePort;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
     private ElevatorBox databox;
@@ -34,6 +33,8 @@ public class ElevatorIntermediate implements Runnable {
             System.exit(1);
         }
 
+        //Translate Status
+        extractStatus(data);
         //Get request
         if(PacketProcessor.isGetRequest(data)) {
             System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has GET request...");
@@ -48,6 +49,22 @@ public class ElevatorIntermediate implements Runnable {
             byte[] reply = PacketProcessor.createOkReply();
             sendData(reply, receivePacket.getPort());
         }
+    }
+
+    private void extractStatus(byte[] data){
+        int delimiter = PacketProcessor.findDelimiter(data, 1);
+        int stateDelim = PacketProcessor.findDelimiter(data, delimiter);
+        int floorDelim = PacketProcessor.findDelimiter(data, stateDelim);
+
+        ElevatorState state = ElevatorState.valueOf(new String(data, delimiter, stateDelim-delimiter));
+        int floorNumber = data[floorDelim - 1];
+
+        int stateValue = (state == ElevatorState.IDLE) ? 0 : 1;
+        String elevatorNum = (elevatorID == 0) ? "el1" : "el2";
+
+        databox.setElevatorData(elevatorNum + "State", stateValue);
+        databox.setElevatorData(elevatorNum + "Floor", floorNumber);
+
     }
 
     /**

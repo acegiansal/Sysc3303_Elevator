@@ -18,11 +18,10 @@ public class ElevatorBox {
 
 
     /**
-
      Retrieves the elevator data stored in a HashMap.
      @return The elevator data stored in a HashMap.
      */
-    public HashMap<String, Integer> getElevatorData() {
+    public synchronized HashMap<String, Integer> getElevatorData() {
         return elevatorData;
     }
     /**
@@ -31,7 +30,7 @@ public class ElevatorBox {
      @param key The key to be added to the HashMap.
      @param val The value to be added to the HashMap.
      */
-    public void setElevatorData(String key, int val) {
+    public synchronized void setElevatorData(String key, int val) {
         this.elevatorData.put(key, val);
     }
 

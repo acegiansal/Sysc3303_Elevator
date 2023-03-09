@@ -43,7 +43,6 @@ public class Elevator implements Runnable{
         }
     }
 
-
     public byte[] sendRpcRequest(byte[] data){
         sendData(data, intermediatePort);
 
@@ -83,6 +82,8 @@ public class Elevator implements Runnable{
      * @param data The data to be sent
      */
     public void sendData(byte[] data, int port) {
+        data = PacketProcessor.addElevatorStatus(currentRequest, data);
+
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
         // port
@@ -137,7 +138,7 @@ public class Elevator implements Runnable{
             }
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
-                byte[] response = {0, 1, (byte) this.startingFloor};
+                byte[] response = {0, 1, (byte) this.startingFloor, 0};
                 System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
                 byte[] reply = sendRpcRequest(response);
                 System.out.println(Thread.currentThread().getName() + " GOT REPLY: " + Arrays.toString(reply));
@@ -217,8 +218,6 @@ public class Elevator implements Runnable{
             e.printStackTrace();
         }
         this.startingFloor = destination;
-
-        //TODO: WAIT TO SIMULATE ELEVATOR MOVING
 
         handleEvent(ElevatorEvent.DOORS_OPEN);
     }
