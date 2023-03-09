@@ -37,7 +37,7 @@ public class Elevator implements Runnable{
     }
 
 
-    public void sendRpcRequest(byte[] data){
+    public byte[] sendRpcRequest(byte[] data){
         sendData(data, intermediatePort);
 
         byte[] received = new byte[50];
@@ -51,17 +51,16 @@ public class Elevator implements Runnable{
             e.printStackTrace();
             System.exit(1);
         }
-        System.out.println(Thread.currentThread().getName() + " GOT: " + Arrays.toString(received));
-
         // If data is get request
         if(PacketProcessor.isGetRequest(data)) {
+            System.out.println("GET REQUEST RECEIVED (" + Arrays.toString(data) + ")");
             //Translate request
             translateRequest(received);
             handleEvent(ElevatorEvent.CALL);
         } else {
             System.out.println("PUT REQUEST SENT (" + Arrays.toString(data) + ")");
         }
-        
+        return received;
     }
 
     private void translateRequest(byte[] data){
@@ -133,7 +132,8 @@ public class Elevator implements Runnable{
                 currentRequest.setState(ElevatorState.IDLE);
                 byte[] response = {0, 1};
                 System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
-                sendRpcRequest(response);
+                byte[] reply = sendRpcRequest(response);
+                System.out.println(Thread.currentThread().getName() + " GOT REPLY: " + Arrays.toString(reply));
             }
         }
 
@@ -200,6 +200,9 @@ public class Elevator implements Runnable{
         String direction = this.startingFloor < destination ? "Up" : "Down";
         logging.info( "Elevator", "Elevator is moving " + direction);
         this.startingFloor = destination;
+
+        //TODO: WAIT TO SIMULATE ELEVATOR MOVING
+
         handleEvent(ElevatorEvent.DOORS_OPEN);
     }
 
@@ -249,7 +252,8 @@ public class Elevator implements Runnable{
         byte[] getRequest = PacketProcessor.createGetRequest();
         while(true) {
             System.out.println(Thread.currentThread().getName() + " is sending GET request!");
-            sendRpcRequest(getRequest);
+            byte[] reply = sendRpcRequest(getRequest);
+            System.out.println(Thread.currentThread().getName() +" got request: " + Arrays.toString(reply));
         }
     }
 

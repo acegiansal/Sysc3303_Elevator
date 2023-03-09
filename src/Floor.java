@@ -58,7 +58,7 @@ public class Floor {
     }
 
 
-    private void sendRpcRequest(byte[] data){
+    private byte[] sendRpcRequest(byte[] data){
 
         System.out.println("Floor sending: " + Arrays.toString(data));
         sendData(data, schedulerPort);
@@ -76,7 +76,7 @@ public class Floor {
             System.exit(1);
         }
 
-        System.out.println("Floor got reply: " + Arrays.toString(reply));
+        return reply;
 
     }
 
@@ -131,7 +131,8 @@ public class Floor {
 
         while(true){
             byte[] getRequest = PacketProcessor.createGetRequest();
-            floorControl.sendRpcRequest(getRequest);
+            byte[] reply = floorControl.sendRpcRequest(getRequest);
+            System.out.println("Floor got reply: " + Arrays.toString(reply));
         }
 
     }
