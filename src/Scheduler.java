@@ -3,8 +3,9 @@ import java.net.DatagramSocket;
 import java.net.*;
 
 public class Scheduler {
-
+    /** Current state of the scheduler */
     private SchedulerState state;
+    /** data box used for putting and getting elevator data */
     private ElevatorBox databox;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
@@ -71,7 +72,8 @@ public class Scheduler {
     }
 
     /**
-     * Only receives from Floor
+     * Handles incoming RPC requests from clients and dispatches them to the appropriate handler.
+     * Blocks until a datagram packet is received from the receiveSocket.
      */
     public void handleRpcRequest() {
         // Read out information
@@ -110,6 +112,11 @@ public class Scheduler {
 
     }
 
+    /**
+     * Sends the specified data to the specified port using the send/receive socket.
+     * @param data the data to be sent
+     * @param port the port to send the data to
+     */
     public void sendData(byte[] data, int port) {
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
@@ -130,20 +137,33 @@ public class Scheduler {
         }
     }
 
+    /**
+
+     A private helper class that implements the Runnable interface to perform
+     some processing in a separate thread.
+     */
     private class BoxHelper implements Runnable {
         byte[] data;
         int chosenElevator;
 
+        /**
+         Constructs a new BoxHelper object with the specified data and chosen elevator.
+         @param data the data to be processed
+         @param chosenElevator the elevator to which the processed data will be sent
+         */
         public BoxHelper(byte[] data, int chosenElevator) {
             this.data = data;
             this.chosenElevator = chosenElevator;
         }
 
+        /**
+         Performs the actual processing of the data in a separate thread.
+         This method sends the specified data to the chosen elevator by putting it into
+         a databox.
+         */
         @Override
         public void run() {
-
             System.out.println("SCHEDULER HELPER SENDING PUT REQUEST TO ELEVATOR " + chosenElevator);
-            //Puts into box
             databox.putRequestData(data, chosenElevator);
         }
     }

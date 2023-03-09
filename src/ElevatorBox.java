@@ -17,10 +17,20 @@ public class ElevatorBox {
     private HashMap<String, Integer> elevatorData= new HashMap<>();
 
 
+    /**
+
+     Retrieves the elevator data stored in a HashMap.
+     @return The elevator data stored in a HashMap.
+     */
     public HashMap<String, Integer> getElevatorData() {
         return elevatorData;
     }
+    /**
 
+     Sets a key-value pair in the elevator data HashMap.
+     @param key The key to be added to the HashMap.
+     @param val The value to be added to the HashMap.
+     */
     public void setElevatorData(String key, int val) {
         this.elevatorData.put(key, val);
     }
