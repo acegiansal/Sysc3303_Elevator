@@ -97,6 +97,7 @@ public class Elevator implements Runnable{
      */
     public void sendData(byte[] data, int port) {
         data = PacketProcessor.addElevatorStatus(currentRequest, data);
+        System.out.println("------ DATA IS NOW:" + Arrays.toString(data));
 
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
@@ -152,13 +153,22 @@ public class Elevator implements Runnable{
             }
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
-                byte[] response = {0, 1, (byte) this.startingFloor, 0};
+                byte[] response = createElevatorResponse();
                 System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
                 byte[] reply = sendRpcRequest(response);
                 System.out.println(Thread.currentThread().getName() + " GOT REPLY: " + Arrays.toString(reply));
             }
         }
 
+    }
+
+    private byte[] createElevatorResponse(){
+        byte[] response = new byte[50];
+        response[0] = 0;    //For put request
+        response[1] = 1;
+        response[2] = (byte)this.startingFloor;
+        response[3] = 0;
+        return response;
     }
 
     /**

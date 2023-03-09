@@ -82,8 +82,11 @@ public class PacketProcessor {
         return dIndex;
     }
 
-    public static byte[] createGetRequest(){
-        return new byte[]{GET_BYTE, 0};
+    public static byte[] createGetRequest() {
+        byte[] getRequest = new byte[50];
+        getRequest[0] = GET_BYTE;
+        getRequest[1] = 0;
+        return getRequest;
     }
 
     /**

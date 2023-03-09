@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 
 public class ElevatorIntermediate implements Runnable {
 
@@ -58,6 +59,9 @@ public class ElevatorIntermediate implements Runnable {
         int delimiter = PacketProcessor.findDelimiter(data, 1);
         int stateDelim = PacketProcessor.findDelimiter(data, delimiter+1);
         int floorDelim = PacketProcessor.findDelimiter(data, stateDelim+1);
+
+        System.out.println("-------------" + Arrays.toString(data));
+
 
         String enumVal = new String(data, delimiter+1, stateDelim-delimiter-1);
         ElevatorState state = ElevatorState.valueOf(enumVal);
