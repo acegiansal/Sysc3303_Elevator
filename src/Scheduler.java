@@ -6,7 +6,6 @@ public class Scheduler {
 
     private SchedulerState state;
     private ElevatorBox databox;
-    private int schedulerPort;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
 
@@ -33,7 +32,6 @@ public class Scheduler {
     public Scheduler(int schedulerPort) {
 
         this.state = SchedulerState.IDLE;
-        this.schedulerPort = schedulerPort;
 
         this.databox = new ElevatorBox(2);
         // Create elevator intermediates
@@ -102,7 +100,7 @@ public class Scheduler {
             //Does algorithm
             // chosenElevator = algorithm();
             int chosenElevator = 0;
-            Thread helper = new Thread(new BoxHelper(data, chosenElevator, receivePacket));
+            Thread helper = new Thread(new BoxHelper(data, chosenElevator));
             helper.start();
             //Sends reply to floor
             logging.info("Scheduler", "Scheduler got PUT request, adding to queue and sending reply");
@@ -135,18 +133,16 @@ public class Scheduler {
     private class BoxHelper implements Runnable {
         byte[] data;
         int chosenElevator;
-        DatagramPacket receivePacket;
 
-        public BoxHelper(byte[] data, int chosenElevator, DatagramPacket receivePacket) {
+        public BoxHelper(byte[] data, int chosenElevator) {
             this.data = data;
             this.chosenElevator = chosenElevator;
-            this.receivePacket = receivePacket;
         }
 
         @Override
         public void run() {
 
-            System.out.println("HELPER SENDING PUT REQUEST");
+            System.out.println("SCHEDULER HELPER SENDING PUT REQUEST TO ELEVATOR " + chosenElevator);
             //Puts into box
             databox.putRequestData(data, chosenElevator);
         }
@@ -159,9 +155,6 @@ public class Scheduler {
     public SchedulerState getState(){
         return state;
     }
-
-
-
 
     public static void main(String[] args) {
         Scheduler mainSched = new Scheduler(Config.SCHEDULER_PORT);
