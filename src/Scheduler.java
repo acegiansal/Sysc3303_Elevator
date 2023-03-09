@@ -9,7 +9,6 @@ public class Scheduler {
     private int schedulerPort;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
-    int DEBUGCOUNTER;
 
 
     /**
@@ -32,7 +31,6 @@ public class Scheduler {
      * Creates a scheduler object
      */
     public Scheduler(int schedulerPort) {
-        DEBUGCOUNTER = 0;
 
         this.state = SchedulerState.IDLE;
         this.schedulerPort = schedulerPort;
@@ -103,7 +101,6 @@ public class Scheduler {
             this.handleEvent(SchedulerEvent.REQUEST);
             //Does algorithm
             // chosenElevator = algorithm();
-//            int chosenElevator = (DEBUGCOUNTER++%2);
             int chosenElevator = 0;
             Thread helper = new Thread(new BoxHelper(data, chosenElevator, receivePacket));
             helper.start();
