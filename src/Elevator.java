@@ -208,10 +208,15 @@ public class Elevator implements Runnable{
         String direction = this.startingFloor < destination ? "Up" : "Down";
         logging.info( "Elevator", "Elevator is moving " + direction);
         try {
-            Thread.sleep((long) MOVE_TIME * Math.abs(currentRequest.getFloorNumber() - startingFloor) - (MOVE_TIME/2));
-            this.arrivalSensor = true;
-            this.directionLamp = direction.equals("Up");
-            Thread.sleep(MOVE_TIME/2);
+            if(currentRequest.getFloorNumber()==startingFloor){
+                this.arrivalSensor=true;
+                this.directionLamp = direction.equals("Up");
+            }
+            else {
+                Thread.sleep((long) MOVE_TIME * Math.abs(currentRequest.getFloorNumber() - startingFloor) - (MOVE_TIME / 2));
+                this.arrivalSensor = true;
+                this.directionLamp = direction.equals("Up");
+            }
         } catch (Exception e) {
             logging.warning("Elevator", "Broke");
             e.printStackTrace();
