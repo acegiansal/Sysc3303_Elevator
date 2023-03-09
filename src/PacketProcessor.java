@@ -1,12 +1,24 @@
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+/**
+ * A Packet Processor class
+ * Contains logic to process the various packets used
+ */
 public class PacketProcessor {
 
     public static final byte GET_BYTE = 1;
     public static final byte REPLY = 2;
     public static final byte DELIMITER = 0;
 
+    /**
+     * Creates a request packet
+     * @param time the time of the request
+     * @param floorNumber the origin floor number
+     * @param direction the direction to move
+     * @param carButton the destination floor number
+     * @return the formatted request in byte array form
+     */
     public static byte[] createRequestPacket(String time, int floorNumber, String direction, int carButton){
         byte[] request = new byte[50];
 
@@ -20,6 +32,11 @@ public class PacketProcessor {
         return request;
     }
 
+    /**
+     * Translates a request from byte array form to ElevatorInfo form
+     * @param data the request in byte array form
+     * @return an Elevator info object containing the request info
+     */
     public static ElevatorInfo translateRequest(byte[] data){
 
         int floorNumber = data[1];
@@ -69,18 +86,39 @@ public class PacketProcessor {
         return new byte[]{GET_BYTE, 0};
     }
 
+    /**
+     * Returns true if the data is a get request
+     * @param data the data in byte form
+     * @return true if the data is a get request
+     */
     public static boolean isGetRequest(byte[] data){
         return data[0] == GET_BYTE;
     }
 
+    /**
+     * Creates an OK reply
+     * @return a byte array containing an OK reply
+     */
     public static byte[] createOkReply(){
         return new byte[]{REPLY};
     }
 
+    /**
+     * Returns true if the data is an OK reply
+     * @param data the data in byte form
+     * @return true if the data is an OK reply
+     */
     public static boolean isOkReply(byte[] data){
         return data[0] == REPLY;
     }
 
+    /**
+     * Function to combine 2 byte arrays
+     * @param start the start index
+     * @param subject the byte array to add to
+     * @param toAdd the byte array to be added
+     * @return the combined byte array
+     */
     private static byte[] combineByteArr(int start, byte[] subject, byte[] toAdd) {
         byte[] combinedByteArr = new byte[subject.length];
 

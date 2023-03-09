@@ -19,6 +19,9 @@ public class ElevatorIntermediate implements Runnable {
         }
     }
 
+    /**
+     * Handles an RPC request sent by the Floor
+     */
     public void handleRpcRequest(){
         // Read out information
         byte[] data = new byte[50];
