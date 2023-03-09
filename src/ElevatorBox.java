@@ -74,7 +74,7 @@ public class ElevatorBox {
     public synchronized byte[] getResponseData(int elevatorID) {
         while(!hasResponseData.get(elevatorID)) {
             try {
-                System.out.println("Waiting");
+                System.out.println("Waiting for response data to exist");
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -93,7 +93,7 @@ public class ElevatorBox {
         int responseIndex = getResponseIndex();
         while(responseIndex==-1) {
             try {
-                System.out.println("Waiting");
+                System.out.println("Waiting for response to have data");
                 wait();
                 responseIndex = getResponseIndex();
             } catch (InterruptedException e) {
@@ -111,7 +111,6 @@ public class ElevatorBox {
      */
     private int getResponseIndex(){
         for(int i=0; i<hasResponseData.size(); i++){
-            System.out.println("Checking elevator " + i + " for item");
             if(hasResponseData.get(i)){
                 return i;
             }
