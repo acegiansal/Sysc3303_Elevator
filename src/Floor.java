@@ -1,28 +1,29 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.*;
+import java.util.Arrays;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 /**
  * Class that represents a floor in an elevator system
  */
-public class Floor implements Runnable{
-
-    /**
-     * Logger for Floor class
-     */
-    private static final Logger LOGGER = Logger.getLogger(Floor.class.getName());
+public class Floor {
 
     /** The scheduler responsible for the floor */
-    private Scheduler scheduler;
+    private int schedulerPort;
     private String testString;
+    /** A socket that sends and receives data */
+    private DatagramSocket sendReceiveSocket;
 
-    /**
-     * Creates a floor object
-     * @param scheduler The scheduler object responsible for the floor
-     */
-    public Floor(Scheduler scheduler) {
-        this.scheduler = scheduler;
+    public Floor(int schedulerPort) {
+        this.schedulerPort = schedulerPort;
+        try {
+            sendReceiveSocket = new DatagramSocket();
+        } catch (SocketException se) {
+            se.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -38,33 +39,69 @@ public class Floor implements Runnable{
                 String[] splitData = data.split(" ");
                 //Data must be 4 items long
                 if (splitData.length != 4){
-                    LOGGER.warning("INPUT DATA INVALID!!");
+                    logging.warning( "Floor", "INPUT DATA INVALID!!");
                     System.out.println("INPUT DATA INVALID!!");
                     break;
                 }else {
                     //Direction is true if 'Up' is selected
-                    boolean direction = splitData[2].equals("Up");
-                    //Send the data to the scheduler
-                    send(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
+                    String direction = (splitData[2].equals("Up")) ? "u" : "d";
+
+                    prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
                 }
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            LOGGER.warning("An error occurred while reading the input file" + e.getMessage());
+            logging.warning( "Floor", "An error occurred while reading the input file" + e.getMessage());
             //System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
 
+
+    private byte[] sendRpcRequest(byte[] data){
+
+        System.out.println("Floor sending: " + Arrays.toString(data));
+        sendData(data, schedulerPort);
+
+        //Receive reply
+        byte[] reply = new byte[50];
+        DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
+
+        try {
+            // Block until a datagram is received via sendReceiveSocket.
+            System.out.println("Floor Waiting for reply");
+            sendReceiveSocket.receive(receivePacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return reply;
+
+    }
+
     /**
-     * Receives information from the elevator through the scheduler
-     * @return ElevatorInfo with information about the elevator
+     * Sends data to the given port
+     * @param data The data to be sent
      */
-    private ElevatorInfo receiveFromSched(){
-       ElevatorInfo info = scheduler.getElevatorMessages();
-       LOGGER.info("Floor Receiving" + info);
-       //System.out.println("Floor Receiving " + info);
-       return info;
+    public void sendData(byte[] data, int port) {
+        DatagramPacket sendPacket = null;
+        // Create a packet that sends to the same computer at the previously specified
+        // port
+        try {
+            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Send the datagram packet to the server via the send/receive socket.
+        try {
+            sendReceiveSocket.send(sendPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -74,35 +111,10 @@ public class Floor implements Runnable{
      * @param direction The direction that the elevator should be going to
      * @param carButton The target floor
      */
-    private void send(String time, int floorNumber, boolean direction, int carButton){
-        ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
-        LOGGER.info("Floor Sending" + info);
-        //System.out.println("Floor Sending " + info);
-        scheduler.addFloorMessage(info);
-    }
-
-    /**
-     * Sends the data using a preexisting ElevatorInfo object
-     * @param info Existing ElevatorInfo object to send
-     */
-    private void send(ElevatorInfo info){
-        LOGGER.info("Floor Sending" + info);
-        //System.out.println("Floor Sending " + info);
-        scheduler.addFloorMessage(info);
-    }
-
-    //Created for only testing purposes
-    void testReceiveFromSched(){
-        ElevatorInfo info = scheduler.getElevatorMessages();
-        System.out.println("Floor Receiving " + info);
-        testString = info.toString();
-    }
-
-    //Created for only testing purposes
-    void testSend(String time, int floorNumber, boolean direction, int carButton){
-        ElevatorInfo info = new ElevatorInfo(direction, floorNumber, time, carButton);
-        System.out.println("Floor Sending " + info);
-        scheduler.addFloorMessage(info);
+    private void prepareSend(String time, int floorNumber, String direction, int carButton){
+        byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
+        logging.info( "Floor", "Floor Sending" + Arrays.toString(request));
+        sendRpcRequest(request);
     }
 
     //Created for only testing purposes
@@ -110,13 +122,18 @@ public class Floor implements Runnable{
         return testString;
     }
 
-    @Override
-    public void run() {
+    public static void main(String[] args){
+        Floor floorControl = new Floor(Config.SCHEDULER_PORT);
+
         //Read information from selected file
         File file = new File("src/elevatorFile");
-        readFromFile(file);
+        floorControl.readFromFile(file);
 
-        this.receiveFromSched();
+        while(true){
+            byte[] getRequest = PacketProcessor.createGetRequest();
+            byte[] reply = floorControl.sendRpcRequest(getRequest);
+            System.out.println("Floor got reply: " + Arrays.toString(reply));
+        }
 
     }
 }
