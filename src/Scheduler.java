@@ -101,6 +101,13 @@ public class Scheduler {
             this.handleEvent(SchedulerEvent.REQUEST);
             //Does algorithm
              int chosenElevator = algorithm(data);
+             if (chosenElevator==0) {
+                 databox.setElevatorData("el1State", 1);
+             }
+             else{
+                databox.setElevatorData("el2State", 1);
+             }
+
 //            int chosenElevator = 0;
             Thread helper = new Thread(new BoxHelper(data, chosenElevator));
             helper.start();
@@ -145,7 +152,7 @@ public class Scheduler {
             while(true) {
                 try {
                     System.out.println("Both elevators are busy, waiting until one is not");
-                    wait();
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     System.exit(1);
