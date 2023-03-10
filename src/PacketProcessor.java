@@ -137,28 +137,6 @@ public class PacketProcessor {
         return combinedByteArr;
     }
 
-
-    public static void extractStatus(byte[] data){
-        int elevatorID = 1;
-        int delimiter = PacketProcessor.findDelimiter(data, 1);
-        int stateDelim = PacketProcessor.findDelimiter(data, delimiter+1);
-        int floorDelim = PacketProcessor.findDelimiter(data, stateDelim+1);
-
-
-        System.out.println("DELIMITERS: " + delimiter + " " + stateDelim + " " + floorDelim);
-
-        String enumVal = new String(data, delimiter+1, stateDelim-delimiter-1);
-        System.out.println("ENUM VAL: " + enumVal);
-
-        ElevatorState state = ElevatorState.valueOf(enumVal);
-        int floorNumber = data[floorDelim - 1];
-        System.out.println(floorNumber);
-
-        int stateValue = (state == ElevatorState.IDLE) ? 0 : 1;
-        String elevatorNum = (elevatorID == 0) ? "el1" : "el2";
-
-    }
-
     public static void main(String[] args){
         byte[] tester = PacketProcessor.createRequestPacket("10:15", 3, "u", 6);
         System.out.println(Arrays.toString(tester));
@@ -167,7 +145,7 @@ public class PacketProcessor {
 
         byte[] result = addElevatorStatus(testInfo, tester);
         System.out.println(Arrays.toString(result));
-        PacketProcessor.extractStatus(result);
+//        PacketProcessor.extractStatus(result);
 //        System.out.println(translateRequest(result));
     }
 }

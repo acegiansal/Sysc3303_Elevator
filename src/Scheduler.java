@@ -101,10 +101,12 @@ public class Scheduler {
             this.handleEvent(SchedulerEvent.REQUEST);
             //Does algorithm
              int chosenElevator = algorithm(data);
-             if (chosenElevator==0) {
+             if (chosenElevator==-1) {
+                System.out.println("The algorithm could not choose an elevator!!");
+                System.exit(2);
+             } else if(chosenElevator == 0){
                  databox.setElevatorData("el1State", 1);
-             }
-             else{
+             } else{
                 databox.setElevatorData("el2State", 1);
              }
 
@@ -125,41 +127,44 @@ public class Scheduler {
      * @return the id of the elevator that should service the request
      */
     public int algorithm(byte[] data){
-        ElevatorInfo req = PacketProcessor.translateRequest(data);
-        if (databox.getElevatorData().get("el1State") == 0 && databox.getElevatorData().get("el2State") ==0){
-            int el1Distance = Math.abs(databox.getElevatorData().get("el1Floor") - req.getFloorNumber());
-            int el2Distance = Math.abs(databox.getElevatorData().get("el2Floor") - req.getFloorNumber());
-            if (el1Distance < el2Distance) {
-                return 0;
-            } else if (el1Distance > el2Distance) {
-                return 1;
-            } else {
-                if (req.getDirection().equals("Up") && databox.getElevatorData().get("el1Floor") < req.getFloorNumber()) {
-                    return 0;
-                } else if (req.getDirection().equals("Up") && databox.getElevatorData().get("el2Floor") < req.getFloorNumber()) {
-                    return 1;
-                } else if (req.getDirection().equals("Down") && databox.getElevatorData().get("el1Floor") > req.getFloorNumber()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        }else if (databox.getElevatorData().get("el1State") != 0 && databox.getElevatorData().get("el2State") ==0) {
-            return 1;
-        } else if (databox.getElevatorData().get("el1State") == 0 && databox.getElevatorData().get("el2State") != 0) {
-            return 0;
-        } else {
-            while(true) {
-                try {
-                    System.out.println("Both elevators are busy, waiting until one is not");
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.exit(1);
-                }
-            }
 
-        }
+        boolean bothBusy = true;
+        ElevatorInfo req = PacketProcessor.translateRequest(data);
+
+        do {
+            if (databox.getElevatorData().get("el1State") == 0 && databox.getElevatorData().get("el2State") == 0) {
+                int el1Distance = Math.abs(databox.getElevatorData().get("el1Floor") - req.getFloorNumber());
+                int el2Distance = Math.abs(databox.getElevatorData().get("el2Floor") - req.getFloorNumber());
+                if (el1Distance < el2Distance) {
+                    return 0;
+                } else if (el1Distance > el2Distance) {
+                    return 1;
+                } else {
+                    if (req.getDirection().equals("Up") && databox.getElevatorData().get("el1Floor") < req.getFloorNumber()) {
+                        return 0;
+                    } else if (req.getDirection().equals("Up") && databox.getElevatorData().get("el2Floor") < req.getFloorNumber()) {
+                        return 1;
+                    } else if (req.getDirection().equals("Down") && databox.getElevatorData().get("el1Floor") > req.getFloorNumber()) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+            } else if (databox.getElevatorData().get("el1State") != 0 && databox.getElevatorData().get("el2State") == 0) {
+                return 1;
+            } else if (databox.getElevatorData().get("el1State") == 0 && databox.getElevatorData().get("el2State") != 0) {
+                return 0;
+            } else {
+                bothBusy = true;
+                try {
+                    Thread.sleep(1000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        } while(bothBusy);
+
+        return -1;
     }
 
     /**

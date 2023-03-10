@@ -70,6 +70,8 @@ public class ElevatorIntermediate implements Runnable {
         int stateValue = (state == ElevatorState.IDLE) ? 0 : 1;
         String elevatorNum = (elevatorID == 0) ? "el1" : "el2";
 
+        System.out.println("Setting state to " + stateValue);
+
         databox.setElevatorData(elevatorNum + "State", stateValue);
         databox.setElevatorData(elevatorNum + "Floor", floorNumber);
 

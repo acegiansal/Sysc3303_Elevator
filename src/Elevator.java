@@ -74,7 +74,7 @@ public class Elevator implements Runnable{
             translateRequest(received);
             handleEvent(ElevatorEvent.CALL);
         } else {
-            System.out.println("PUT REQUEST SENT (" + Arrays.toString(data) + ")");
+            System.out.println(Thread.currentThread().getName() + " PUT REQUEST SENT (" + Arrays.toString(data) + ")");
         }
         return received;
     }
@@ -97,7 +97,7 @@ public class Elevator implements Runnable{
      */
     public void sendData(byte[] data, int port) {
         data = PacketProcessor.addElevatorStatus(currentRequest, data);
-        System.out.println("------ DATA IS NOW:" + Arrays.toString(data));
+//        System.out.println("------ DATA IS NOW:" + Arrays.toString(data));
 
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
@@ -177,10 +177,10 @@ public class Elevator implements Runnable{
     private void checkFloor(){
         System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
-            logging.info("Elevator", "Elevator does not need to move to process request");
+            logging.info("Elevator", Thread.currentThread().getName() + "Elevator does not need to move to process request");
             handleEvent(ElevatorEvent.DOORS_OPEN);
         } else {
-            logging.info( "Elevator", "Elevator needs to move to process request");
+            logging.info( "Elevator", Thread.currentThread().getName() + "Elevator needs to move to process request");
             handleEvent(ElevatorEvent.PROCESS_REQUEST);
         }
     }
@@ -189,7 +189,7 @@ public class Elevator implements Runnable{
      * Simulates opening elevator doors
      */
     private void doorOpen(){
-        logging.info( "Elevator", "Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
+        logging.info( "Elevator", Thread.currentThread().getName() + "Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
 
         try {
             Thread.sleep(LOAD_TIME);
@@ -206,7 +206,7 @@ public class Elevator implements Runnable{
      * Simulates closing doors
      */
     private void doorClosed(){
-        logging.info("Elevator","Door closing on floor " + startingFloor );
+        logging.info("Elevator",Thread.currentThread().getName() + "Door closing on floor " + startingFloor );
         this.arrivalSensor = false;
         //If car is at the destination floor
         if (this.startingFloor == currentRequest.getCarButton()){
@@ -231,7 +231,7 @@ public class Elevator implements Runnable{
         }
 
         String direction = this.startingFloor < destination ? "Up" : "Down";
-        logging.info( "Elevator", "Elevator is moving " + direction);
+        logging.info( "Elevator", Thread.currentThread().getName() + "Elevator is moving " + direction);
         try {
             if(currentRequest.getFloorNumber()==startingFloor){
                 this.arrivalSensor=true;
@@ -261,7 +261,7 @@ public class Elevator implements Runnable{
         while(true) {
             System.out.println(Thread.currentThread().getName() + " is sending GET request!");
             byte[] reply = sendRpcRequest(getRequest);
-            System.out.println(Thread.currentThread().getName() +" got request: " + Arrays.toString(reply));
+            System.out.println(Thread.currentThread().getName() + " got request: " + Arrays.toString(reply));
         }
     }
 
