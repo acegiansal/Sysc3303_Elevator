@@ -72,6 +72,7 @@ public class Elevator implements Runnable{
         if(PacketProcessor.isGetRequest(data)) {
             logging.info2("Elevator", "GET REQUEST RECEIVED (" + Arrays.toString(data) + ")");
             //System.out.println("GET REQUEST RECEIVED (" + Arrays.toString(data) + ")");
+            TestingElevator.setDataElevator(data);
             //Translate request
             translateRequest(received);
             handleEvent(ElevatorEvent.CALL);
@@ -131,6 +132,7 @@ public class Elevator implements Runnable{
         switch (event) {
             case CALL -> {
                 currentRequest.setState(ElevatorState.CHECK_FLOOR);
+                TestingElevator.idleCheckFlag(true);
                 if (!testing[0]) {
                     checkFloor();
                 }
@@ -138,25 +140,30 @@ public class Elevator implements Runnable{
             case DOORS_OPEN -> {
                 if (this.state == ElevatorState.IDLE) {
                     currentRequest.setState(ElevatorState.DOOR_OPENED);
+                    TestingElevator.idleOpenFlag(true);
                 } else if (this.state == ElevatorState.MOVING) {
                     currentRequest.setState(ElevatorState.DOOR_OPENED);
+                    TestingElevator.movingOpenFlag(true);
                 }
                 doorOpen();
             }
             case DOORS_CLOSE -> {
                 currentRequest.setState(ElevatorState.DOOR_CLOSED);
+                TestingElevator.openCloseFlag(true);
                 if (!testing[3]) {
                     doorClosed();
                 }
             }
             case PROCESS_REQUEST -> {
                 currentRequest.setState(ElevatorState.MOVING);
+                TestingElevator.checkMovingFlag(true);
                 if (!testing[1]) {
                     moveElevator();
                 }
             }
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
+                TestingElevator.closeIdleFlag(true);
                 byte[] response = createElevatorResponse();
                 logging.info("Elevator", ""+ Thread.currentThread().getName(),  " is sending PUT request!" );
                 //System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
@@ -184,9 +191,17 @@ public class Elevator implements Runnable{
         //System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
             logging.info("Elevator", ""+ Thread.currentThread().getName(), "Elevator does not need to move to process request");
+            TestingElevator.idleOpenFlag(true);
+            if (currentRequest.getElevatorID() == 0){
+                TestingElevator.e1Floor(currentRequest.getFloorNumber());
+            }
+            else if (currentRequest.getElevatorID() == 1){
+                TestingElevator.e2Floor(currentRequest.getFloorNumber());
+            }
             handleEvent(ElevatorEvent.DOORS_OPEN);
         } else {
             logging.info( "Elevator", ""+ Thread.currentThread().getName() ,"Elevator needs to move to process request");
+            TestingElevator.movingOpenFlag(true);
             handleEvent(ElevatorEvent.PROCESS_REQUEST);
         }
     }
@@ -218,6 +233,7 @@ public class Elevator implements Runnable{
         if (this.startingFloor == currentRequest.getCarButton()){
             handleEvent(ElevatorEvent.FINISH_REQUEST);
         } else {    // If not at destination floor, it must not have finished the request yet
+            TestingElevator.closeMovingFlag(true);
             handleEvent(ElevatorEvent.PROCESS_REQUEST);
         }
     }
@@ -237,15 +253,18 @@ public class Elevator implements Runnable{
         }
 
         String direction = this.startingFloor < destination ? "Up" : "Down";
+        TestingElevator.setDirection(direction);
         logging.info( "Elevator", ""+ Thread.currentThread().getName() , "Elevator is moving " + direction);
         try {
             if(currentRequest.getFloorNumber()==startingFloor){
                 this.arrivalSensor=true;
+                TestingElevator.lampPower(true);
                 this.directionLamp = direction.equals("Up");
             }
             else {
                 Thread.sleep((long) MOVE_TIME * Math.abs(currentRequest.getFloorNumber() - startingFloor) - (MOVE_TIME / 2));
                 this.arrivalSensor = true;
+                TestingElevator.lampPower(true);
                 this.directionLamp = direction.equals("Up");
             }
         } catch (Exception e) {
@@ -253,6 +272,13 @@ public class Elevator implements Runnable{
             e.printStackTrace();
         }
         this.startingFloor = destination;
+
+        if (currentRequest.getElevatorID() == 0){
+            TestingElevator.e1Floor(destination);
+        }
+        else if (currentRequest.getElevatorID() == 1){
+            TestingElevator.e2Floor(destination);
+        }
 
         handleEvent(ElevatorEvent.DOORS_OPEN);
     }
@@ -270,6 +296,7 @@ public class Elevator implements Runnable{
             byte[] reply = sendRpcRequest(getRequest);
             logging.info("Elevator", ""+ Thread.currentThread().getName()," got request: " + Arrays.toString(reply)  );
             //System.out.println(Thread.currentThread().getName() + " got request: " + Arrays.toString(reply));
+            TestingElevator.setDataElevator(reply);
         }
     }
 

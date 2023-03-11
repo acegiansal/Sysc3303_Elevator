@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.*;
 
-public class Scheduler {
+public class Scheduler implements Runnable{
     /** Current state of the scheduler */
     private SchedulerState state;
     /** data box used for putting and getting elevator data */
@@ -85,6 +85,7 @@ public class Scheduler {
             logging.info2("Scheduler","SCHEDULER Waiting..."); //so we know we're waiting
             //System.out.println("\n SCHEDULER Waiting..."); // so we know we're waiting
             sendReceiveSocket.receive(receivePacket);
+            TestingElevator.setDataFloor(receivePacket.getData());
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -97,6 +98,7 @@ public class Scheduler {
             logging.info2("Scheduler", "Scheduler got GET request, sending reply");
             byte[] response = databox.getSomeResponseData();
             sendData(response, receivePacket.getPort());
+            TestingElevator.setDataReply(response);
 
         } else { //Put request
             this.handleEvent(SchedulerEvent.REQUEST);
@@ -138,23 +140,31 @@ public class Scheduler {
                 int el1Distance = Math.abs(databox.getElevatorData().get("el1Floor") - req.getFloorNumber());
                 int el2Distance = Math.abs(databox.getElevatorData().get("el2Floor") - req.getFloorNumber());
                 if (el1Distance < el2Distance) {
+                    TestingElevator.setE1(true);
                     return 0;
                 } else if (el1Distance > el2Distance) {
+                    TestingElevator.setE2(true);
                     return 1;
                 } else {
                     if (req.getDirection().equals("Up") && databox.getElevatorData().get("el1Floor") < req.getFloorNumber()) {
+                        TestingElevator.setE1(true);
                         return 0;
                     } else if (req.getDirection().equals("Up") && databox.getElevatorData().get("el2Floor") < req.getFloorNumber()) {
+                        TestingElevator.setE2(true);
                         return 1;
                     } else if (req.getDirection().equals("Down") && databox.getElevatorData().get("el1Floor") > req.getFloorNumber()) {
+                        TestingElevator.setE1(true);
                         return 0;
                     } else {
+                        TestingElevator.setE2(true);
                         return 1;
                     }
                 }
             } else if (databox.getElevatorData().get("el1State") != 0 && databox.getElevatorData().get("el2State") == 0) {
+                TestingElevator.setE2(true);
                 return 1;
             } else if (databox.getElevatorData().get("el1State") == 0 && databox.getElevatorData().get("el2State") != 0) {
+                TestingElevator.setE1(true);
                 return 0;
             } else {
                 bothBusy = true;
@@ -232,6 +242,12 @@ public class Scheduler {
      */
     public SchedulerState getState(){
         return state;
+    }
+
+    public void run(){
+        while (true) {
+            handleRpcRequest();
+        }
     }
 
     public static void main(String[] args) {
