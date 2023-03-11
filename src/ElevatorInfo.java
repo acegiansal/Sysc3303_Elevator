@@ -3,14 +3,19 @@
  */
 public class ElevatorInfo {
 
+
     /** The direction of the elevator */
-    private boolean direction;
+    private String direction;
     /** The original floor number of the elevator */
     private int floorNumber;
     /** The time that the input was received*/
     private String time;
     /** The destination floor */
     private int carButton;
+    /** current state of the elevator */
+    private ElevatorState currentState;
+    /** elevator id used to identify the elevator */
+    private int elevatorID;
 
     /**
      * Creates an ElevatorInfo object
@@ -19,28 +24,75 @@ public class ElevatorInfo {
      * @param time The time that the input was received
      * @param carButton The destination floor
      */
-    public ElevatorInfo(boolean direction, int floorNumber, String time, int carButton) {
+    public ElevatorInfo(String direction, int floorNumber, String time, int carButton, int elevatorID) {
+
+
+        logging.info2( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction + ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
+        this.direction = direction;
+        this.floorNumber = floorNumber;
+        this.time = time;
+        this.carButton = carButton;
+        this.currentState = ElevatorState.IDLE;
+        this.elevatorID = elevatorID;
+    }
+    /**
+     Constructs a new ElevatorInfo object with the specified direction, floor number,
+     time, and car button.
+     @param direction the direction of the elevator (up/down)
+     @param floorNumber the current floor number of the elevator
+     @param time the current time of the elevator
+     @param carButton the current status of the car button of the elevator
+     */
+    public ElevatorInfo(String direction,  int floorNumber, String time, int carButton){
         this.direction = direction;
         this.floorNumber = floorNumber;
         this.time = time;
         this.carButton = carButton;
     }
 
+    /**
+     Returns the ID of the elevator.
+     @return the ID of the elevator
+     */
+    public int getElevatorID() {
+        return elevatorID;
+    }
+
+    /**
+     Returns a string representation of the elevator information.
+     @return a string representation of the elevator information
+     */
     @Override
     public String toString() {
         return "ElevatorInfo{" +
-                "direction=" + direction +
-                ", floorNumber=" + floorNumber +
-                ", time='" + time + '\'' +
-                ", carButton=" + carButton +
+                "Direction is " + direction +
+                ", Floor Number is " + floorNumber +
+                ", Time ='" + time + '\'' +
+                ", Car Button = " + carButton +
                 '}';
+    }
+
+    /**
+     * Getter for state
+     * @return state
+     */
+    public ElevatorState getState() {
+        return currentState;
+    }
+
+    /**
+     *
+     * @param state
+     */
+    public void setState(ElevatorState state) {
+        this.currentState = state;
     }
 
     /**
      * Getter for direction
      * @return True if going up, false otherwise
      */
-    public boolean getDirection() {
+    public String getDirection() {
         return direction;
     }
 
@@ -48,7 +100,7 @@ public class ElevatorInfo {
      * Setter for direction
      * @param direction The direction of the elevator
      */
-    public void setDirection(boolean direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 
