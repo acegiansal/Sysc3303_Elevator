@@ -8,16 +8,27 @@ import java.util.Scanner;
 /**
  * Class that represents a floor in an elevator system
  */
-public class Floor {
+public class Floor implements Runnable{
 
     /** The scheduler responsible for the floor */
     private int schedulerPort;
-    private String testString;
+    private String[] testString;
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
 
     public Floor(int schedulerPort) {
         this.schedulerPort = schedulerPort;
+        try {
+            sendReceiveSocket = new DatagramSocket();
+        } catch (SocketException se) {
+            se.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public Floor(int schedulerPort, String[] test){
+        this.schedulerPort = schedulerPort;
+        testString = test;
         try {
             sendReceiveSocket = new DatagramSocket();
         } catch (SocketException se) {
@@ -45,7 +56,7 @@ public class Floor {
                 }else {
                     //Direction is true if 'Up' is selected
                     String direction = (splitData[2].equals("Up")) ? "u" : "d";
-
+                    System.out.println(splitData[0]);
                     prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
                 }
             }
@@ -117,9 +128,19 @@ public class Floor {
         sendRpcRequest(request);
     }
 
-    //Created for only testing purposes
-    String getTestString(){
-        return testString;
+    void testPrepareSend(String time, int floorNumber, String direction, int carButton){
+        byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
+        sendRpcRequest(request);
+    }
+
+    public void run(){
+        for (int i = 0; i < testString.length; i++) {
+            String[] splitData = testString[i].split(" ");
+            String direction = (splitData[2].equals("Up")) ? "u" : "d";
+            System.out.println(splitData[0]);
+            System.out.println("The direction of the damn elevator is " + direction);
+            prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
+        }
     }
 
     public static void main(String[] args){

@@ -10,7 +10,6 @@ public class Building {
 
     /**
      * Creates and runs elevator system
-     * @param args Arguments passed upon program launch
      */
     public static void main(String[] args){
 
