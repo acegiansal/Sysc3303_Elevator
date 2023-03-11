@@ -98,7 +98,6 @@ public class Scheduler implements Runnable{
             logging.info2("Scheduler", "Scheduler got GET request, sending reply");
             byte[] response = databox.getSomeResponseData();
             sendData(response, receivePacket.getPort());
-            TestingElevator.setDataReply(response);
 
         } else { //Put request
             this.handleEvent(SchedulerEvent.REQUEST);
@@ -121,6 +120,7 @@ public class Scheduler implements Runnable{
             logging.info2("Scheduler", "Scheduler got PUT request, adding to queue and sending reply");
             byte[] reply = PacketProcessor.createOkReply();
             sendData(reply, receivePacket.getPort());
+            TestingElevator.setDataReply(reply);
         }
 
     }

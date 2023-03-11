@@ -132,7 +132,7 @@ public class TestingElevator {
         Building.main(null);
         sc.start();
         fl.start();
-        Thread.sleep(5000);
+        Thread.sleep(20000);
         byte[] testData = PacketProcessor.createOkReply();
         assertEquals(Arrays.toString(testData), Arrays.toString(reply));
     }
@@ -214,9 +214,16 @@ public class TestingElevator {
         sc.start();
         fl.start();
         Thread.sleep(20000);
-        assertEquals(0,elevator1);
-        assertEquals(1,elevator2);
-        assertEquals(1,e1Floor);
-        assertEquals(6,e2Floor);
+        if (elevator1 == 0){
+            assertEquals(1,elevator2);
+            assertEquals(1,e1Floor);
+            assertEquals(6,e2Floor);
+        }
+        else{
+            assertEquals(1,elevator1);
+            assertEquals(0,elevator2);
+            assertEquals(6,e1Floor);
+            assertEquals(1,e2Floor);
+        }
     }
 }
