@@ -27,7 +27,7 @@ public class ElevatorInfo {
     public ElevatorInfo(String direction, int floorNumber, String time, int carButton, int elevatorID) {
 
 
-        logging.info( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction + ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
+        logging.info2( "ElevatorInfo", "Creating an ElevatorInfo object with parameters: direction=" + direction + ", floorNumber="+ floorNumber + ", time=" +time + ", carButton=" + carButton);
         this.direction = direction;
         this.floorNumber = floorNumber;
         this.time = time;

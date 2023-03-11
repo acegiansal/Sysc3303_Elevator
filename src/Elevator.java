@@ -61,7 +61,8 @@ public class Elevator implements Runnable{
 
         // Block until a datagram packet is received from receiveSocket.
         try {
-            System.out.println(Thread.currentThread().getName() + " Waiting..."); // so we know we're waiting
+            logging.info("Elevator", "" + Thread.currentThread().getName(), " Waiting..."); // so we know we're waiting
+            //System.out.println(Thread.currentThread().getName() + " Waiting..."); // so we know we're waiting
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,12 +70,14 @@ public class Elevator implements Runnable{
         }
         // If data is get request
         if(PacketProcessor.isGetRequest(data)) {
-            System.out.println("GET REQUEST RECEIVED (" + Arrays.toString(data) + ")");
+            logging.info2("Elevator", "GET REQUEST RECEIVED (" + Arrays.toString(data) + ")");
+            //System.out.println("GET REQUEST RECEIVED (" + Arrays.toString(data) + ")");
             //Translate request
             translateRequest(received);
             handleEvent(ElevatorEvent.CALL);
         } else {
-            System.out.println(Thread.currentThread().getName() + " PUT REQUEST SENT (" + Arrays.toString(data) + ")");
+            logging.info("Elevator",""+ Thread.currentThread().getName() ," PUT REQUEST SENT (" + Arrays.toString(data) + ")" );
+            //System.out.println(Thread.currentThread().getName() + " PUT REQUEST SENT (" + Arrays.toString(data) + ")");
         }
         return received;
     }
@@ -97,6 +100,7 @@ public class Elevator implements Runnable{
      */
     public void sendData(byte[] data, int port) {
         data = PacketProcessor.addElevatorStatus(currentRequest, data);
+        logging.info2("Elevator","DATA IS NOW:" + Arrays.toString(data) );
 //        System.out.println("------ DATA IS NOW:" + Arrays.toString(data));
 
         DatagramPacket sendPacket = null;
@@ -154,9 +158,11 @@ public class Elevator implements Runnable{
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
                 byte[] response = createElevatorResponse();
-                System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
+                logging.info("Elevator", ""+ Thread.currentThread().getName(),  " is sending PUT request!" );
+                //System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
                 byte[] reply = sendRpcRequest(response);
-                System.out.println(Thread.currentThread().getName() + " GOT REPLY: " + Arrays.toString(reply));
+                logging.info("Elevator",""+ Thread.currentThread().getName()  ," GOT REPLY: " + Arrays.toString(reply) );
+                //System.out.println(Thread.currentThread().getName() + " GOT REPLY: " + Arrays.toString(reply));
             }
         }
 
@@ -175,12 +181,12 @@ public class Elevator implements Runnable{
      * Checks if the elevator is already at the starting floor
      */
     private void checkFloor(){
-        System.out.println();
+        //System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
-            logging.info("Elevator", Thread.currentThread().getName() + "Elevator does not need to move to process request");
+            logging.info("Elevator", ""+ Thread.currentThread().getName(), "Elevator does not need to move to process request");
             handleEvent(ElevatorEvent.DOORS_OPEN);
         } else {
-            logging.info( "Elevator", Thread.currentThread().getName() + "Elevator needs to move to process request");
+            logging.info( "Elevator", ""+ Thread.currentThread().getName() ,"Elevator needs to move to process request");
             handleEvent(ElevatorEvent.PROCESS_REQUEST);
         }
     }
@@ -189,7 +195,7 @@ public class Elevator implements Runnable{
      * Simulates opening elevator doors
      */
     private void doorOpen(){
-        logging.info( "Elevator", Thread.currentThread().getName() + "Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
+        logging.info( "Elevator", ""+ Thread.currentThread().getName(), "Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
 
         try {
             Thread.sleep(LOAD_TIME);
@@ -206,7 +212,7 @@ public class Elevator implements Runnable{
      * Simulates closing doors
      */
     private void doorClosed(){
-        logging.info("Elevator",Thread.currentThread().getName() + "Door closing on floor " + startingFloor );
+        logging.info("Elevator",""+ Thread.currentThread().getName() ,"Door closing on floor " + startingFloor );
         this.arrivalSensor = false;
         //If car is at the destination floor
         if (this.startingFloor == currentRequest.getCarButton()){
@@ -231,7 +237,7 @@ public class Elevator implements Runnable{
         }
 
         String direction = this.startingFloor < destination ? "Up" : "Down";
-        logging.info( "Elevator", Thread.currentThread().getName() + "Elevator is moving " + direction);
+        logging.info( "Elevator", ""+ Thread.currentThread().getName() , "Elevator is moving " + direction);
         try {
             if(currentRequest.getFloorNumber()==startingFloor){
                 this.arrivalSensor=true;
@@ -259,9 +265,11 @@ public class Elevator implements Runnable{
         // Process request
         byte[] getRequest = PacketProcessor.createGetRequest();
         while(true) {
-            System.out.println(Thread.currentThread().getName() + " is sending GET request!");
+            logging.info( "Elevator", ""+ Thread.currentThread().getName(), " is sending GET request!" );
+            //System.out.println(Thread.currentThread().getName() + " is sending GET request!");
             byte[] reply = sendRpcRequest(getRequest);
-            System.out.println(Thread.currentThread().getName() + " got request: " + Arrays.toString(reply));
+            logging.info("Elevator", ""+ Thread.currentThread().getName()," got request: " + Arrays.toString(reply)  );
+            //System.out.println(Thread.currentThread().getName() + " got request: " + Arrays.toString(reply));
         }
     }
 

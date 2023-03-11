@@ -81,13 +81,15 @@ public class ElevatorBox {
     public synchronized void putRequestData(byte[] data, int elevatorID) {
         while(hasRequestData.get(elevatorID)) {
             try {
-                System.out.println("SOMETHING INSIDE REQUEST: " +  elevatorID + ": " +  Arrays.toString(requestData.get(elevatorID)));
+                logging.info2("ElevatorBox", "SOMETHING INSIDE REQUEST: " +  elevatorID + ": " +  Arrays.toString(requestData.get(elevatorID)));
+                //System.out.println("SOMETHING INSIDE REQUEST: " +  elevatorID + ": " +  Arrays.toString(requestData.get(elevatorID)));
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Putting request into box: " + Arrays.toString(data));
+        logging.info2("ElevatorBox", "Putting request into box: " + Arrays.toString(data));
+        //System.out.println("Putting request into box: " + Arrays.toString(data));
         hasRequestData.set(elevatorID, true);
         requestData.set(elevatorID, data);
         notifyAll();
@@ -100,7 +102,8 @@ public class ElevatorBox {
     public synchronized byte[] getResponseData(int elevatorID) {
         while(!hasResponseData.get(elevatorID)) {
             try {
-                System.out.println("Waiting for response data to exist");
+                logging.info2("ElevatorBox","Waiting for response data to exist");
+                //System.out.println("Waiting for response data to exist");
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -119,7 +122,8 @@ public class ElevatorBox {
         int responseIndex = getResponseIndex();
         while(responseIndex==-1) {
             try {
-                System.out.println("Waiting for response to have data");
+                logging.info2("ElevatorBox", "Waiting for response to have data");
+                //System.out.println("Waiting for response to have data");
                 wait();
                 responseIndex = getResponseIndex();
             } catch (InterruptedException e) {
@@ -152,6 +156,7 @@ public class ElevatorBox {
         while(hasResponseData.get(elevatorID)) {
             try {
                 //DEBUG
+                logging.info2("ElevatorBox","SOMETHING INSIDE RESPONSE: " + elevatorID + ": " + Arrays.toString(responseData.get(elevatorID)));
                 System.out.println("SOMETHING INSIDE RESPONSE: " + elevatorID + ": " + Arrays.toString(responseData.get(elevatorID)));
                 wait();
             } catch (InterruptedException e) {

@@ -28,8 +28,8 @@ public class Building {
         Elevator el2 = new Elevator(Config.ELEVATOR_HOST_2, 1);
 
 //        Thread floor = new Thread(floor1);
-        Thread elevator1 = new Thread(el1, "el1");
-        Thread elevator2 = new Thread(el2, "el2");
+        Thread elevator1 = new Thread(el1, "1");
+        Thread elevator2 = new Thread(el2, "2");
 //        Thread scheduler = new Thread(schedy);
 
         //Start threads

@@ -57,7 +57,8 @@ public class PacketProcessor {
     public static byte[] addElevatorStatus(ElevatorInfo info, byte[] data){
         int dIndex = findDelimiter(data, 1);
         if(dIndex == -1){
-            System.out.println("CAN'T FIND THE DELIMETER IN DATA: " + Arrays.toString(data));
+            logging.info2("PacketProcessor", "CAN'T FIND THE DELIMETER IN DATA: " + Arrays.toString(data));
+            //System.out.println("CAN'T FIND THE DELIMETER IN DATA: " + Arrays.toString(data));
             System.exit(1);
         }
 
@@ -139,12 +140,14 @@ public class PacketProcessor {
 
     public static void main(String[] args){
         byte[] tester = PacketProcessor.createRequestPacket("10:15", 3, "u", 6);
-        System.out.println(Arrays.toString(tester));
+        logging.info2("PacketProcessor",""+Arrays.toString(tester) );
+        //System.out.println(Arrays.toString(tester));
 
         ElevatorInfo testInfo = new ElevatorInfo("u", 5, "12:00", 5, 1);
 
         byte[] result = addElevatorStatus(testInfo, tester);
-        System.out.println(Arrays.toString(result));
+        logging.info2("PacketProcessor",""+Arrays.toString(result) );
+        //System.out.println(Arrays.toString(result));
 //        PacketProcessor.extractStatus(result);
 //        System.out.println(translateRequest(result));
     }

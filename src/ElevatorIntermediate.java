@@ -30,7 +30,8 @@ public class ElevatorIntermediate implements Runnable {
 
         // Block until a datagram packet is received from receiveSocket.
         try {
-            System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Waiting..."); // so we know we're waiting
+            logging.info2("ElevatorIntermediate",Thread.currentThread().getName() + " mediator Waiting...");
+            //System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Waiting..."); // so we know we're waiting
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,11 +42,13 @@ public class ElevatorIntermediate implements Runnable {
         extractStatus(data);
         //Get request
         if(PacketProcessor.isGetRequest(data)) {
-            System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has GET request...");
+            logging.info2("ElevatorIntermediate", Thread.currentThread().getName() + " mediator Has GET request..." );
+            //System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has GET request...");
             byte[] requestData = databox.getRequestData(elevatorID);
             sendData(requestData, receivePacket.getPort());
         } else { //Put request
-            System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has PUT request...");
+            logging.info2("ElevatorIntermediate", Thread.currentThread().getName() + " mediator Has PUT request...");
+            //System.out.println("\n [" + Thread.currentThread().getName() + "] mediator Has PUT request...");
             //Puts into box
             databox.putResponseData(data, elevatorID);
 
@@ -60,7 +63,8 @@ public class ElevatorIntermediate implements Runnable {
         int stateDelim = PacketProcessor.findDelimiter(data, delimiter+1);
         int floorDelim = PacketProcessor.findDelimiter(data, stateDelim+1);
 
-        System.out.println("-------------" + Arrays.toString(data));
+        logging.info2("ElevatorIntermediate","" + Arrays.toString(data));
+        //System.out.println("-------------" + Arrays.toString(data));
 
 
         String enumVal = new String(data, delimiter+1, stateDelim-delimiter-1);
@@ -70,7 +74,8 @@ public class ElevatorIntermediate implements Runnable {
         int stateValue = (state == ElevatorState.IDLE) ? 0 : 1;
         String elevatorNum = (elevatorID == 0) ? "el1" : "el2";
 
-        System.out.println("Setting state to " + stateValue);
+        logging.info2("ElevatorIntermediate", "Setting state to " + stateValue);
+        //System.out.println("Setting state to " + stateValue);
 
         databox.setElevatorData(elevatorNum + "State", stateValue);
         databox.setElevatorData(elevatorNum + "Floor", floorNumber);

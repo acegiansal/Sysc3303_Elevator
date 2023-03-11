@@ -47,8 +47,8 @@ public class Scheduler {
         }
 
         // Start elevator intermediates
-        Thread med1 = new Thread(mediate1, "med1");
-        Thread med2 = new Thread(mediate2, "med2");
+        Thread med1 = new Thread(mediate1, "First Elevator");
+        Thread med2 = new Thread(mediate2, "Second Elevator");
         med1.start();
         med2.start();
     }
@@ -61,11 +61,11 @@ public class Scheduler {
 
         switch (event) {
             case REQUEST -> {
-                logging.info("Scheduler", "Scheduler receiving request!");
+                logging.info2("Scheduler","Scheduler receiving request!");
                 this.state = SchedulerState.RECEIVING;
             }
             case RECEIVING_RESPONSE -> {
-                logging.info("Scheduler", "Scheduler sending reply");
+                logging.info2("Scheduler", "Scheduler sending reply");
                 this.state = SchedulerState.IDLE;
             }
         }
@@ -82,7 +82,8 @@ public class Scheduler {
 
         // Block until a datagram packet is received from receiveSocket.
         try {
-            System.out.println("\n SCHEDULER Waiting..."); // so we know we're waiting
+            logging.info2("Scheduler","SCHEDULER Waiting..."); //so we know we're waiting
+            //System.out.println("\n SCHEDULER Waiting..."); // so we know we're waiting
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,7 +94,7 @@ public class Scheduler {
         if(PacketProcessor.isGetRequest(data)) {
             //Figure out which elevator to get reply from
             //Send reply
-            logging.info("Scheduler", "Scheduler got GET request, sending reply");
+            logging.info2("Scheduler", "Scheduler got GET request, sending reply");
             byte[] response = databox.getSomeResponseData();
             sendData(response, receivePacket.getPort());
 
@@ -102,7 +103,8 @@ public class Scheduler {
             //Does algorithm
              int chosenElevator = algorithm(data);
              if (chosenElevator==-1) {
-                System.out.println("The algorithm could not choose an elevator!!");
+                 logging.info2("Scheduler", "The algorithm could not choose an elevator!!");
+               // System.out.println("The algorithm could not choose an elevator!!");
                 System.exit(2);
              } else if(chosenElevator == 0){
                  databox.setElevatorData("el1State", 1);
@@ -114,7 +116,7 @@ public class Scheduler {
             Thread helper = new Thread(new BoxHelper(data, chosenElevator));
             helper.start();
             //Sends reply to floor
-            logging.info("Scheduler", "Scheduler got PUT request, adding to queue and sending reply");
+            logging.info2("Scheduler", "Scheduler got PUT request, adding to queue and sending reply");
             byte[] reply = PacketProcessor.createOkReply();
             sendData(reply, receivePacket.getPort());
         }
@@ -218,7 +220,8 @@ public class Scheduler {
          */
         @Override
         public void run() {
-            System.out.println("SCHEDULER HELPER SENDING PUT REQUEST TO ELEVATOR " + chosenElevator);
+            logging.info("Scheduler", "" + chosenElevator, "SCHEDULER HELPER SENDING PUT REQUEST TO ELEVATOR");
+            //System.out.println("SCHEDULER HELPER SENDING PUT REQUEST TO ELEVATOR " + chosenElevator);
             databox.putRequestData(data, chosenElevator);
         }
     }

@@ -40,7 +40,7 @@ public class Floor {
                 //Data must be 4 items long
                 if (splitData.length != 4){
                     logging.warning( "Floor", "INPUT DATA INVALID!!");
-                    System.out.println("INPUT DATA INVALID!!");
+                    //System.out.println("INPUT DATA INVALID!!");
                     break;
                 }else {
                     //Direction is true if 'Up' is selected
@@ -60,7 +60,8 @@ public class Floor {
 
     private byte[] sendRpcRequest(byte[] data){
 
-        System.out.println("Floor sending: " + Arrays.toString(data));
+        //System.out.println("Floor sending: " + Arrays.toString(data));
+        logging.info2("Floor","Floor sending: " + Arrays.toString(data));
         sendData(data, schedulerPort);
 
         //Receive reply
@@ -69,7 +70,8 @@ public class Floor {
 
         try {
             // Block until a datagram is received via sendReceiveSocket.
-            System.out.println("Floor Waiting for reply");
+            logging.info2("Floor", "Floor Waiting for reply");
+            //System.out.println("Floor Waiting for reply");
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,7 +115,7 @@ public class Floor {
      */
     private void prepareSend(String time, int floorNumber, String direction, int carButton){
         byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
-        logging.info( "Floor", "Floor Sending" + Arrays.toString(request));
+        logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
         sendRpcRequest(request);
     }
 
@@ -132,7 +134,8 @@ public class Floor {
         while(true){
             byte[] getRequest = PacketProcessor.createGetRequest();
             byte[] reply = floorControl.sendRpcRequest(getRequest);
-            System.out.println("Floor got reply: " + Arrays.toString(reply));
+            logging.info2("Floor", "Floor got reply: " + Arrays.toString(reply) );
+            //System.out.println("Floor got reply: " + Arrays.toString(reply));
         }
 
     }
