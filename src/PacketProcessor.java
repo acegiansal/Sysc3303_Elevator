@@ -54,6 +54,12 @@ public class PacketProcessor {
         return new ElevatorInfo(direction, floorNumber, time, carButton);
     }
 
+    /**
+     * Adds the elevator status information to the given byte array data.
+     * @param info the ElevatorInfo object containing the elevator state information
+     * @param data the byte array to add the elevator status information to
+     * @return the byte array with the elevator status information added
+     */
     public static byte[] addElevatorStatus(ElevatorInfo info, byte[] data){
         int dIndex = findDelimiter(data, 1);
         if(dIndex == -1){
@@ -72,6 +78,12 @@ public class PacketProcessor {
 
     }
 
+    /**
+     * Finds the delimiter in the given byte array data starting from the specified index start.
+     * @param data the byte array to search for the delimiter
+     * @param start the index to start searching from in the byte array
+     * @return the index of the delimiter in the byte array, or -1 if the delimiter is not found
+     */
     public static int findDelimiter(byte[] data, int start){
         int dIndex = -1;
         for (int i=start; i<50; i++){
@@ -83,6 +95,10 @@ public class PacketProcessor {
         return dIndex;
     }
 
+    /**
+     * Creates a GET request byte array with the format [GET_BYTE, 0].
+     * @return the GET request byte array
+     */
     public static byte[] createGetRequest() {
         byte[] getRequest = new byte[50];
         getRequest[0] = GET_BYTE;

@@ -8,7 +8,12 @@ public class ElevatorIntermediate implements Runnable {
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
     private ElevatorBox databox;
-
+    /**
+     * Creates a new instance of ElevatorIntermediate with the given ElevatorBox, elevatorID and intermediatePort.
+     * @param box the ElevatorBox to use for communication with the Elevator subsystem
+     * @param elevatorID the ID of the elevator associated with this instance
+     * @param intermediatePort the port number to use for communication with the Scheduler subsystem
+     */
     public ElevatorIntermediate(ElevatorBox box, int elevatorID, int intermediatePort){
         this.elevatorID = elevatorID;
         this.databox = box;
@@ -58,6 +63,11 @@ public class ElevatorIntermediate implements Runnable {
         }
     }
 
+    /**
+     * Extracts the status information from the given byte array data and updates the
+     * elevator state and floor number in the databox.
+     * @param data a byte array containing the status information
+     */
     private void extractStatus(byte[] data){
         int delimiter = PacketProcessor.findDelimiter(data, 1);
         int stateDelim = PacketProcessor.findDelimiter(data, delimiter+1);

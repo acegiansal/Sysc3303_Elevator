@@ -16,6 +16,10 @@ public class Floor implements Runnable{
     /** A socket that sends and receives data */
     private DatagramSocket sendReceiveSocket;
 
+    /**
+     * Creates a new instance of Floor with the given schedulerPort.
+     * @param schedulerPort the port number to use for communication with the Scheduler subsystem
+     */
     public Floor(int schedulerPort) {
         this.schedulerPort = schedulerPort;
         try {
@@ -26,6 +30,11 @@ public class Floor implements Runnable{
         }
     }
 
+    /**
+     * Creates a new instance of Floor with the given schedulerPort and test string array.
+     * @param schedulerPort the port number to use for communication with the Scheduler subsystem
+     * @param test the test string array
+     */
     public Floor(int schedulerPort, String[] test) {
         this.schedulerPort = schedulerPort;
         testString = test;
@@ -68,7 +77,11 @@ public class Floor implements Runnable{
         }
     }
 
-
+    /**
+     * Sends the given byte array data as an RPC request to the Scheduler subsystem and waits for a reply.
+     * @param data the byte array to send as an RPC request
+     * @return the reply received from the Scheduler subsystem
+     */
     private byte[] sendRpcRequest(byte[] data){
 
         //System.out.println("Floor sending: " + Arrays.toString(data));

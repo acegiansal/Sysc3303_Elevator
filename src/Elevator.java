@@ -175,6 +175,9 @@ public class Elevator implements Runnable{
 
     }
 
+    /**
+     * Creates response packet
+     */
     private byte[] createElevatorResponse(){
         byte[] response = new byte[50];
         response[0] = 0;    //For put request
