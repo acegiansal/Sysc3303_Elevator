@@ -18,21 +18,21 @@ import java.util.Date;
         }
 
         public static void info(String cls, String ElevatorNum, String notification) {
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+            String time = new SimpleDateFormat("HH:mm:ss.SSS").format(new Date());
             String log = String.format("[Time:%s] [Class: %s] [Elevator: %s] [Notification] %s", time, cls, ElevatorNum, notification);
             System.out.println(log);
             printStream.println(log);
         }
 
         public static void info2(String cls, String notification) {
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+            String time = new SimpleDateFormat("HH:mm:ss.SSS").format(new Date());
             String log = String.format("[Time:%s] [Class: %s] [Notification] %s", time, cls, notification);
             System.out.println(log);
             printStream.println(log);
         }
 
         public static void warning(String cls, String notification) {
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+            String time = new SimpleDateFormat("HH:mm:ss.SSS").format(new Date());
             String log = String.format("[Time:%s] [Class: %s] [Elevator] [Warning] %s", time,  cls, notification);
             System.out.println(log);
             printStream.println(log);

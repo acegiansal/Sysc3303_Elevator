@@ -7,6 +7,14 @@ import java.util.Arrays;
  */
 public class Elevator implements Runnable{
 
+    private DirectionLamp dirLamp;
+
+
+    /** Motor for the Elevator **/
+    private Motor motor;
+
+    private ElevatorLamp elevatorLamp;
+
     private ElevatorState state;
     /** The scheduler for the elevator */
     private int intermediatePort;
@@ -127,14 +135,16 @@ public class Elevator implements Runnable{
      * @param event The incoming event for the elevator
      */
     private void handleEvent(ElevatorEvent event){
+        this.motor = new Motor();
+        this.elevatorLamp = new ElevatorLamp();
 
         switch (event) {
             case CALL -> {
-                currentRequest.setState(ElevatorState.CHECK_FLOOR);
                 if (!testing[0]) {
                     checkFloor();
                 }
             }
+
             case DOORS_OPEN -> {
                 if (this.state == ElevatorState.IDLE) {
                     currentRequest.setState(ElevatorState.DOOR_OPENED);
@@ -152,11 +162,14 @@ public class Elevator implements Runnable{
             case PROCESS_REQUEST -> {
                 currentRequest.setState(ElevatorState.MOVING);
                 if (!testing[1]) {
+                    this.motor.turnOn();
                     moveElevator();
+
                 }
             }
             case FINISH_REQUEST -> {
                 currentRequest.setState(ElevatorState.IDLE);
+                this.motor.turnOff();
                 byte[] response = createElevatorResponse();
                 logging.info("Elevator", ""+ Thread.currentThread().getName(),  " is sending PUT request!" );
                 //System.out.println(Thread.currentThread().getName() + " is sending PUT request!");
@@ -184,6 +197,7 @@ public class Elevator implements Runnable{
         //System.out.println();
         if (this.startingFloor == currentRequest.getFloorNumber()){
             logging.info("Elevator", ""+ Thread.currentThread().getName(), "Elevator does not need to move to process request");
+            this.elevatorLamp.ElevatorButton(currentRequest.getFloorNumber());
             handleEvent(ElevatorEvent.DOORS_OPEN);
         } else {
             logging.info( "Elevator", ""+ Thread.currentThread().getName() ,"Elevator needs to move to process request");
@@ -195,6 +209,7 @@ public class Elevator implements Runnable{
      * Simulates opening elevator doors
      */
     private void doorOpen(){
+        this.motor.turnOff();
         logging.info( "Elevator", ""+ Thread.currentThread().getName(), "Elevator doors are open! (open for " + LOAD_TIME + " milliseconds) on floor " + startingFloor);
 
         try {
@@ -228,6 +243,7 @@ public class Elevator implements Runnable{
     private void moveElevator(){
 
         int destination;
+        this.dirLamp = new DirectionLamp();
         if(this.startingFloor == currentRequest.getFloorNumber()){
             // If elevator is moving to destination
             destination = currentRequest.getCarButton();
@@ -237,7 +253,11 @@ public class Elevator implements Runnable{
         }
 
         String direction = this.startingFloor < destination ? "Up" : "Down";
+
+        this.dirLamp.LightDirection(direction);
+
         logging.info( "Elevator", ""+ Thread.currentThread().getName() , "Elevator is moving " + direction);
+
         try {
             if(currentRequest.getFloorNumber()==startingFloor){
                 this.arrivalSensor=true;

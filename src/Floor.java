@@ -68,7 +68,7 @@ public class Floor implements Runnable{
                     break;
                 }else {
                     //Direction is true if 'Up' is selected
-                    String direction = (splitData[2].equals("Up")) ? "Up" : "Down";
+                    String direction = (splitData[2].equals("Up")) ? "u" : "d";
 
                     prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
                 }
@@ -149,6 +149,8 @@ public class Floor implements Runnable{
         this.floorLamp.turnOn(floorNumber);
         logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
         sendRpcRequest(request);
+
+
     }
 
     public void run(){
@@ -177,3 +179,4 @@ public class Floor implements Runnable{
 
     }
 }
+
