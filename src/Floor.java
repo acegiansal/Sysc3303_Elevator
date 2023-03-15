@@ -10,6 +10,10 @@ import java.util.Scanner;
  */
 public class Floor implements Runnable{
 
+    private FloorLamp floorLamp;
+
+    private FloorButton floorButton;
+
     /** The scheduler responsible for the floor */
     private int schedulerPort;
     private String[] testString;
@@ -64,7 +68,7 @@ public class Floor implements Runnable{
                     break;
                 }else {
                     //Direction is true if 'Up' is selected
-                    String direction = (splitData[2].equals("Up")) ? "u" : "d";
+                    String direction = (splitData[2].equals("Up")) ? "Up" : "Down";
 
                     prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
                 }
@@ -138,7 +142,11 @@ public class Floor implements Runnable{
      * @param carButton The target floor
      */
     private void prepareSend(String time, int floorNumber, String direction, int carButton){
+        this.floorLamp = new FloorLamp();
+        this.floorButton = new FloorButton();
         byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
+        this.floorButton.DirButt(floorNumber, direction);
+        this.floorLamp.turnOn(floorNumber);
         logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
         sendRpcRequest(request);
     }
