@@ -31,8 +31,10 @@ public class ElevatorControl {
             se.printStackTrace();
             System.exit(1);
         }
-    }
 
+        // Start scheduler
+        new Thread(scheduler, "Scheduler").start();
+    }
 
     private void handleReceiveStatus(){
 
@@ -59,6 +61,11 @@ public class ElevatorControl {
         while(true){
             handleReceiveStatus();
         }
+    }
+
+    public static void main(String[] args){
+        ElevatorControl controller = new ElevatorControl(2);
+        controller.controlElevator();
     }
 
 }

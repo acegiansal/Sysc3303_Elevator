@@ -70,9 +70,9 @@ public class ElevatorIntermediate implements Runnable{
         sendData(scheduleRequest);
     }
 
-    public static void main(String[] args){
-        byte[] test = {3, 5, 117};
-        ElevatorIntermediate testInt = new ElevatorIntermediate(new ElevatorBox(1), 0);
-        testInt.translateStatusBytes(test);
-    }
+//    public static void main(String[] args){
+//        byte[] test = {3, 5, 117};
+//        ElevatorIntermediate testInt = new ElevatorIntermediate(new ElevatorBox(1), 0);
+//        testInt.translateStatusBytes(test);
+//    }
 }
