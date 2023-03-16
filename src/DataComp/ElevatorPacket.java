@@ -1,5 +1,7 @@
 package DataComp;
 
+import Config.ConfigInfo;
+
 public class ElevatorPacket {
 
     public static byte[] createOk(){

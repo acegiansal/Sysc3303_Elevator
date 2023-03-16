@@ -48,6 +48,7 @@ public class ElevatorControl {
             e.printStackTrace();
             System.exit(1);
         }
+        //TODO check if packet is valid status upadte
         //Get ID of the elevator then delegates to respective mediator
         int mediatorTarget = data[0];
         ElevatorIntermediate mediator = mediators.get(mediatorTarget);

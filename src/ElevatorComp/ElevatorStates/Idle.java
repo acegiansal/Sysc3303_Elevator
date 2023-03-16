@@ -15,6 +15,7 @@ public class Idle extends ElevatorState {
         ArrayList<Integer> workQueue = elevator.getFloorQueue();
 
 //        elevator.changeState();
+        System.out.println("THE QUEUE HAS SOMETHING IN IT");
 
 
     }

@@ -1,5 +1,6 @@
 package ElevatorComp;
 
+import Config.ConfigInfo;
 import DataComp.ElevatorStatus;
 import ElevatorComp.ElevatorStates.*;
 
@@ -77,6 +78,10 @@ public class ElevatorCar implements Runnable {
     }
 
     public static void main(String[] args){
-
+        for(int i = 0; i< ConfigInfo.NUM_ELEVATORS; i++){
+            ElevatorCar el = new ElevatorCar(i);
+            Thread elThread = new Thread(el, "Elevator Car " + i);
+            elThread.start();
+        }
     }
 }
