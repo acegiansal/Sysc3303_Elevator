@@ -1,4 +1,5 @@
 package ControlComp;
+import DataComp.ElevatorPacket;
 import DataComp.ElevatorStatus;
 import Config.ConfigInfo;
 
@@ -16,9 +17,6 @@ public class ElevatorBox {
    public ElevatorBox(int elevatorNum){
        // Set up the noRequest
        noRequest = new byte[ConfigInfo.PACKET_SIZE];
-       for(int i = 0; i<ConfigInfo.PACKET_SIZE; i++){
-           noRequest[i] = 0;
-       }
 
        statuses = new ArrayList<>();
        requests = new ArrayList<>();
@@ -26,7 +24,7 @@ public class ElevatorBox {
 
        //Fill with empty info
        for(int i = 0; i<elevatorNum; i++){
-           statuses.add(i, new ElevatorStatus());
+           statuses.add(i, new ElevatorStatus(i));
            requests.add(i, noRequest);
            hasRequest.add(i, false);
        }
@@ -50,7 +48,7 @@ public class ElevatorBox {
    }
 
    public synchronized void setRequest(int index, byte[] request){
-       while(!hasNoRequest(requests.get(index))){
+       while(!ElevatorPacket.isEmptyRequest(requests.get(index))){
            try {
                wait();
            } catch (InterruptedException e) {
@@ -61,10 +59,6 @@ public class ElevatorBox {
        hasRequest.set(index, true);
        requests.set(index, request);
        notifyAll();
-   }
-
-   private boolean hasNoRequest(byte[] data){
-       return Arrays.equals(data, noRequest);
    }
 
    public static void main(String[] args){

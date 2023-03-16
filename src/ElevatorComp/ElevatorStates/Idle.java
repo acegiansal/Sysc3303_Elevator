@@ -3,6 +3,8 @@ package ElevatorComp.ElevatorStates;
 import DataComp.ElevatorStatus;
 import ElevatorComp.ElevatorCar;
 
+import java.util.ArrayList;
+
 public class Idle extends ElevatorState {
 
     public Idle(ElevatorCar elevator){
@@ -10,6 +12,10 @@ public class Idle extends ElevatorState {
     }
 
     public void performAction(){
+        ArrayList<Integer> workQueue = elevator.getFloorQueue();
+
+//        elevator.changeState();
+
 
     }
 }

@@ -31,12 +31,6 @@ public class ElevatorIntermediate implements Runnable{
         this.status = status;
     }
 
-    public ElevatorStatus translateStatusBytes(byte[] data){
-        int currentFloor = data[1];
-        String direction = new String(data, 2, 1);
-        return new ElevatorStatus(currentFloor, direction);
-    }
-
     private void sendData(byte[] data){
         DatagramPacket sendPacket = null;
         // Create a packet that sends to the same computer at the previously specified
@@ -61,7 +55,7 @@ public class ElevatorIntermediate implements Runnable{
     public void run() {
 
         // Translate data
-        ElevatorStatus newStatus = translateStatusBytes(this.status);
+        ElevatorStatus newStatus = ElevatorStatus.translateStatusBytes(this.status);
         // Set status
         databox.setStatus(elevatorID, newStatus);
         // Get request

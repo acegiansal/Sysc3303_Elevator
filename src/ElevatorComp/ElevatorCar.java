@@ -1,22 +1,25 @@
 package ElevatorComp;
 
 import DataComp.ElevatorStatus;
+import ElevatorComp.ElevatorStates.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class ElevatorCar {
+public class ElevatorCar implements Runnable {
 
     private ElevatorStatus status;
     private ArrayList<Integer> floorQueue;
     private int elevatorID;
+    private ElevatorState currentState;
 
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
         floorQueue = new ArrayList<>();
-        status = new ElevatorStatus();
+        status = new ElevatorStatus(elevatorID);
+        this.currentState = new Idle(this);
 
         // Start comms
         ElevatorCommunications comms = new ElevatorCommunications(this);
@@ -45,12 +48,35 @@ public class ElevatorCar {
         return queue;
     }
 
+    public void setDirection(String direction){
+        getStatus().setDirection(direction);
+    }
+
     public synchronized void addFloor(int toAdd){
         floorQueue.add(toAdd);
-        if(this.getStatus().getDirection().equals("u")) {
+        String direction = this.getStatus().getDirection();
+        //Sort based on direction (elevator will attempt to go to each one in order
+        if(direction.equals("u")) {
             Collections.sort(floorQueue);
-        } else if(this.getStatus){
-
+        } else if(direction.equals("d")){
+            Collections.sort(floorQueue, Collections.reverseOrder());
         }
+        notifyAll();
+    }
+
+    public void changeState(ElevatorState state){
+        this.currentState = state;
+    }
+
+
+    @Override
+    public void run() {
+        while(true){
+            this.currentState.performAction();
+        }
+    }
+
+    public static void main(String[] args){
+
     }
 }
