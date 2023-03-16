@@ -16,33 +16,33 @@ public class Scheduler implements Runnable{
         this.databox = databox;
 
         try {
-            sendReceiveSocket = new DatagramSocket(ConfigInfo.CONTROL_PORT);
+            sendReceiveSocket = new DatagramSocket(ConfigInfo.SCHEDULER_PORT);
         } catch (SocketException se) {
             se.printStackTrace();
             System.exit(1);
         }
     }
 
-    public void sendData(byte[] data) {
-
-        DatagramPacket sendPacket = null;
-        // Create a packet that sends to the same computer at the previously specified
-        // port
-        try {
-            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), ConfigInfo.FLOOR_PORT);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        // Send the datagram packet to the server via the send/receive socket.
-        try {
-            sendReceiveSocket.send(sendPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
+//    public void sendData(byte[] data) {
+//
+//        DatagramPacket sendPacket = null;
+//        // Create a packet that sends to the same computer at the previously specified
+//        // port
+//        try {
+//            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), ConfigInfo.FLOOR_PORT);
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//            System.exit(1);
+//        }
+//
+//        // Send the datagram packet to the server via the send/receive socket.
+//        try {
+//            sendReceiveSocket.send(sendPacket);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.exit(1);
+//        }
+//    }
 
     private byte[] receiveData(){
         byte[] received = new byte[ConfigInfo.PACKET_SIZE];
