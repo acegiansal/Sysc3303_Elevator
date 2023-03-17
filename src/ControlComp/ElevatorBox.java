@@ -1,10 +1,9 @@
 package ControlComp;
-import DataComp.ElevatorPacket;
+import DataComp.RequestPacket;
 import DataComp.ElevatorStatus;
 import Config.ConfigInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class ElevatorBox {
@@ -48,7 +47,7 @@ public class ElevatorBox {
    }
 
    public synchronized void setRequest(int index, byte[] request){
-       while(!ElevatorPacket.isEmptyRequest(requests.get(index))){
+       while(!RequestPacket.isEmptyRequest(requests.get(index))){
            try {
                wait();
            } catch (InterruptedException e) {

@@ -8,6 +8,11 @@ public class ElevatorStatus {
     private String direction;
     private int id;
 
+    /* Constants */
+    public static final String UP = "u";
+    public static final String DOWN = "d";
+    public static final String IDLE = "i";
+
 
 
     public ElevatorStatus(int currentFloor, String direction, int id) {
@@ -18,7 +23,7 @@ public class ElevatorStatus {
 
     public ElevatorStatus(int id){
         currentFloor = 1;
-        direction = "i";
+        direction = IDLE;
         this.id = id;
     }
 
@@ -42,7 +47,7 @@ public class ElevatorStatus {
         byte[] translated = new byte[ConfigInfo.PACKET_SIZE];
         translated[0] = (byte)status.getId();
         translated[1] = (byte)status.getCurrentFloor();
-        translated = ElevatorPacket.combineByteArr(2, translated, status.getDirection().getBytes());
+        translated = RequestPacket.combineByteArr(2, translated, status.getDirection().getBytes());
 
         return translated;
     }
