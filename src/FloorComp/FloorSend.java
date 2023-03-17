@@ -3,13 +3,10 @@ package FloorComp;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputFilter;
 import java.net.*;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import Config.*;
 
@@ -21,7 +18,6 @@ public class FloorSend implements Runnable{
     private static int SCHEDULER_PORT;
     /** A socket that sends and receives data */
     private DatagramSocket sendSocket;
-    private SimpleDateFormat sf;
     private int timestamp;
 
     public enum floorType {
@@ -33,25 +29,25 @@ public class FloorSend implements Runnable{
     public FloorSend(int numFloors, int schedulerPort){
         MAX_FLOORS = numFloors;
         SCHEDULER_PORT = schedulerPort;
-        sf = new SimpleDateFormat("hh:mm:ss");
         timestamp = 0;
+        floors = new ArrayList<>();
         try {
             sendSocket = new DatagramSocket();
         } catch (SocketException se) {
             se.printStackTrace();
             System.exit(1);
         }
-        for(int i = 1; i<numFloors; i++){
+        for(int i = 0; i<numFloors; i++){
             floorType type;
 
-            if(i == 1){
+            if(i == 0){
                 type = floorType.BOT;
             } else if(i == MAX_FLOORS){
                 type = floorType.TOP;
             } else {
                 type = floorType.MID;
             }
-            floors.add(i, new Floor(i, type));
+            floors.add(i, new Floor((i+1), type));
         }
         FloorReceive floorReceive = new FloorReceive(this.floors);
         Thread floorReceiveThread = new Thread(floorReceive);
@@ -183,7 +179,8 @@ public class FloorSend implements Runnable{
     }
 
     public static void main(String[] args){
-        FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
+//        FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
+    	FloorSend floorSend = new FloorSend(22, 5020);
         Thread floorSendThread = new Thread(floorSend);
         floorSendThread.start();
     }
