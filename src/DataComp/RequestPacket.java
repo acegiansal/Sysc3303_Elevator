@@ -1,12 +1,34 @@
 package DataComp;
 
-import Config.ConfigInfo;
+public class RequestPacket {
 
-public class ElevatorPacket {
+    private int startFloor;
+    private int endFloor;
+    private String direction;
+    private int scenario;
 
-    public static byte[] createOk(){
-        // TODO:
-        return new byte[3];
+
+    public RequestPacket(int startFloor, int endFloor, String direction, int scenario) {
+        this.startFloor = startFloor;
+        this.endFloor = endFloor;
+        this.direction = direction;
+        this.scenario = scenario;
+    }
+
+    public int getStartFloor() {
+        return startFloor;
+    }
+
+    public int getEndFloor() {
+        return endFloor;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public int getScenario() {
+        return scenario;
     }
 
     public static boolean isEmptyRequest(byte[] data){

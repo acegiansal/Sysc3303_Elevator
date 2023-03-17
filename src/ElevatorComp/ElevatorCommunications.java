@@ -1,13 +1,11 @@
 package ElevatorComp;
 
 import Config.ConfigInfo;
-import ControlComp.ElevatorBox;
-import DataComp.ElevatorPacket;
+import DataComp.RequestPacket;
 import DataComp.ElevatorStatus;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
 
 public class ElevatorCommunications implements Runnable {
 
@@ -76,15 +74,16 @@ public class ElevatorCommunications implements Runnable {
             //receive request
             byte[] request = receiveData();
             //Translate packet
-            if(!ElevatorPacket.isEmptyRequest(request)){
+            if(!RequestPacket.isEmptyRequest(request)){
                 int startFloor = request[0];
                 int endFloor = request[1];
-                String direction = new String(request, 2, 1);
+                int scenario = request[2];
+                String direction = new String(request, 3, 1);
+
+                RequestPacket req = new RequestPacket(startFloor, endFloor, direction, scenario);
 
                 // put floor in or go back to send
-                elevator.setDirection(direction);
-                elevator.addFloor(startFloor);
-                elevator.addFloor(endFloor);
+                elevator.handleRequest(req);
             }
 
         }
