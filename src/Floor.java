@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * Class that represents a floor in an elevator system
  */
-public class Floor implements Runnable{
+public class Floor {
 
     /** The scheduler responsible for the floor */
     private int schedulerPort;
@@ -144,8 +144,8 @@ public class Floor implements Runnable{
     }
 
     public void run(){
-        for (int i = 0; i < testString.length; i++) {
-            String[] splitData = testString[i].split(" ");
+        for (String s : testString) {
+            String[] splitData = s.split(" ");
             String direction = (splitData[2].equals("Up")) ? "u" : "d";
             System.out.println(splitData[0]);
             System.out.println("The direction of the damn elevator is " + direction);
