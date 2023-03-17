@@ -12,8 +12,7 @@ public class Idle extends ElevatorState {
     }
 
     public void performAction(){
-        ArrayList<Integer> workQueue = elevator.getFloorQueue();
-        System.out.println("Floor queue after IDLE: {" + workQueue.toString() + "}");
+        System.out.println("Floor queue after IDLE: {" + elevator.getFloorQueue().toString() + "}");
 
     }
 
