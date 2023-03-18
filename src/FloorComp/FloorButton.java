@@ -5,10 +5,16 @@ public class FloorButton {
     private String direction;
 
     public FloorButton(String direction){
-        this.direction = direction.equals("u") ? "Up" : "Down";
+        this.lamp = new FloorLamp();
+        this.direction = direction.equals("Up") ? "Up" : "Down";
     }
 
-    public String pressed(){
-        return direction + " button pressed, " + lamp.pressed();
+    public void setDirection(String direction) {
+        this.direction = direction.equals("Up") ? "Up" : "Down";
+    }
+
+    public String pressed(String direction){
+        setDirection(direction);
+        return this.direction + " button pressed, " + this.lamp.pressed();
     }
 }
