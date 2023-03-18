@@ -6,6 +6,7 @@ import DataComp.ElevatorStatus;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 
 public class ElevatorCommunications implements Runnable {
 
@@ -84,6 +85,14 @@ public class ElevatorCommunications implements Runnable {
 
                 // put floor in or go back to send
                 elevator.handleRequest(req);
+            } else {
+//                System.out.println("Request is empty!: " + Arrays.toString(request));
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
         }

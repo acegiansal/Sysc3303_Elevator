@@ -25,9 +25,9 @@ public class Moving extends ElevatorState {
     @Override
     public void updateStatus() {
         // Update currentFloor
-        if(elevator.getStatus().getDirection().equals(ElevatorStatus.UP)){
+        if(elevator.getFloorQueue().get(0) > elevator.getCurrentFloor()){
             elevator.setCurrentFloor(elevator.getCurrentFloor() + 1);
-        } else if(elevator.getStatus().getDirection().equals(ElevatorStatus.DOWN)){
+        } else if(elevator.getFloorQueue().get(0) < elevator.getCurrentFloor()){
             elevator.setCurrentFloor(elevator.getCurrentFloor() - 1);
         } else {
             System.out.println(Thread.currentThread().getName() + "An error occured! Status is idle but elevator moved!");

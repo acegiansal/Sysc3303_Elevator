@@ -12,7 +12,7 @@ public class OpenDoors extends ElevatorState {
     @Override
     public void performAction() {
         try {
-            System.out.println(Thread.currentThread().getName() + " Door is opening");
+            System.out.println(Thread.currentThread().getName() + " Door is opening for " + ConfigInfo.DOOR_OPEN_TIME + " on floor " + elevator.getCurrentFloor());
             Thread.sleep(ConfigInfo.DOOR_OPEN_TIME);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

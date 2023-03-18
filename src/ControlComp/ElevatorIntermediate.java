@@ -5,6 +5,7 @@ import DataComp.ElevatorStatus;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 
 public class ElevatorIntermediate implements Runnable{
 
@@ -60,6 +61,7 @@ public class ElevatorIntermediate implements Runnable{
         databox.setStatus(elevatorID, newStatus);
         // Get request
         byte[] scheduleRequest = databox.getRequest(elevatorID);
+//        System.out.println("Sending to elevator: " + Arrays.toString(scheduleRequest));
         // Send request
         sendData(scheduleRequest);
     }

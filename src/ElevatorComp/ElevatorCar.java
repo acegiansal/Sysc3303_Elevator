@@ -64,7 +64,9 @@ public class ElevatorCar implements Runnable {
     }
 
     public synchronized void addFloor(int toAdd){
-        floorQueue.add(toAdd);
+        if(!floorQueue.contains(toAdd)) {
+            floorQueue.add(toAdd);
+        }
         String direction = this.getStatus().getDirection();
         //Sort based on direction (elevator will attempt to go to each one in order
         if(direction.equals("u")) {
@@ -114,14 +116,14 @@ public class ElevatorCar implements Runnable {
     }
 
     public static void main(String[] args){
-//        for(int i = 0; i< ConfigInfo.NUM_ELEVATORS; i++){
-//            ElevatorCar el = new ElevatorCar(i);
-//            Thread elThread = new Thread(el, "Elevator Car " + i);
-//            elThread.start();
-//        }
+        for(int i = 0; i< ConfigInfo.NUM_ELEVATORS; i++){
+            ElevatorCar el = new ElevatorCar(i);
+            Thread elThread = new Thread(el, "Elevator Car " + i);
+            elThread.start();
+        }
 
-        ElevatorCar el = new ElevatorCar(1);
-        Thread elThread = new Thread(el, "Elevator Car " + 1);
-        elThread.start();
+//        ElevatorCar el = new ElevatorCar(0);
+//        Thread elThread = new Thread(el, "Elevator Car " + 0);
+//        elThread.start();
     }
 }

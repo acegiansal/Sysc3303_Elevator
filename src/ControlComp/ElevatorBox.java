@@ -4,6 +4,7 @@ import DataComp.ElevatorStatus;
 import Config.ConfigInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class ElevatorBox {
@@ -38,7 +39,7 @@ public class ElevatorBox {
    }
 
    public synchronized byte[] getRequest(int index){
-       byte[] toSend = requests.get(index);
+       byte[] toSend = requests.get(index).clone();
        // Remove the request
        requests.set(index, noRequest);
        hasRequest.set(index, false);
@@ -54,7 +55,7 @@ public class ElevatorBox {
                e.printStackTrace();
            }
        }
-
+        System.out.println("Setting Elevator [" + index + "] to {"+ Arrays.toString(request) + "}");
        hasRequest.set(index, true);
        requests.set(index, request);
        notifyAll();

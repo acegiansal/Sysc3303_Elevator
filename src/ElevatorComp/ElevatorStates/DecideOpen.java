@@ -15,12 +15,11 @@ public class DecideOpen extends ElevatorState {
 
     @Override
     public void performAction() {
-        if(elevator.getFloorQueue().contains(elevator.getCurrentFloor())){
-            System.out.println("Door needs to open");
+        if(elevator.getFloorQueue().get(0) == elevator.getCurrentFloor()){
+//            System.out.println("Door needs to open");
             shouldOpen = true;
         } else {
-            System.out.println("Floor Queue: " + elevator.getFloorQueue().toString());
-            System.out.println("Current floor: " + elevator.getCurrentFloor());
+            System.out.println(Thread.currentThread().getName() + " Floor Queue: " + elevator.getFloorQueue().toString() + " and current floor: " + elevator.getCurrentFloor());
             shouldOpen = false;
         }
     }

@@ -14,7 +14,7 @@ public class CloseDoors extends ElevatorState {
     @Override
     public void performAction() {
         try {
-            System.out.println(Thread.currentThread().getName() + " Door is closing");
+            System.out.println(Thread.currentThread().getName() + " Door is closing for " + ConfigInfo.DOOR_OPEN_TIME);
             Thread.sleep(ConfigInfo.DOOR_OPEN_TIME);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

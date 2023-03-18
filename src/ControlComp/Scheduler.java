@@ -4,6 +4,7 @@ import Config.ConfigInfo;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 
 public class Scheduler implements Runnable{
 
@@ -51,6 +52,7 @@ public class Scheduler implements Runnable{
         // Block until a datagram packet is received from receiveSocket.
         try {
             //System.out.println(Thread.currentThread().getName() + " Waiting..."); // so we know we're waiting
+            System.out.println("Scheduler is waiting for something");
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,6 +76,7 @@ public class Scheduler implements Runnable{
             // Schedule
             int chosenEl = chooseElevator(request);
             // Put into box
+            System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
             databox.setRequest(chosenEl, request);
         }
         

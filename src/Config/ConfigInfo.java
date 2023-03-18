@@ -13,6 +13,6 @@ public class ConfigInfo {
     public static final int NUM_ELEVATORS = 2;
 
     /* Timing Config */
-    public static final int DOOR_OPEN_TIME = 1000;
-    public static final int FLOOR_TRAVERSAL_TIME = 2000;
+    public static final int DOOR_OPEN_TIME = 500;
+    public static final int FLOOR_TRAVERSAL_TIME = 750;
 }
