@@ -71,7 +71,7 @@ public class FloorSend implements Runnable{
                     System.out.println( "Floor" + "INPUT DATA INVALID!!");
                     //System.out.println("INPUT DATA INVALID!!");
                     break;
-                }else {
+                } else {
                     //Direction is true if 'Up' is selected
                     String direction = (splitData[2].equals("Up")) ? "u" : "d";
                     RequestPacket request = new RequestPacket(Integer.parseInt(splitData[1]), Integer.parseInt(splitData[3]), direction, Integer.parseInt(splitData[4]), splitData[0]);
@@ -150,9 +150,8 @@ public class FloorSend implements Runnable{
 
     public void run(){
         //Read information from selected file
-        File file = new File("src/elevatorFile");
+        File file = new File("src/elevatorFile.txt");
         readFromFile(file);
-
     }
 
     public static void main(String[] args){
