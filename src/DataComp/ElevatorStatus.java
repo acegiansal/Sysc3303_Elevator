@@ -57,4 +57,13 @@ public class ElevatorStatus {
         String direction = new String(data, 2, 1);
         return new ElevatorStatus(currentFloor, direction, data[0]);
     }
+
+    @Override
+    public String toString() {
+        return "ElevatorStatus{" +
+            "currentFloor=" + currentFloor +
+            ", direction='" + direction + '\'' +
+            ", id=" + id +
+            '}';
+    }
 }

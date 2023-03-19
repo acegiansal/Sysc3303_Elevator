@@ -3,14 +3,12 @@ package ElevatorComp;
 import Config.ConfigInfo;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
-import ElevatorComp.ElevatorStates.*;
+import ElevatorComp.NewElevatorStates.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
-public class ElevatorCar implements Runnable {
+public class ElevatorCar {
 
     private ElevatorStatus status;
     private ArrayList<Integer> floorQueue;
@@ -18,6 +16,7 @@ public class ElevatorCar implements Runnable {
     private ElevatorState currentState;
     private int scenario;
     private int currentFloor;
+    private String currentDirection;
 
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
@@ -26,6 +25,8 @@ public class ElevatorCar implements Runnable {
         this.currentState = new Idle(this);
         this.scenario = 0;
         this.currentFloor = 1;
+        this.currentDirection = ElevatorStatus.IDLE;
+
 
         // Start comms
         ElevatorCommunications comms = new ElevatorCommunications(this);
@@ -60,27 +61,26 @@ public class ElevatorCar implements Runnable {
     }
 
     public void setDirection(String direction){
-        getStatus().setDirection(direction);
+        this.currentDirection = direction;
+    }
+    public String getDirection(){
+        return currentDirection;
     }
 
     public synchronized void addFloor(int toAdd){
         if(!floorQueue.contains(toAdd)) {
             floorQueue.add(toAdd);
         }
-        String direction = this.getStatus().getDirection();
+        String direction = this.getDirection();
         //Sort based on direction (elevator will attempt to go to each one in order
         if(direction.equals("u")) {
             Collections.sort(floorQueue);
         } else if(direction.equals("d")){
             floorQueue.sort(Collections.reverseOrder());
+        } else {
+            System.out.println("Got an idle request when it should not be!");
         }
         notifyAll();
-    }
-
-    public void handleRequest(RequestPacket request){
-        setDirection(request.getDirection());
-        addFloor(request.getStartFloor());
-        addFloor(request.getEndFloor());
     }
 
     public int getScenario() {
@@ -103,27 +103,23 @@ public class ElevatorCar implements Runnable {
         return elevatorID;
     }
 
-    public void changeState(ElevatorState state){
-        this.currentState = state;
+    public void timeout(){
+        this.currentState.timeout();
     }
 
-    @Override
-    public void run() {
-        while(true){
-            this.currentState.performAction();
-            this.currentState.updateStatus();
-        }
+    public void requestReceived(RequestPacket packet){
+        this.currentState.requestReceived(packet);
+    }
+
+    public void changeState(ElevatorState state){
+        this.currentState.exit();
+        this.currentState = state;
+        this.currentState.entry();
     }
 
     public static void main(String[] args){
         for(int i = 0; i< ConfigInfo.NUM_ELEVATORS; i++){
             ElevatorCar el = new ElevatorCar(i);
-            Thread elThread = new Thread(el, "Elevator Car " + i);
-            elThread.start();
         }
-
-//        ElevatorCar el = new ElevatorCar(0);
-//        Thread elThread = new Thread(el, "Elevator Car " + 0);
-//        elThread.start();
     }
 }

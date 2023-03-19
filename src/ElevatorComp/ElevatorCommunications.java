@@ -84,11 +84,12 @@ public class ElevatorCommunications implements Runnable {
                 RequestPacket req = new RequestPacket(startFloor, endFloor, direction, scenario);
 
                 // put floor in or go back to send
-                elevator.handleRequest(req);
+                elevator.requestReceived(req);
             } else {
 //                System.out.println("Request is empty!: " + Arrays.toString(request));
             }
 
+            // Pause before checking again
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
