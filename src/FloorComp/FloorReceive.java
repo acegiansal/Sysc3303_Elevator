@@ -1,5 +1,7 @@
 package FloorComp;
 
+import Config.ConfigInfo;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -17,7 +19,7 @@ public class FloorReceive implements Runnable{
     public FloorReceive(ArrayList<Floor> floors) {
         this.floors = floors;
         try {
-            receiveSocket = new DatagramSocket();
+            receiveSocket = new DatagramSocket(ConfigInfo.FLOOR_PORT);
         } catch (SocketException se) {
             se.printStackTrace();
             System.exit(1);
@@ -27,7 +29,7 @@ public class FloorReceive implements Runnable{
     private void getInfo() {
         while (true) {
             //Receive reply
-            byte[] reply = new byte[50];
+            byte[] reply = new byte[ConfigInfo.PACKET_SIZE];
             DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
             try {
                 // Block until a datagram is received via sendReceiveSocket.

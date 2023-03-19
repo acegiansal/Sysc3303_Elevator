@@ -137,8 +137,8 @@ public class FloorSend implements Runnable{
         sendData(data, SCHEDULER_PORT);
 
         //Receive reply
-        byte[] reply = new byte[50];
-        DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
+//        byte[] reply = new byte[ConfigInfo.PACKET_SIZE];
+//        DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
 
 //        try {
 //            // Block until a datagram is received via sendReceiveSocket.
@@ -178,13 +178,6 @@ public class FloorSend implements Runnable{
         }
     }
 
-    public static void main(String[] args){
-//        FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
-    	FloorSend floorSend = new FloorSend(22, 5020);
-        Thread floorSendThread = new Thread(floorSend);
-        floorSendThread.start();
-    }
-
     public void run(){
         //Read information from selected file
         File file = new File("src/elevatorFile");
@@ -196,5 +189,12 @@ public class FloorSend implements Runnable{
 //            logging.info2("Floor", "Floor got reply: " + Arrays.toString(reply) );
 //            //System.out.println("Floor got reply: " + Arrays.toString(reply));
 //        }
+    }
+
+    public static void main(String[] args){
+//        FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
+    	FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
+        Thread floorSendThread = new Thread(floorSend);
+        floorSendThread.start();
     }
 }

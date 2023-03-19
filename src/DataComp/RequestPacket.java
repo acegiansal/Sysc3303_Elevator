@@ -1,5 +1,7 @@
 package DataComp;
 
+import Config.ConfigInfo;
+
 public class RequestPacket {
 
     private int startFloor;
@@ -38,6 +40,16 @@ public class RequestPacket {
             }
         }
         return true;
+    }
+
+    public static byte[] translateToBytes(RequestPacket request){
+        byte[] translated = new byte[ConfigInfo.PACKET_SIZE];
+        translated[0] = (byte)request.getStartFloor();
+        translated[1] = (byte)request.getEndFloor();
+        translated = RequestPacket.combineByteArr(2, translated, request.getDirection().getBytes());
+        translated[3] = (byte) request.getScenario();
+
+        return translated;
     }
 
     /**

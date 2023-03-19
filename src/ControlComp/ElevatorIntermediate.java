@@ -59,6 +59,7 @@ public class ElevatorIntermediate implements Runnable{
         ElevatorStatus newStatus = ElevatorStatus.translateStatusBytes(this.status);
         // Set status
         databox.setStatus(elevatorID, newStatus);
+        System.out.println(newStatus);
         // Get request
         byte[] scheduleRequest = databox.getRequest(elevatorID);
 //        System.out.println("Sending to elevator: " + Arrays.toString(scheduleRequest));
