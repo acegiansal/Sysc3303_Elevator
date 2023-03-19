@@ -45,7 +45,18 @@ public class FloorReceive implements Runnable{
     }
 
     private void decodePacket(DatagramPacket receivePacket) {
-        // take specified packet and decode here, then send data to floor.
+        byte[] reply = receivePacket.getData();
+        int elevatorID = reply[0];
+        int floor = reply[1];
+        String direction;
+        if (reply[2] == 0){
+            direction = "Down";
+        } else if (reply[2] == 1){
+            direction = "Up";
+        } else {
+            direction = "Leaving";
+        }
+        this.floors.get(floor).arrive(direction, elevatorID);
     }
 
     @Override
