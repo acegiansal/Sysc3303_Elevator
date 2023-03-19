@@ -8,13 +8,15 @@ public class RequestPacket {
     private int endFloor;
     private String direction;
     private int scenario;
+    private String time;
 
 
-    public RequestPacket(int startFloor, int endFloor, String direction, int scenario) {
+    public RequestPacket(int startFloor, int endFloor, String direction, int scenario, String time) {
         this.startFloor = startFloor;
         this.endFloor = endFloor;
         this.direction = direction;
         this.scenario = scenario;
+        this.time = time;
     }
 
     public int getStartFloor() {
@@ -33,6 +35,14 @@ public class RequestPacket {
         return scenario;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public static boolean isEmptyRequest(byte[] data){
         for (int i=0; i<data.length; i++){
             if(data[i] != 0){
@@ -42,12 +52,18 @@ public class RequestPacket {
         return true;
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     */
     public static byte[] translateToBytes(RequestPacket request){
         byte[] translated = new byte[ConfigInfo.PACKET_SIZE];
         translated[0] = (byte)request.getStartFloor();
         translated[1] = (byte)request.getEndFloor();
         translated = RequestPacket.combineByteArr(2, translated, request.getDirection().getBytes());
         translated[3] = (byte) request.getScenario();
+        translated = combineByteArr(4, translated, request.getTime().getBytes());
 
         return translated;
     }

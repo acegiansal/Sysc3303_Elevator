@@ -1,6 +1,7 @@
 package ElevatorComp.NewElevatorStates;
 
 import Config.ConfigInfo;
+import DataComp.RequestPacket;
 import ElevatorComp.ElevatorCar;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public abstract class DoorState extends ElevatorState{
         byte[] toFloor = new byte[ConfigInfo.PACKET_SIZE];
         toFloor[0] = (byte)elevator.getElevatorID();
         toFloor[1] = (byte)elevator.getCurrentFloor();
+        toFloor = RequestPacket.combineByteArr(2, toFloor, elevator.getDirection().getBytes());
         sendData(toFloor);
     }
 

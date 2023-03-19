@@ -4,37 +4,44 @@ import ElevatorComp.ElevatorCar;
 
 public class Floor {
 
-    int floorNum;
-    FloorButton floorButton;
-    DirectionLamp upLamp;
-    DirectionLamp downLamp;
+    private int floorNum;
+    private FloorButton floorButton;
+    private DirectionLamp upLamp;
+    private DirectionLamp downLamp;
     FloorSend.floorType floorType;
+    private int[] elevatorCars;
 
-
-
-    public Floor(int floorNum, FloorSend.floorType type){
+    public Floor(int floorNum, FloorSend.floorType type, int numElevators){
 
         this.floorNum = floorNum;
         this.floorType = type;
         this.floorButton = new FloorButton("Up");
         this.upLamp = new DirectionLamp();
         this.downLamp = new DirectionLamp();
+        elevatorCars = new int[numElevators];
+
     }
 
     public void send(String direction){
         this.floorButton.pressed(direction);
-//        this.directionLamp.toggleLamp(true);
     }
 
     public void arrive(String direction, int elevatorID){
+
         if (direction.equals("Up")){
-            upLamp.toggleLamp(true);
+            upLamp.toggleLamp();
         } else if (direction.equals("Down")) {
-            downLamp.toggleLamp(true);
+            downLamp.toggleLamp();
         } else {
-            upLamp.toggleLamp(false);
-            downLamp.toggleLamp(false);
+            upLamp.toggleLamp();
+            downLamp.toggleLamp();
         }
-        // LOGGER PRINT THE ELEVATOR ARRIVING AT THIS FLOOR
+        elevatorCars[elevatorID] ^= 1;
+        if(elevatorCars[elevatorID] == 0){
+            System.out.println("Elevator " + elevatorID + " has LEFT the floor " + floorNum);
+        } else {
+            System.out.println("Elevator " + elevatorID + " has ENTERED the floor " + floorNum);
+        }
+
     }
 }

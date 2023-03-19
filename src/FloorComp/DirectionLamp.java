@@ -7,7 +7,7 @@ public class DirectionLamp {
         return lamp;
     }
 
-    public void toggleLamp(boolean lamp) {
+    public void toggleLamp() {
         this.lamp = !this.lamp;
     }
 

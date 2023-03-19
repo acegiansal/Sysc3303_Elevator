@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import Config.*;
+import DataComp.RequestPacket;
 
 public class FloorSend implements Runnable{
 
@@ -26,7 +27,7 @@ public class FloorSend implements Runnable{
         MID
     }
 
-    public FloorSend(int numFloors, int schedulerPort){
+    public FloorSend(int numFloors, int schedulerPort, int numElevators){
         MAX_FLOORS = numFloors;
         SCHEDULER_PORT = schedulerPort;
         timestamp = 0;
@@ -47,7 +48,7 @@ public class FloorSend implements Runnable{
             } else {
                 type = floorType.MID;
             }
-            floors.add(i, new Floor((i+1), type));
+            floors.add(i, new Floor((i+1), type, numElevators));
         }
         FloorReceive floorReceive = new FloorReceive(this.floors);
         Thread floorReceiveThread = new Thread(floorReceive);
@@ -73,22 +74,20 @@ public class FloorSend implements Runnable{
                 }else {
                     //Direction is true if 'Up' is selected
                     String direction = (splitData[2].equals("Up")) ? "u" : "d";
+                    RequestPacket request = new RequestPacket(Integer.parseInt(splitData[1]), Integer.parseInt(splitData[3]), direction, Integer.parseInt(splitData[4]), splitData[0]);
                     timestamp = (timestamp == 0) ? timeConversion(splitData[0]) : timestamp;
                     if (timeConversion(splitData[0]) == timestamp){
                         System.out.println("First: " + timestamp);
-                        prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
+                        prepareSend(request);
                     } else if (timeConversion(splitData[0]) > timestamp){
                         Thread.sleep((timeConversion(splitData[0]) - timestamp));
                         System.out.println("Slept: " + (timeConversion(splitData[0]) - timestamp));
-                        prepareSend(splitData[0], Integer.parseInt(splitData[1]), direction, Integer.parseInt(splitData[3]));
+                        prepareSend(request);
                     }
                 }
             }
             myReader.close();
-//            System.exit(0);
         } catch (FileNotFoundException | InterruptedException e) {
-//            logging.warning( "Floor", "An error occurred while reading the input file" + e.getMessage());
-            //System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
@@ -108,22 +107,13 @@ public class FloorSend implements Runnable{
         return (int) (timeSecs / 1000);
     }
 
-    /**
-     * Sends the data to scheduler
-     * @param time The time that the input was retrieved
-     * @param floorNumber The original floor number
-     * @param direction The direction that the elevator should be going to
-     * @param carButton The target floor
-     */
-    private void prepareSend(String time, int floorNumber, String direction, int carButton){
-//        needs to make a new packet to send the request
-        byte[] request = new byte[1];
-//        byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
-//        logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
-        Floor selectedFloor = floors.get(floorNumber);
-//        push floor button
-        selectedFloor.send(direction);
-        sendRpcRequest(request);
+    private void prepareSend(RequestPacket request){
+
+        byte[] toSend = RequestPacket.translateToBytes(request);
+        Floor selectedFloor = floors.get(request.getStartFloor());
+        // Push floor button
+        selectedFloor.send(request.getDirection());
+        sendData(toSend, SCHEDULER_PORT);
     }
 
     /**
@@ -131,27 +121,7 @@ public class FloorSend implements Runnable{
      * @param data the byte array to send as an RPC request
      */
     private void sendRpcRequest(byte[] data){
-
-        //System.out.println("Floor sending: " + Arrays.toString(data));
-//        logging.info2("Floor","Floor sending: " + Arrays.toString(data));
         sendData(data, SCHEDULER_PORT);
-
-        //Receive reply
-//        byte[] reply = new byte[ConfigInfo.PACKET_SIZE];
-//        DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
-
-//        try {
-//            // Block until a datagram is received via sendReceiveSocket.
-////            logging.info2("Floor", "Floor Waiting for reply");
-//            //System.out.println("Floor Waiting for reply");
-//            ReceiveSocket.receive(receivePacket);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            System.exit(1);
-//        }
-//
-//        return reply;
-
     }
 
     /**
@@ -183,17 +153,10 @@ public class FloorSend implements Runnable{
         File file = new File("src/elevatorFile");
         readFromFile(file);
 
-//        while(true){
-//            byte[] getRequest = PacketProcessor.createGetRequest();
-//            byte[] reply = floorControl.sendRpcRequest(getRequest);
-//            logging.info2("Floor", "Floor got reply: " + Arrays.toString(reply) );
-//            //System.out.println("Floor got reply: " + Arrays.toString(reply));
-//        }
     }
 
     public static void main(String[] args){
-//        FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
-    	FloorSend floorSend = new FloorSend(22, ConfigInfo.SCHEDULER_PORT);
+    	FloorSend floorSend = new FloorSend(ConfigInfo.NUM_FLOORS, ConfigInfo.SCHEDULER_PORT, ConfigInfo.NUM_ELEVATORS);
         Thread floorSendThread = new Thread(floorSend);
         floorSendThread.start();
     }

@@ -1,11 +1,13 @@
 package FloorComp;
 
 import Config.ConfigInfo;
+import DataComp.ElevatorStatus;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class FloorReceive implements Runnable{
@@ -49,12 +51,12 @@ public class FloorReceive implements Runnable{
         int elevatorID = reply[0];
         int floor = reply[1];
         String direction;
-        if (reply[2] == 0){
+        if (reply[2] == ElevatorStatus.DOWN.charAt(0)){
             direction = "Down";
-        } else if (reply[2] == 1){
+        } else if (reply[2] == ElevatorStatus.UP.charAt(0)){
             direction = "Up";
         } else {
-            direction = "Leaving";
+            direction = "idle";
         }
         this.floors.get(floor).arrive(direction, elevatorID);
     }
