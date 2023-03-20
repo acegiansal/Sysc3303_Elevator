@@ -122,8 +122,13 @@ public class FloorSend implements Runnable{
 //        logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
         Floor selectedFloor = floors.get(floorNumber);
 //        push floor button
-        selectedFloor.send(direction);
-        sendRpcRequest(request);
+        if (selectedFloor.send(direction)){
+            sendRpcRequest(request);
+        } else {
+            // drop request
+        }
+
+
     }
 
     /**
