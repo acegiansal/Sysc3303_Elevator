@@ -1,7 +1,5 @@
 package FloorComp;
 
-import ElevatorComp.ElevatorCar;
-
 public class Floor {
 
     private int floorNum;
@@ -22,8 +20,16 @@ public class Floor {
 
     }
 
-    public void send(String direction){
-        this.floorButton.pressed(direction);
+    public boolean send(String direction){
+        if (this.floorType == FloorSend.floorType.BOT && direction.equals("Down")){
+            return false;
+        } else if (this.floorType == FloorSend.floorType.TOP && direction.equals("Up")){
+            return false;
+        } else {
+            this.floorButton.pressed(direction);
+            return true;
+        }
+//        this.directionLamp.toggleLamp(true);
     }
 
     public void arrive(String direction, int elevatorID){
@@ -43,5 +49,7 @@ public class Floor {
             System.out.println("Elevator " + elevatorID + " has ENTERED the floor " + floorNum);
         }
 
+        this.floorButton.resetLamp();
+        // LOGGER PRINT THE ELEVATOR ARRIVING AT THIS FLOOR
     }
 }

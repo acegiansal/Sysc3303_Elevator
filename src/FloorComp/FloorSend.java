@@ -114,6 +114,27 @@ public class FloorSend implements Runnable{
         // Push floor button
         selectedFloor.send(request.getDirection());
         sendData(toSend, SCHEDULER_PORT);
+    /**
+     * Sends the data to scheduler
+     * @param time The time that the input was retrieved
+     * @param floorNumber The original floor number
+     * @param direction The direction that the elevator should be going to
+     * @param carButton The target floor
+     */
+    private void prepareSend(String time, int floorNumber, String direction, int carButton){
+//        needs to make a new packet to send the request
+        byte[] request = new byte[1];
+//        byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
+//        logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
+        Floor selectedFloor = floors.get(floorNumber);
+//        push floor button
+        if (selectedFloor.send(direction)){
+            sendRpcRequest(request);
+        } else {
+            // drop request
+        }
+
+
     }
 
     /**
