@@ -17,6 +17,7 @@ public class ElevatorCar {
     private int scenario;
     private int currentFloor;
     private String currentDirection;
+    private boolean statusUpdated;
 
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
@@ -26,6 +27,7 @@ public class ElevatorCar {
         this.scenario = 0;
         this.currentFloor = 1;
         this.currentDirection = ElevatorStatus.IDLE;
+        this.statusUpdated = false;
 
 
         // Start comms
@@ -40,12 +42,13 @@ public class ElevatorCar {
 
     public synchronized void setStatus(ElevatorStatus newStatus){
         status = newStatus;
+        this.statusUpdated = true;
     }
 
     public synchronized ArrayList<Integer> getFloorQueue(){
         while(queueIsEmpty()){
             try {
-                System.out.println(Thread.currentThread().getName() + " is waiting for command");
+                System.out.println("Elevator " + elevatorID + " is waiting for command in state " + currentState);
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -109,6 +112,14 @@ public class ElevatorCar {
 
     public void requestReceived(RequestPacket packet){
         this.currentState.requestReceived(packet);
+    }
+
+    public synchronized boolean isStatusUpdated() {
+        return statusUpdated;
+    }
+
+    public synchronized void setStatusUpdated(boolean statusUpdated) {
+        this.statusUpdated = statusUpdated;
     }
 
     public void changeState(ElevatorState state){

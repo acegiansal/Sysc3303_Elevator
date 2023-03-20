@@ -67,7 +67,7 @@ public class FloorSend implements Runnable{
                 //Split information (divided by spaces)
                 String[] splitData = data.split(" ");
                 //Data must be 4 items long
-                if (splitData.length != 4){
+                if (splitData.length != 5){
                     System.out.println( "Floor" + "INPUT DATA INVALID!!");
                     //System.out.println("INPUT DATA INVALID!!");
                     break;
@@ -107,34 +107,17 @@ public class FloorSend implements Runnable{
         return (int) (timeSecs / 1000);
     }
 
-    private void prepareSend(RequestPacket request){
+    private void prepareSend(RequestPacket request) {
 
         byte[] toSend = RequestPacket.translateToBytes(request);
         Floor selectedFloor = floors.get(request.getStartFloor());
         // Push floor button
-        selectedFloor.send(request.getDirection());
-        sendData(toSend, SCHEDULER_PORT);
-    /**
-     * Sends the data to scheduler
-     * @param time The time that the input was retrieved
-     * @param floorNumber The original floor number
-     * @param direction The direction that the elevator should be going to
-     * @param carButton The target floor
-     */
-    private void prepareSend(String time, int floorNumber, String direction, int carButton){
-//        needs to make a new packet to send the request
-        byte[] request = new byte[1];
-//        byte[] request = PacketProcessor.createRequestPacket(time, floorNumber, direction, carButton);
-//        logging.info2( "Floor", "Floor Sending" + Arrays.toString(request));
-        Floor selectedFloor = floors.get(floorNumber);
-//        push floor button
-        if (selectedFloor.send(direction)){
-            sendRpcRequest(request);
+        if(selectedFloor.send(request.getDirection())){
+            System.out.println("Sending request " + request);
+            sendData(toSend, SCHEDULER_PORT);
         } else {
-            // drop request
+            System.out.println("Invalid request! Dropping request");
         }
-
-
     }
 
     /**

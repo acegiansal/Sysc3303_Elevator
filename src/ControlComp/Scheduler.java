@@ -1,9 +1,12 @@
 package ControlComp;
 
 import Config.ConfigInfo;
+import DataComp.ElevatorStatus;
+import DataComp.RequestPacket;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Scheduler implements Runnable{
@@ -24,27 +27,6 @@ public class Scheduler implements Runnable{
         }
     }
 
-//    public void sendData(byte[] data) {
-//
-//        DatagramPacket sendPacket = null;
-//        // Create a packet that sends to the same computer at the previously specified
-//        // port
-//        try {
-//            sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), ConfigInfo.FLOOR_PORT);
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//            System.exit(1);
-//        }
-//
-//        // Send the datagram packet to the server via the send/receive socket.
-//        try {
-//            sendReceiveSocket.send(sendPacket);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            System.exit(1);
-//        }
-//    }
-
     private byte[] receiveData(){
         byte[] received = new byte[ConfigInfo.PACKET_SIZE];
         DatagramPacket receivePacket = new DatagramPacket(received, received.length);
@@ -61,24 +43,126 @@ public class Scheduler implements Runnable{
         return received;
     }
 
-    private int chooseElevator(byte[] request){
-        // TODO implement actual algorithm
-        return 0;
+    private int algorithm(RequestPacket req){
+
+        boolean lookingForEl = false;
+        System.out.println("============");
+        ArrayList<Integer> toUse = new ArrayList<>();
+        do {
+            // 1. Get all elevators that are either idle or going in the same direction
+            toUse = getSameDirection(req);
+            System.out.println("All in same direction: " + toUse.toString());
+
+            // 2. Get all elevators that are not ahead
+            toUse = getCarNotPast(req, toUse);
+            System.out.println("Elevators not ahead: " + toUse.toString());
+
+            // 3. Get elevators that are closest
+            toUse = getClosestElevators(req, toUse);
+            System.out.println("Closest elevators: " + toUse.toString());
+
+            // 4. Check if there are any elevators in queue. If yes, continue, if false, wait 1 second then do it again
+            lookingForEl = !(toUse.size() > 0);
+            if(lookingForEl){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(lookingForEl);
+
+        // 5. Grab the first elevator
+        return toUse.get(0);
+    }
+
+    private ArrayList<Integer> getSameDirection(RequestPacket request){
+        ArrayList<Integer> toUse = new ArrayList<>();
+
+        for(int i=0; i<numOfElevators; i++){
+            ElevatorStatus status = databox.getStatus(i);
+            if(status.getDirection().equals(request.getDirection()) || status.getDirection().equals(ElevatorStatus.IDLE)){
+                toUse.add(status.getId());
+            }
+        }
+        return toUse;
+    }
+
+    private ArrayList<Integer> getCarNotPast(RequestPacket request, ArrayList<Integer> sameDirection){
+        ArrayList<Integer> toUse = new ArrayList<>();
+
+        for (Integer integer : sameDirection) {
+            ElevatorStatus status = databox.getStatus(integer);
+//            System.out.println("El " + status.getId() + " is at " + status.getCurrentFloor() + ", start floor is: " + request.getStartFloor());
+            if (request.getDirection().equals(ElevatorStatus.UP)) {
+                if (status.getCurrentFloor() <= request.getStartFloor() || status.getDirection().equals(ElevatorStatus.IDLE)) {
+                    toUse.add(status.getId());
+                }
+            } else {
+                if (status.getCurrentFloor() >= request.getStartFloor() || status.getDirection().equals(ElevatorStatus.IDLE)) {
+                    toUse.add(status.getId());
+                }
+            }
+        }
+        return toUse;
+    }
+
+    private ArrayList<Integer> getClosestElevators(RequestPacket request, ArrayList<Integer> choices){
+        ArrayList<Integer> toUse = new ArrayList<>();
+        int min = ConfigInfo.NUM_FLOORS;
+
+        // Get smallest distance
+        for (Integer integer : choices) {
+            ElevatorStatus status = databox.getStatus(integer);
+            int distance = getDistance(status.getCurrentFloor(), request.getStartFloor());
+            if(distance < min){
+                min = distance;
+            }
+        }
+
+        // Get all elevators with that distance
+        for (Integer integer : choices) {
+            ElevatorStatus status = databox.getStatus(integer);
+            int distance = getDistance(status.getCurrentFloor(), request.getStartFloor());
+            if(distance == min){
+                toUse.add(integer);
+            }
+        }
+        return toUse;
+    }
+
+    private int getDistance(int elFloor, int reqFloor){
+        return Math.abs(elFloor - reqFloor);
     }
 
     @Override
     public void run() {
-
         while(true){
             // Receive floor request
             byte[] request = receiveData();
+
             //TODO check if request is valid
-            // Schedule
-            int chosenEl = chooseElevator(request);
-            // Put into box
+
+            RequestPacket req = RequestPacket.translateRequestBytes(request);
+            int chosenEl = algorithm(req);
+            // Put into box and update the status of the chosen elevator
             System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
+            ElevatorStatus prevStatus = databox.getStatus(chosenEl);
+            ElevatorStatus newStatus = new ElevatorStatus(prevStatus.getCurrentFloor(), req.getDirection(), prevStatus.getId());
+            databox.setStatus(chosenEl, newStatus);
             databox.setRequest(chosenEl, request);
         }
         
     }
+
+
+    public static void main(String[] args){
+        int elNum = 2;
+        Scheduler test = new Scheduler(new ElevatorBox(elNum), elNum);
+        RequestPacket testPacket = new RequestPacket(1, 3,"u", 0, "10:00");
+
+        System.out.println(test.algorithm(testPacket));
+    }
+
 }

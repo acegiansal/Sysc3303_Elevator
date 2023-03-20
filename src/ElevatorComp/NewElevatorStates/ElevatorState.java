@@ -51,6 +51,7 @@ public abstract class ElevatorState {
 
     protected void updateStatus(){
         ElevatorStatus status = new ElevatorStatus(elevator.getCurrentFloor(), elevator.getDirection(), elevator.getStatus().getId());
+        System.out.println("Elevator " + elevator.getElevatorID() + " Setting status to " + status);
         elevator.setStatus(status);
 //        System.out.println(status);
     }

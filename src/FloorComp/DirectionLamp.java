@@ -9,6 +9,7 @@ public class DirectionLamp {
 
     public void toggleLamp() {
         this.lamp = !this.lamp;
+        System.out.println("Lamp is now " + this.lamp);
     }
 
     public DirectionLamp() {

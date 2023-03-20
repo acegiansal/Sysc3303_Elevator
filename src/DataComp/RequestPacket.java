@@ -61,11 +61,27 @@ public class RequestPacket {
         byte[] translated = new byte[ConfigInfo.PACKET_SIZE];
         translated[0] = (byte)request.getStartFloor();
         translated[1] = (byte)request.getEndFloor();
-        translated = RequestPacket.combineByteArr(2, translated, request.getDirection().getBytes());
-        translated[3] = (byte) request.getScenario();
+        translated[2] = (byte) request.getScenario();
+        translated = RequestPacket.combineByteArr(3, translated, request.getDirection().getBytes());
         translated = combineByteArr(4, translated, request.getTime().getBytes());
 
         return translated;
+    }
+
+    public static RequestPacket translateRequestBytes(byte[] data){
+        int startFloor = data[0];
+        int endFloor = data[1];
+        int scenario = data[2];
+        String direction = new String(data, 3, 1);
+        int endOfTime = 0;
+        for(int i=4; i<data.length; i++){
+            if(data[i] == 0){
+                break;
+            }
+            endOfTime++;
+        }
+        String time = new String(data, 4, endOfTime);
+        return new RequestPacket(startFloor, endFloor, direction, scenario, time);
     }
 
     /**
@@ -90,4 +106,14 @@ public class RequestPacket {
         return combinedByteArr;
     }
 
+    @Override
+    public String toString() {
+        return "RequestPacket{" +
+                "startFloor=" + startFloor +
+                ", endFloor=" + endFloor +
+                ", direction='" + direction + '\'' +
+                ", scenario=" + scenario +
+                ", time='" + time + '\'' +
+                '}';
+    }
 }

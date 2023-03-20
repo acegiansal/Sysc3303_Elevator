@@ -28,5 +28,4 @@ public class ShaftState extends ElevatorState {
         elevator.changeState(nextState);
     }
 
-
 }

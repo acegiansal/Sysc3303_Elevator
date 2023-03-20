@@ -11,7 +11,7 @@ public class Idle extends ShaftState {
 
     @Override
     public void entry(){
-        System.out.println("Elevator is now idle");
+        System.out.println("Elevator " + elevator.getElevatorID() + " is now idle");
         elevator.setDirection(ElevatorStatus.IDLE);
         // update status
         this.updateStatus();
@@ -19,7 +19,7 @@ public class Idle extends ShaftState {
 
     @Override
     public void exit() {
-        System.out.println("Elevator is now active!");
+        System.out.println("Elevator " + elevator.getElevatorID() + " is now active!");
     }
 
     @Override
@@ -34,4 +34,8 @@ public class Idle extends ShaftState {
         this.shouldOpen();
     }
 
+    @Override
+    public String toString(){
+        return "Idle";
+    }
 }

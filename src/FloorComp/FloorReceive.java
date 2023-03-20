@@ -58,7 +58,7 @@ public class FloorReceive implements Runnable{
         } else {
             direction = "idle";
         }
-        this.floors.get(floor).arrive(direction, elevatorID);
+        this.floors.get(floor-1).arrive(direction, elevatorID);
     }
 
     @Override

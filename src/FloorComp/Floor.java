@@ -29,7 +29,6 @@ public class Floor {
             this.floorButton.pressed(direction);
             return true;
         }
-//        this.directionLamp.toggleLamp(true);
     }
 
     public void arrive(String direction, int elevatorID){

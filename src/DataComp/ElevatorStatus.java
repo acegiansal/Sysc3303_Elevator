@@ -12,8 +12,7 @@ public class ElevatorStatus {
     public static final String UP = "u";
     public static final String DOWN = "d";
     public static final String IDLE = "i";
-
-
+    public static final String STUCK = "s";
 
     public ElevatorStatus(int currentFloor, String direction, int id) {
         this.currentFloor = currentFloor;

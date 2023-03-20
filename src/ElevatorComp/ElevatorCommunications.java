@@ -70,23 +70,20 @@ public class ElevatorCommunications implements Runnable {
             // send packet
             ElevatorStatus status = elevator.getStatus();
             byte[] transformed = ElevatorStatus.translateToBytes(status);
+            if(!elevator.isStatusUpdated()){
+                transformed[3] = 1;
+            }
             sendData(transformed);
+            elevator.setStatusUpdated(false);
 
             //receive request
             byte[] request = receiveData();
             //Translate packet
             if(!RequestPacket.isEmptyRequest(request)){
-                int startFloor = request[0];
-                int endFloor = request[1];
-                int scenario = request[2];
-                String direction = new String(request, 3, 1);
-
-                RequestPacket req = new RequestPacket(startFloor, endFloor, direction, scenario);
+                RequestPacket req = RequestPacket.translateRequestBytes(request);
 
                 // put floor in or go back to send
                 elevator.requestReceived(req);
-            } else {
-//                System.out.println("Request is empty!: " + Arrays.toString(request));
             }
 
             // Pause before checking again
