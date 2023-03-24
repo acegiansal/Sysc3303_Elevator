@@ -16,7 +16,8 @@ public class OpenDoors extends DoorState{
     }
     @Override
     public void timeout(){
-        elevator.changeState(new CloseDoors(elevator));
+        ElevatorState nextState = elevator.isTransFaulted() ? new BrokenDoors(elevator, 2) : new CloseDoors(elevator);
+        elevator.changeState(nextState);
     }
 
     @Override

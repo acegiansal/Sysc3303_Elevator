@@ -19,6 +19,9 @@ public class ElevatorCar {
     private String currentDirection;
     private boolean statusUpdated;
 
+    private boolean transFaulted;
+    private boolean hardFaulted;
+
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
         floorQueue = new ArrayList<>();
@@ -29,6 +32,8 @@ public class ElevatorCar {
         this.currentDirection = ElevatorStatus.IDLE;
         this.statusUpdated = false;
 
+        transFaulted = false;
+        hardFaulted = false;
 
         // Start comms
         ElevatorCommunications comms = new ElevatorCommunications(this);
@@ -92,6 +97,27 @@ public class ElevatorCar {
 
     public void setScenario(int scenario) {
         this.scenario = scenario;
+        if(scenario == 1){
+            transFaulted = true;
+        } else if (scenario == 2){
+            hardFaulted = true;
+        }
+    }
+
+    public boolean isTransFaulted() {
+        return transFaulted;
+    }
+
+    public void setTransFaulted(boolean transFaulted) {
+        this.transFaulted = transFaulted;
+    }
+
+    public boolean isHardFaulted() {
+        return hardFaulted;
+    }
+
+    public void setHardFaulted(boolean hardFaulted) {
+        this.hardFaulted = hardFaulted;
     }
 
     public int getCurrentFloor() {
@@ -126,6 +152,13 @@ public class ElevatorCar {
         this.currentState.exit();
         this.currentState = state;
         this.currentState.entry();
+    }
+
+    public void hardFault(){
+        // Hard fault elevator
+        System.out.println("Elevator " + getElevatorID() + " has experienced a hard fault!");
+        ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK,getElevatorID());
+        setStatus(status);
     }
 
     public static void main(String[] args){

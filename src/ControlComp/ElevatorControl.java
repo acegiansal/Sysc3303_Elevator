@@ -65,7 +65,7 @@ public class ElevatorControl {
     }
 
     public static void main(String[] args){
-        ElevatorControl controller = new ElevatorControl(2);
+        ElevatorControl controller = new ElevatorControl(ConfigInfo.NUM_ELEVATORS);
         controller.controlElevator();
     }
 

@@ -1,16 +1,21 @@
 package ElevatorComp.NewElevatorStates;
 
 import Config.ConfigInfo;
+import DataComp.ElevatorStatus;
+import ElevatorComp.ArrivalSensor;
 import ElevatorComp.ElevatorCar;
 
 public class MoveFloor extends ShaftState{
+
+    private ArrivalSensor sensor;
+
     public MoveFloor(ElevatorCar elevator) {
         super(elevator);
+        sensor = new ArrivalSensor(elevator);
     }
 
     @Override
     public void entry(){
-        // TODO ALERT ARRIVAL SENSOR
         System.out.println("Elevator " + elevator.getElevatorID() + " moving 1 floor!");
 
         // Update currentFloor
@@ -22,16 +27,21 @@ public class MoveFloor extends ShaftState{
 
         //Update the floor now to tell the scheduler that it shouldn't tell it to use the same floor
         this.updateStatus();
+
+        Thread sensorThread = new Thread(sensor, "Elevator " + elevator.getElevatorID() + " arrival sensor");
+        sensorThread.start();
+
         this.setTimer(ConfigInfo.FLOOR_TRAVERSAL_TIME);
 
     }
 
     @Override
     public void timeout(){
-
-        // CHECK SCENARIO, IF IT SHOULD BREAK
-        System.out.println("Elevator " + elevator.getElevatorID() + " Now on floor: " + elevator.getCurrentFloor());
-        this.shouldOpen();
+        if(!elevator.isHardFaulted()){
+            sensor.alertSensor();
+            System.out.println("Elevator " + elevator.getElevatorID() + " Now on floor: " + elevator.getCurrentFloor());
+            this.shouldOpen();
+        }
     }
 
     @Override
