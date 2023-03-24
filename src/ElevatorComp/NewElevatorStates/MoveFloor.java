@@ -16,7 +16,7 @@ public class MoveFloor extends ShaftState{
 
     @Override
     public void entry(){
-        System.out.println("Elevator " + elevator.getElevatorID() + " moving 1 floor!");
+        System.out.println("Elevator " + elevator.getElevatorID() + " motor starting!");
 
         // Update currentFloor
         if(elevator.getFloorQueue().get(0) > elevator.getCurrentFloor()){
@@ -30,7 +30,6 @@ public class MoveFloor extends ShaftState{
 
         Thread sensorThread = new Thread(sensor, "Elevator " + elevator.getElevatorID() + " arrival sensor");
         sensorThread.start();
-
         this.setTimer(ConfigInfo.FLOOR_TRAVERSAL_TIME);
 
     }

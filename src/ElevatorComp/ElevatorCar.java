@@ -78,6 +78,7 @@ public class ElevatorCar {
     public synchronized void addFloor(int toAdd){
         if(!floorQueue.contains(toAdd)) {
             floorQueue.add(toAdd);
+            System.out.println("Elevator " + elevatorID + " floor: " + toAdd + " has button pushed and lamp turned on");
         }
         String direction = this.getDirection();
         //Sort based on direction (elevator will attempt to go to each one in order
