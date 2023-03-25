@@ -1,6 +1,7 @@
 package ElevatorComp;
 
 import Config.ConfigInfo;
+import ControlComp.Logging;
 
 public class ArrivalSensor implements Runnable {
 
@@ -25,7 +26,8 @@ public class ArrivalSensor implements Runnable {
         }
 
         if(!floorReached){
-            System.out.println("Elevator " + elevator.getElevatorID() + "'s arrival sensor has timed out!!!");
+            //System.out.println("Elevator " + elevator.getElevatorID() + "'s arrival sensor has timed out!!!");
+            Logging.info("ArrivalSensor", ""+elevator.getElevatorID()," arrival sensor has timed out!!!" );
             elevator.hardFault();
         }
 

@@ -16,6 +16,8 @@ public class ElevatorControl {
     private Scheduler scheduler;
     private DatagramSocket receiveSocket;
 
+    Logging logger = new Logging();
+
     public ElevatorControl(int elevatorNum){
         mediators = new ArrayList<>();
         databox = new ElevatorBox(elevatorNum);
@@ -42,7 +44,8 @@ public class ElevatorControl {
         DatagramPacket receivePacket = new DatagramPacket(data, data.length);
         // Block until a datagram packet is received from receiveSocket.
         try {
-            System.out.println("Elevator Control is Waiting for something from the elevators..."); // so we know we're waiting
+            Logging.info2("ElevatorControl", "Elevator Control is Waiting for something from the elevators...");
+            //System.out.println("Elevator Control is Waiting for something from the elevators..."); // so we know we're waiting
             receiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();

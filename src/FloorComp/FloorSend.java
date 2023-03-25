@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import Config.*;
+import ControlComp.Logging;
 import DataComp.RequestPacket;
 
 public class FloorSend implements Runnable{
@@ -68,7 +69,8 @@ public class FloorSend implements Runnable{
                 String[] splitData = data.split(" ");
                 //Data must be 4 items long
                 if (splitData.length != 5){
-                    System.out.println( "Floor" + "INPUT DATA INVALID!!");
+                    //System.out.println( "Floor" + "INPUT DATA INVALID!!");
+                    Logging.info2("FloorSend", "Floor" + "INPUT DATA INVALID!!");
                     //System.out.println("INPUT DATA INVALID!!");
                     break;
                 } else {
@@ -77,11 +79,13 @@ public class FloorSend implements Runnable{
                     RequestPacket request = new RequestPacket(Integer.parseInt(splitData[1]), Integer.parseInt(splitData[3]), direction, Integer.parseInt(splitData[4]), splitData[0]);
                     timestamp = (timestamp == 0) ? timeConversion(splitData[0]) : timestamp;
                     if (timeConversion(splitData[0]) == timestamp){
-                        System.out.println("First: " + timestamp);
+                        //System.out.println("First: " + timestamp);
+                        Logging.info2("FloorSend", "First: " + timestamp);
                         prepareSend(request);
                     } else if (timeConversion(splitData[0]) > timestamp){
                         Thread.sleep((timeConversion(splitData[0]) - timestamp));
-                        System.out.println("Slept: " + (timeConversion(splitData[0]) - timestamp));
+                        //System.out.println("Slept: " + (timeConversion(splitData[0]) - timestamp));
+                        Logging.info2("FloorSend", "Slept: " + (timeConversion(splitData[0]) - timestamp));
                         prepareSend(request);
                     }
                 }
@@ -113,10 +117,13 @@ public class FloorSend implements Runnable{
         Floor selectedFloor = floors.get(request.getStartFloor());
         // Push floor button
         if(selectedFloor.send(request.getDirection())){
-            System.out.println("Sending request " + request);
+            //System.out.println("Sending request " + request);
+            Logging.info2("FloorSend", "Sending request " + request);
             sendData(toSend, SCHEDULER_PORT);
         } else {
-            System.out.println("Invalid request! Dropping request");
+            //System.out.println("Invalid request! Dropping request");
+            Logging.info2("FloorSend", "Invalid request! Dropping request");
+
         }
     }
 

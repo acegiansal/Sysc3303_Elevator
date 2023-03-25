@@ -1,7 +1,10 @@
 package FloorComp;
 
+import ControlComp.Logging;
+
 public class DirectionLamp {
     boolean lamp;
+    String OnorNot;
 
     public boolean getLamp() {
         return lamp;
@@ -9,7 +12,14 @@ public class DirectionLamp {
 
     public void toggleLamp() {
         this.lamp = !this.lamp;
-        System.out.println("Lamp is now " + this.lamp);
+        if (this.lamp == true){
+            OnorNot = "On";
+        }
+        else {
+            OnorNot = "OFF";
+        }
+        //System.out.println("Lamp is now " + OnorNot);
+        Logging.info2("DirectionLamp", "Lamp is now " + OnorNot);
     }
 
     public DirectionLamp() {

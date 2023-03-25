@@ -15,6 +15,7 @@ public class Scheduler implements Runnable{
     private int numOfElevators;
     private DatagramSocket sendReceiveSocket;
 
+
     public Scheduler(ElevatorBox databox, int elevatorNum){
         this.numOfElevators = elevatorNum;
         this.databox = databox;
@@ -34,7 +35,8 @@ public class Scheduler implements Runnable{
         // Block until a datagram packet is received from receiveSocket.
         try {
             //System.out.println(Thread.currentThread().getName() + " Waiting..."); // so we know we're waiting
-            System.out.println("Scheduler is waiting for something");
+            //System.out.println("Scheduler is waiting for something");
+            Logging.info2("Scheduler","Scheduler is waiting for something" );
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,20 +48,23 @@ public class Scheduler implements Runnable{
     private int algorithm(RequestPacket req){
 
         boolean lookingForEl = false;
-        System.out.println("============");
+        //System.out.println("============");
         ArrayList<Integer> toUse = new ArrayList<>();
         do {
             // 1. Get all elevators that are either idle or going in the same direction
             toUse = getSameDirection(req);
-            System.out.println("All in same direction: " + toUse.toString());
+            //System.out.println("All in same direction: " + toUse.toString());
+            Logging.info2("Scheduler","All in same direction: " + toUse.toString() );
 
             // 2. Get all elevators that are not ahead
             toUse = getCarNotPast(req, toUse);
-            System.out.println("Elevators not ahead: " + toUse.toString());
+            //System.out.println("Elevators not ahead: " + toUse.toString());
+            Logging.info2("Scheduler","Elevators not ahead: " + toUse.toString());
 
             // 3. Get elevators that are closest
             toUse = getClosestElevators(req, toUse);
-            System.out.println("Closest elevators: " + toUse.toString());
+            //System.out.println("Closest elevators: " + toUse.toString());
+            Logging.info2("Scheduler","Closest elevators: " + toUse.toString() );
 
             // 4. Check if there are any elevators in queue. If yes, continue, if false, wait 1 second then do it again
             lookingForEl = !(toUse.size() > 0);
@@ -147,7 +152,8 @@ public class Scheduler implements Runnable{
             RequestPacket req = RequestPacket.translateRequestBytes(request);
             int chosenEl = algorithm(req);
             // Put into box and update the status of the chosen elevator
-            System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
+            //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
+            Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");
             ElevatorStatus prevStatus = databox.getStatus(chosenEl);
             ElevatorStatus newStatus = new ElevatorStatus(prevStatus.getCurrentFloor(), req.getDirection(), prevStatus.getId());
             databox.setStatus(chosenEl, newStatus);
@@ -162,7 +168,8 @@ public class Scheduler implements Runnable{
         Scheduler test = new Scheduler(new ElevatorBox(elNum), elNum);
         RequestPacket testPacket = new RequestPacket(1, 3,"u", 0, "10:00");
 
-        System.out.println(test.algorithm(testPacket));
+        //System.out.println(test.algorithm(testPacket));
+        Logging.info2("Scheduler","" + test.algorithm(testPacket));
     }
 
 }

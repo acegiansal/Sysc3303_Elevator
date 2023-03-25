@@ -1,6 +1,7 @@
 package ElevatorComp.NewElevatorStates;
 
 import Config.ConfigInfo;
+import ControlComp.Logging;
 import DataComp.ElevatorStatus;
 import ElevatorComp.ArrivalSensor;
 import ElevatorComp.ElevatorCar;
@@ -16,7 +17,8 @@ public class MoveFloor extends ShaftState{
 
     @Override
     public void entry(){
-        System.out.println("Elevator " + elevator.getElevatorID() + " motor starting!");
+        //System.out.println("Elevator " + elevator.getElevatorID() + " motor starting!");
+        Logging.info("MoveFloor", ""+ elevator.getElevatorID(), "Motor Starting!");
 
         // Update currentFloor
         if(elevator.getFloorQueue().get(0) > elevator.getCurrentFloor()){
@@ -38,7 +40,8 @@ public class MoveFloor extends ShaftState{
     public void timeout(){
         if(!elevator.isHardFaulted()){
             sensor.alertSensor();
-            System.out.println("Elevator " + elevator.getElevatorID() + " Now on floor: " + elevator.getCurrentFloor());
+            //System.out.println("Elevator " + elevator.getElevatorID() + " Now on floor: " + elevator.getCurrentFloor());
+            Logging.info("MoveFloor", ""+elevator.getElevatorID(), "Now on floor:" + elevator.getCurrentFloor());
             this.shouldOpen();
         }
     }

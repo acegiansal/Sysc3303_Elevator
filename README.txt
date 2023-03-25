@@ -12,45 +12,94 @@ The goal of this project is to design a realtime elevator control system and sim
 and effectively simulate an elevator in realtime. 
 
 # Classes
-- Building Class 
-This class contains the main, which starts the threads and the logging
+- ConfigInfo
+This class configures everything for the elevator, this includes the packet sizes, ports and times for the elevator
 
--Config Class
-This class contains the important information required to configure the code. This includes the port configuration for the messaging.
+-ElevatorBox
+The ElevatorBox class in this code is responsible for managing elevator statuses and requests. It provides methods for
+getting and setting elevator statuses and requests, and ensures thread safety through synchronized methods.
 
-- Elevator Class
-This class implements the runnable interface. It simulates an elevator and recieves information from the other class to "move" the elevator
-This class also notifies the user of when requests and current processes that the elevator is going
+-ElevatorControl
+The ElevatorControl class is responsible for controlling the behavior of the elevators in the system.
+It creates a Scheduler and ElevatorIntermediate objects for each elevator and listens for status updates from the elevators.
 
--ElevatorBox Class
-This class receives the information from scheduler and receives other information from the two elevator.
+-ElevatorIntermediate
+Elevator Intermediate is a mediator class that acts as an intermediary between the ElevatorControl and individual elevators.
+It receives updates and requests from the ElevatorControl, and sends requests to the appropriate elevator.
 
--ElevatorEvent Class
-This is an enum class that contains the constants used in the Elevator class
+-Logging Class
+the logging class is a custom-built logging class. This logger prints all the data and information received and sent from
+all the classes and prints it ut in the console and creates a file that contains all the logged data
 
-- ElevatorInfo Class
-This class gathers all of the info of the elevator including direction, time, and floor. It is synchronized with other threads 
-to recieve and send information on the elevator
+-Scheduler
+This class schedules all the elevators and makes sure the correct elevator is selected to run
 
-- ElevatorIntermediate Class
-This class acts as an intermediate between both the elevator and the scheduler
+-ElevatorStatus
+The ElevatorStatus class is a representation of the current status of an elevator in a building.
+It contains information such as the current floor the elevator is on, its direction (up, down, idle, or stuck), and its ID.
 
--ElevatorState Class
-This is an enum class that contains the constants used in the Elevator class
+-RequestPacket
+The RequestPacket class is used to create objects that represent requests made by passengers for elevator service
 
--Floor Class
-This class implemets the runnable interface. It reads the text file and updates the scheduler to tell the elevator where to go.
+-BrokenDoors
+The BrokenDoors class extends the DoorState class and represents the state of the elevator doors when they are stuck open.
+It tries to close the doors when it is entered and sets a timer to check if the doors have been fixed.
 
--logging Class
-the logging class is a custom built logging class. This logger prints all the data and information received and sent from all the classes and prints it ut in the console
-and creates a file that contains all of the logged data
+-CloseDoors
+The CloseDoors class represents the state of the elevator doors when they are closing. When the state is entered, a timer
+is set for the duration of the door closing time.
 
--PacketProcessor
-This class has the logic to process all of the different packages used to send and receive messages between all the different classes
--Schedular Class
-The schedular class implemets the runnable interface. It uses synchronization between the floor messages and elevator messages list.
-It has methods to add and get messages from these lists and updates this information across the other threads. It receives and sends request
-basically telling the elevator where to go.
+-DoorState
+This code represents the DoorState class which is used to handle elevator door states.
+
+-ElevatorState
+Elevator State defines an abstract class for the different states of an elevator. It includes methods for setting and interrupting
+a timer, handling requests, and updating the elevator's status.
+
+-Idle
+The Idle class is a subclass of ShaftState representing the idle state of an elevator car. When an elevator car is in an idle state,
+ it updates its status and waits for a request to arrive.
+
+-MoveFloor
+The MoveFloor class extends ShaftState and handles the movement of the elevator between floors, updating the current floor and
+starting an arrival sensor thread while also setting a timer for floor traversal time.
+
+-OpenDoors
+The OpenDoors state opens the elevator doors for a set amount of time and then transitions to either CloseDoors or BrokenDoors state
+depending on elevator status.
+
+-ShaftState
+The ShaftState class is an abstract class that extends ElevatorState and provides some default implementations for its methods.
+
+-Timer
+This class is for the timer object
+
+-ArrivalSensor
+This class configures and sets the arrival sensor
+
+-ElevatorCar
+The ElevatorCar class handles the management of floor queues, elevator status, and communication with the central control system.
+
+-ElevatorCommunications
+This class implements the Runnable interface. It handles sending and receiving data packets for an elevator car object
+
+-DirectionLamp
+This class configures and turns the direction lamp on or off
+-Floor
+The Floor class represents a floor in the building, with floor number, type, floor button, up and down direction lamps,
+and an array of elevator cars that have arrived at the floor
+
+-FloorButton
+Configures and sets the floor button and direction
+
+-FloorLamp
+sets if floor lamp is pressed or not
+-FloorReceive
+This class receives floor info
+
+-FloorSend
+This class sends floor info
+
 
 
 
@@ -59,9 +108,9 @@ This class contains all the unit tests for the class
 
 #Setup Instructions
 - Import Project into IDE of choice
-- First Start by running the schedular class
-- Second run the Floor class
-- Finally run the Building class
+- First Start by running the ElevatorControl class
+- Second run the ElevatorCar class
+- Finally run the FloorSend class
 - Once the code is stopped a log file called SYSC3303_ITER1_LOG.txt will be created with information. The file will be located in the Project folder. (If in eclipse, refresh the package explorer to see the files)
 
 #Testing

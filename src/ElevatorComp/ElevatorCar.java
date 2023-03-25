@@ -1,6 +1,7 @@
 package ElevatorComp;
 
 import Config.ConfigInfo;
+import ControlComp.Logging;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
 import ElevatorComp.NewElevatorStates.*;
@@ -53,7 +54,9 @@ public class ElevatorCar {
     public synchronized ArrayList<Integer> getFloorQueue(){
         while(queueIsEmpty()){
             try {
-                System.out.println("Elevator " + elevatorID + " is waiting for command in state " + currentState);
+                //System.out.println("Elevator " + elevatorID + " is waiting for command in state " + currentState);
+                Logging.info("ElevatorCar", ""+ elevatorID, "is waiting for command in" + currentState);
+
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -78,7 +81,8 @@ public class ElevatorCar {
     public synchronized void addFloor(int toAdd){
         if(!floorQueue.contains(toAdd)) {
             floorQueue.add(toAdd);
-            System.out.println("Elevator " + elevatorID + " floor: " + toAdd + " has button pushed and lamp turned on");
+            //System.out.println("Elevator " + elevatorID + " floor: " + toAdd + " has button pushed and lamp turned on");
+            Logging.info("ElevatorCar", ""+ elevatorID, " floor: " + toAdd + " has button pushed and lamp turned on");
         }
         String direction = this.getDirection();
         //Sort based on direction (elevator will attempt to go to each one in order
@@ -87,7 +91,8 @@ public class ElevatorCar {
         } else if(direction.equals("d")){
             floorQueue.sort(Collections.reverseOrder());
         } else {
-            System.out.println("Got an idle request when it should not be!");
+            //System.out.println("Got an idle request when it should not be!");
+            Logging.warning("ElevatorCar", "Got an idle request when it should not be!");
         }
         notifyAll();
     }
@@ -157,7 +162,8 @@ public class ElevatorCar {
 
     public void hardFault(){
         // Hard fault elevator
-        System.out.println("Elevator " + getElevatorID() + " has experienced a hard fault!");
+        //System.out.println("Elevator " + getElevatorID() + " has experienced a hard fault!");
+        Logging.info("ElevatorCar", "" + getElevatorID()," has experienced a hard fault!"  );
         ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK,getElevatorID());
         setStatus(status);
     }

@@ -60,7 +60,8 @@ public class ElevatorIntermediate implements Runnable{
         // Set status IF the elevator has just been updated
         if(status[3] != 1){
             databox.setStatus(elevatorID, newStatus);
-            System.out.println(newStatus);
+            Logging.info2("ElevatorIntermediate", ""+newStatus);
+            //System.out.println(newStatus);
         }
         // Get request
         byte[] scheduleRequest = databox.getRequest(elevatorID);

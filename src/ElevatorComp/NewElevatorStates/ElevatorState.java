@@ -1,5 +1,6 @@
 package ElevatorComp.NewElevatorStates;
 
+import ControlComp.Logging;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
 import ElevatorComp.ElevatorCar;
@@ -51,7 +52,8 @@ public abstract class ElevatorState {
 
     protected void updateStatus(){
         ElevatorStatus status = new ElevatorStatus(elevator.getCurrentFloor(), elevator.getDirection(), elevator.getStatus().getId());
-        System.out.println("Elevator " + elevator.getElevatorID() + " Setting status to " + status);
+        //System.out.println("Elevator " + elevator.getElevatorID() + " Setting status to " + status);
+        Logging.info("ElevatorState",""+elevator.getElevatorID()," Setting status to " + status);
         elevator.setStatus(status);
 //        System.out.println(status);
     }

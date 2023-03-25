@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
+
 public class ElevatorBox {
 
    private ArrayList<ElevatorStatus> statuses;
    private ArrayList<byte[]> requests;
    private ArrayList<Boolean> hasRequest;
    private byte[] noRequest;
+
+   Logging logger = new Logging();
 
    public ElevatorBox(int elevatorNum){
        // Set up the noRequest
@@ -48,14 +51,16 @@ public class ElevatorBox {
    }
 
    public synchronized void setRequest(int index, byte[] request){
-       while(!RequestPacket.isEmptyRequest(requests.get(index))){
+       while(!RequestPacket.isEmptyRequest(requests.get(index))) {
            try {
                wait();
            } catch (InterruptedException e) {
                e.printStackTrace();
            }
        }
-        System.out.println("Setting Elevator [" + index + "] to {"+ Arrays.toString(request) + "}");
+
+       //System.out.println("Setting Elevator [" + index + "] to {"+ Arrays.toString(request) + "}");
+       Logging.info("ElevatorBox", ""+index , "Setting Elevator   to "+ Arrays.toString(request) + "}");
        hasRequest.set(index, true);
        requests.set(index, request);
        notifyAll();

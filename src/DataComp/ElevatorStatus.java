@@ -1,6 +1,8 @@
 package DataComp;
 
 import Config.ConfigInfo;
+import ControlComp.Logging;
+
 
 public class ElevatorStatus {
 

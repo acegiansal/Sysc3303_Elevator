@@ -1,5 +1,7 @@
 package FloorComp;
 
+import ControlComp.Logging;
+
 public class Floor {
 
     private int floorNum;
@@ -43,9 +45,11 @@ public class Floor {
         }
         elevatorCars[elevatorID] ^= 1;
         if(elevatorCars[elevatorID] == 0){
-            System.out.println("Elevator " + elevatorID + " has LEFT the floor " + floorNum);
+            //System.out.println("Elevator " + elevatorID + " has LEFT the floor " + floorNum);
+            Logging.info("Floor", ""+ elevatorID, "Elevator has LEFT floor number " + floorNum);
         } else {
-            System.out.println("Elevator " + elevatorID + " has ENTERED the floor " + floorNum);
+            //System.out.println("Elevator " + elevatorID + " has ENTERED the floor " + floorNum);
+            Logging.info("Floor", ""+ elevatorID, "Elevator has ENTERED floor number " + floorNum);
         }
 
         this.floorButton.resetLamp();
