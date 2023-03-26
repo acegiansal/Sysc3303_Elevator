@@ -3,6 +3,7 @@ package ControlComp;
 import Config.ConfigInfo;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
+import Testing.TestingElevator;
 
 import java.io.IOException;
 import java.net.*;
@@ -14,6 +15,8 @@ public class Scheduler implements Runnable{
     private ElevatorBox databox;
     private int numOfElevators;
     private DatagramSocket sendReceiveSocket;
+
+    private boolean stopped = false;
 
 
     public Scheduler(ElevatorBox databox, int elevatorNum){
@@ -39,8 +42,10 @@ public class Scheduler implements Runnable{
             Logging.info2("Scheduler","Scheduler is waiting for something" );
             sendReceiveSocket.receive(receivePacket);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+            if (!stopped) {
+                e.printStackTrace();
+                System.exit(1);
+            }
         }
         return received;
     }
@@ -143,14 +148,16 @@ public class Scheduler implements Runnable{
 
     @Override
     public void run() {
-        while(true){
+        while(!stopped){
             // Receive floor request
             byte[] request = receiveData();
 
             //TODO check if request is valid
 
             RequestPacket req = RequestPacket.translateRequestBytes(request);
+            TestingElevator.setReqPak(req);
             int chosenEl = algorithm(req);
+
             // Put into box and update the status of the chosen elevator
             //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
             Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");
@@ -162,6 +169,10 @@ public class Scheduler implements Runnable{
         
     }
 
+    public void closing(){
+        stopped = true;
+        sendReceiveSocket.close();
+    }
 
     public static void main(String[] args){
         int elNum = 2;

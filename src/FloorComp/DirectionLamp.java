@@ -1,6 +1,7 @@
 package FloorComp;
 
 import ControlComp.Logging;
+import Testing.TestingElevator;
 
 public class DirectionLamp {
     boolean lamp;
@@ -14,6 +15,7 @@ public class DirectionLamp {
         this.lamp = !this.lamp;
         if (this.lamp == true){
             OnorNot = "On";
+            TestingElevator.lampPower(true);
         }
         else {
             OnorNot = "OFF";

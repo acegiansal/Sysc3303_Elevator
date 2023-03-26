@@ -9,7 +9,7 @@ import ElevatorComp.NewElevatorStates.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ElevatorCar {
+public class ElevatorCar implements Runnable{
 
     private ElevatorStatus status;
     private ArrayList<Integer> floorQueue;
@@ -22,6 +22,10 @@ public class ElevatorCar {
 
     private boolean transFaulted;
     private boolean hardFaulted;
+
+    private ElevatorCommunications comms;
+
+    private boolean stopped = false;
 
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
@@ -37,9 +41,12 @@ public class ElevatorCar {
         hardFaulted = false;
 
         // Start comms
-        ElevatorCommunications comms = new ElevatorCommunications(this);
+        comms = new ElevatorCommunications(this);
         new Thread(comms, "El" + elevatorID).start();
+    }
 
+    public ElevatorCar(){
+        //needed a default constructor that doesn't do anything for testing
     }
 
     public synchronized ElevatorStatus getStatus(){
@@ -166,6 +173,18 @@ public class ElevatorCar {
         Logging.info("ElevatorCar", "" + getElevatorID()," has experienced a hard fault!"  );
         ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK,getElevatorID());
         setStatus(status);
+    }
+
+    public void stop(){
+        stopped = true;
+    }
+
+    public void run(){
+        if (!stopped) {
+            for (int i = 0; i < ConfigInfo.NUM_ELEVATORS; i++) {
+                ElevatorCar el = new ElevatorCar(i);
+            }
+        }
     }
 
     public static void main(String[] args){

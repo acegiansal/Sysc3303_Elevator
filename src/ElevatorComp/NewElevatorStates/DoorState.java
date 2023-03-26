@@ -15,8 +15,10 @@ public abstract class DoorState extends ElevatorState{
         try {
             sendSocket = new DatagramSocket();
         } catch (SocketException se) {
-            se.printStackTrace();
-            System.exit(1);
+            if (!false) {
+                se.printStackTrace();
+                System.exit(1);
+            }
         }
     }
 
@@ -62,4 +64,5 @@ public abstract class DoorState extends ElevatorState{
             System.exit(1);
         }
     }
+
 }

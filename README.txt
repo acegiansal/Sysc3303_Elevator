@@ -15,15 +15,15 @@ and effectively simulate an elevator in realtime.
 - ConfigInfo
 This class configures everything for the elevator, this includes the packet sizes, ports and times for the elevator
 
--ElevatorBox
-The ElevatorBox class in this code is responsible for managing elevator statuses and requests. It provides methods for
+-ControlComp.ElevatorControl.ElevatorBox
+The ControlComp.ElevatorControl.ElevatorBox class in this code is responsible for managing elevator statuses and requests. It provides methods for
 getting and setting elevator statuses and requests, and ensures thread safety through synchronized methods.
 
 -ElevatorControl
 The ElevatorControl class is responsible for controlling the behavior of the elevators in the system.
-It creates a Scheduler and ElevatorIntermediate objects for each elevator and listens for status updates from the elevators.
+It creates a Scheduler and DataComp.ElevatorStatus.ElevatorIntermediate objects for each elevator and listens for status updates from the elevators.
 
--ElevatorIntermediate
+-DataComp.ElevatorStatus.ElevatorIntermediate
 Elevator Intermediate is a mediator class that acts as an intermediary between the ElevatorControl and individual elevators.
 It receives updates and requests from the ElevatorControl, and sends requests to the appropriate elevator.
 
@@ -103,7 +103,7 @@ This class sends floor info
 
 
 
-- TestingElevator Class
+- Testing.TestingElevator Class
 This class contains all the unit tests for the class
 
 #Setup Instructions
@@ -115,7 +115,7 @@ This class contains all the unit tests for the class
 
 #Testing
 - Import Project into IDE of choice
-- Select TestingElevator Class and click
+- Select Testing.TestingElevator Class and click
 - watch as all the tests are passed in the console :)
 
 #Known issues
