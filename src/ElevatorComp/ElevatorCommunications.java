@@ -3,11 +3,9 @@ package ElevatorComp;
 import Config.ConfigInfo;
 import DataComp.RequestPacket;
 import DataComp.ElevatorStatus;
-import Testing.TestingElevator;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
 
 public class ElevatorCommunications implements Runnable {
 

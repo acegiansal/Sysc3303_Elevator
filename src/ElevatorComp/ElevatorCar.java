@@ -5,6 +5,7 @@ import ControlComp.Logging;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
 import ElevatorComp.NewElevatorStates.*;
+import Testing.TestingElevator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,6 +116,7 @@ public class ElevatorCar implements Runnable{
         } else if (scenario == 2){
             hardFaulted = true;
         }
+        TestingElevator.setFaulted(this);
     }
 
     public boolean isTransFaulted() {

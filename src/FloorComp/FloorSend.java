@@ -80,6 +80,7 @@ public class FloorSend implements Runnable{
                     //System.out.println( "Floor" + "INPUT DATA INVALID!!");
                     Logging.info2("FloorSend", "Floor" + "INPUT DATA INVALID!!");
                     //System.out.println("INPUT DATA INVALID!!");
+                    TestingElevator.setInvalidInput();
                     break;
                 } else {
                     //Direction is true if 'Up' is selected

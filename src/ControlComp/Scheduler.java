@@ -157,7 +157,7 @@ public class Scheduler implements Runnable{
             RequestPacket req = RequestPacket.translateRequestBytes(request);
             TestingElevator.setReqPak(req);
             int chosenEl = algorithm(req);
-
+            TestingElevator.addElevator(chosenEl);
             // Put into box and update the status of the chosen elevator
             //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
             Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");
