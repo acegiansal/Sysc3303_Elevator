@@ -3,6 +3,7 @@ package ElevatorComp;
 import Config.ConfigInfo;
 import DataComp.RequestPacket;
 import DataComp.ElevatorStatus;
+import Testing.TestingElevator;
 
 import java.io.IOException;
 import java.net.*;
@@ -38,7 +39,6 @@ public class ElevatorCommunications implements Runnable {
             e.printStackTrace();
             System.exit(1);
         }
-
         // Send the datagram packet to the server via the send/receive socket.
         try {
             sendReceiveSocket.send(sendPacket);
@@ -61,6 +61,10 @@ public class ElevatorCommunications implements Runnable {
             System.exit(1);
         }
         return received;
+    }
+
+    public void closing(){
+        sendReceiveSocket.close();
     }
 
     @Override

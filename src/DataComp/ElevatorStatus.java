@@ -62,9 +62,9 @@ public class ElevatorStatus {
     @Override
     public String toString() {
         return "ElevatorStatus{" +
-            "currentFloor=" + currentFloor +
-            ", direction='" + direction + '\'' +
-            ", id=" + id +
-            '}';
+                "currentFloor=" + currentFloor +
+                ", direction='" + direction + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

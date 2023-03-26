@@ -17,6 +17,8 @@ public class FloorReceive implements Runnable{
     private DatagramSocket receiveSocket;
     ArrayList<Floor> floors;
 
+    private boolean stopped = false;
+
 
     public FloorReceive(ArrayList<Floor> floors) {
         this.floors = floors;
@@ -29,7 +31,7 @@ public class FloorReceive implements Runnable{
     }
 
     private void getInfo() {
-        while (true) {
+        while (!stopped) {
             //Receive reply
             byte[] reply = new byte[ConfigInfo.PACKET_SIZE];
             DatagramPacket receivePacket = new DatagramPacket(reply, reply.length);
@@ -40,8 +42,10 @@ public class FloorReceive implements Runnable{
                 receiveSocket.receive(receivePacket);
                 decodePacket(receivePacket);
             } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
+                if (!stopped) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
             }
         }
     }
@@ -59,6 +63,11 @@ public class FloorReceive implements Runnable{
             direction = "idle";
         }
         this.floors.get(floor-1).arrive(direction, elevatorID);
+    }
+
+    public void closing(){
+        receiveSocket.close();
+        stopped = true;
     }
 
     @Override

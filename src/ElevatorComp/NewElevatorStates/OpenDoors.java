@@ -3,6 +3,7 @@ package ElevatorComp.NewElevatorStates;
 import Config.ConfigInfo;
 import ControlComp.Logging;
 import ElevatorComp.ElevatorCar;
+import Testing.TestingElevator;
 
 public class OpenDoors extends DoorState{
     public OpenDoors(ElevatorCar elevator) {
@@ -15,6 +16,7 @@ public class OpenDoors extends DoorState{
         //System.out.println("Elevator " + elevator.getElevatorID() + " Doors opening for " + (ConfigInfo.DOOR_OPEN_TIME/1000) + " seconds on floor " + elevator.getCurrentFloor());
         Logging.info("OpenDoors", ""+ elevator.getElevatorID()," Doors opening for " + (ConfigInfo.DOOR_OPEN_TIME/1000) + " seconds on floor " + elevator.getCurrentFloor() );
         this.setTimer(ConfigInfo.DOOR_OPEN_TIME);
+        TestingElevator.openFlag(true);
     }
     @Override
     public void timeout(){

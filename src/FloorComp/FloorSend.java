@@ -11,6 +11,8 @@ import java.util.Scanner;
 import Config.*;
 import ControlComp.Logging;
 import DataComp.RequestPacket;
+import Testing.TestingElevator;
+
 
 public class FloorSend implements Runnable{
 
@@ -22,11 +24,15 @@ public class FloorSend implements Runnable{
     private DatagramSocket sendSocket;
     private int timestamp;
 
+    private FloorReceive floorReceive;
+
     public enum floorType {
         TOP,
         BOT,
         MID
     }
+
+    private boolean stopped = false;
 
     public FloorSend(int numFloors, int schedulerPort, int numElevators){
         MAX_FLOORS = numFloors;
@@ -51,7 +57,7 @@ public class FloorSend implements Runnable{
             }
             floors.add(i, new Floor((i+1), type, numElevators));
         }
-        FloorReceive floorReceive = new FloorReceive(this.floors);
+        floorReceive = new FloorReceive(this.floors);
         Thread floorReceiveThread = new Thread(floorReceive);
         floorReceiveThread.start();
     }
@@ -63,10 +69,12 @@ public class FloorSend implements Runnable{
     private void readFromFile(File file){
         try {
             Scanner myReader = new Scanner(file);
-            while (myReader.hasNextLine()) {
+            while (myReader.hasNextLine() && !stopped) {
                 String data = myReader.nextLine();
+                TestingElevator.setFileInput(data);
                 //Split information (divided by spaces)
                 String[] splitData = data.split(" ");
+                TestingElevator.setInputParse(splitData);
                 //Data must be 4 items long
                 if (splitData.length != 5){
                     //System.out.println( "Floor" + "INPUT DATA INVALID!!");
@@ -159,10 +167,18 @@ public class FloorSend implements Runnable{
         }
     }
 
+    public void stop(){
+        stopped = true;
+        sendSocket.close();
+        floorReceive.closing();
+    }
+
     public void run(){
         //Read information from selected file
-        File file = new File("src/elevatorFile.txt");
-        readFromFile(file);
+        if (!stopped) {
+            File file = new File("src/elevatorFile.txt");
+            readFromFile(file);
+        }
     }
 
     public static void main(String[] args){

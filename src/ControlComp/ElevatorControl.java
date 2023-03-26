@@ -3,18 +3,23 @@ package ControlComp;
 import Config.ConfigInfo;
 
 import java.io.IOException;
-import java.io.ObjectInputFilter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
-public class ElevatorControl {
+import static java.lang.System.exit;
+
+public class ElevatorControl implements Runnable{
 
     private ArrayList<ElevatorIntermediate> mediators;
     private ElevatorBox databox;
     private Scheduler scheduler;
     private DatagramSocket receiveSocket;
+
+    private boolean stopped = false;
 
     Logging logger = new Logging();
 
@@ -31,7 +36,7 @@ public class ElevatorControl {
             receiveSocket = new DatagramSocket(ConfigInfo.CONTROL_PORT);
         } catch (SocketException se) {
             se.printStackTrace();
-            System.exit(1);
+            exit(1);
         }
 
         // Start scheduler
@@ -47,9 +52,12 @@ public class ElevatorControl {
             Logging.info2("ElevatorControl", "Elevator Control is Waiting for something from the elevators...");
             //System.out.println("Elevator Control is Waiting for something from the elevators..."); // so we know we're waiting
             receiveSocket.receive(receivePacket);
+
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+            if (!stopped) {
+                e.printStackTrace();
+                exit(1);
+            }
         }
         //TODO check if packet is valid status upadte
         //Get ID of the elevator then delegates to respective mediator
@@ -62,8 +70,23 @@ public class ElevatorControl {
     }
 
     public void controlElevator(){
-        while(true){
+        while(!stopped){
             handleReceiveStatus();
+        }
+    }
+
+    public void stop(){
+        stopped = true;
+        receiveSocket.close();
+        for (int i = 0; i < mediators.size(); i++){
+            mediators.get(i).closing();
+        }
+        scheduler.closing();
+    }
+
+    public void run(){
+        if (!stopped) {
+            this.controlElevator();
         }
     }
 

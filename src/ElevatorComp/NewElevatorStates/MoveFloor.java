@@ -5,6 +5,7 @@ import ControlComp.Logging;
 import DataComp.ElevatorStatus;
 import ElevatorComp.ArrivalSensor;
 import ElevatorComp.ElevatorCar;
+import Testing.TestingElevator;
 
 public class MoveFloor extends ShaftState{
 
@@ -19,6 +20,7 @@ public class MoveFloor extends ShaftState{
     public void entry(){
         //System.out.println("Elevator " + elevator.getElevatorID() + " motor starting!");
         Logging.info("MoveFloor", ""+ elevator.getElevatorID(), "Motor Starting!");
+        TestingElevator.movingFlag(true);
 
         // Update currentFloor
         if(elevator.getFloorQueue().get(0) > elevator.getCurrentFloor()){
