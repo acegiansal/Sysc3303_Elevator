@@ -4,7 +4,7 @@ import ControlComp.Logging;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
 import ElevatorComp.ElevatorCar;
-import Testing.TestingElevatorFunctional;
+import Testing.TestingElevator;
 
 public class Idle extends ShaftState {
     public Idle(ElevatorCar elevator) {
@@ -16,7 +16,7 @@ public class Idle extends ShaftState {
         //System.out.println("Elevator " + elevator.getElevatorID() + " is now idle");
         Logging.info("Idle", ""+ elevator.getElevatorID(), "Elevator is now idle");
         elevator.setDirection(ElevatorStatus.IDLE);
-        TestingElevatorFunctional.idleFlag(true);
+        TestingElevator.idleFlag(true);
         // update status
         this.updateStatus();
     }
@@ -37,7 +37,7 @@ public class Idle extends ShaftState {
     public void requestReceived(RequestPacket request){
         super.requestReceived(request);
         this.updateStatus();
-        TestingElevatorFunctional.checkFloorFlag(true);
+        TestingElevator.checkFloorFlag(true);
         this.shouldOpen();
     }
 

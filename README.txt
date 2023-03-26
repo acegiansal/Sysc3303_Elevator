@@ -103,7 +103,7 @@ This class sends floor info
 
 
 
-- Testing.TestingElevatorFunctional Class
+- Testing.TestingElevator Class
 This class contains all the unit tests for the class
 
 #Setup Instructions
@@ -115,7 +115,7 @@ This class contains all the unit tests for the class
 
 #Testing
 - Import Project into IDE of choice
-- Select Testing.TestingElevatorFunctional Class and click
+- Select Testing.TestingElevator Class and click
 - watch as all the tests are passed in the console :)
 
 #Known issues

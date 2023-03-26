@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Config.*;
 import ControlComp.Logging;
 import DataComp.RequestPacket;
-import Testing.TestingElevatorFunctional;
+import Testing.TestingElevator;
 
 
 public class FloorSend implements Runnable{
@@ -71,15 +71,16 @@ public class FloorSend implements Runnable{
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine() && !stopped) {
                 String data = myReader.nextLine();
-                TestingElevatorFunctional.setFileInput(data);
+                TestingElevator.setFileInput(data);
                 //Split information (divided by spaces)
                 String[] splitData = data.split(" ");
-                TestingElevatorFunctional.setInputParse(splitData);
+                TestingElevator.setInputParse(splitData);
                 //Data must be 4 items long
                 if (splitData.length != 5){
                     //System.out.println( "Floor" + "INPUT DATA INVALID!!");
                     Logging.info2("FloorSend", "Floor" + "INPUT DATA INVALID!!");
                     //System.out.println("INPUT DATA INVALID!!");
+                    TestingElevator.setInvalidInput();
                     break;
                 } else {
                     //Direction is true if 'Up' is selected

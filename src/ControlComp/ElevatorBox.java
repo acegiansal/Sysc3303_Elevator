@@ -2,7 +2,7 @@ package ControlComp;
 import DataComp.RequestPacket;
 import DataComp.ElevatorStatus;
 import Config.ConfigInfo;
-import Testing.TestingElevatorFunctional;
+import Testing.TestingElevator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +64,7 @@ public class ElevatorBox {
         Logging.info("ElevatorBox", ""+index , "Setting Elevator   to "+ Arrays.toString(request) + "}");
         hasRequest.set(index, true);
         requests.set(index, request);
-        TestingElevatorFunctional.seteleData(request);
+        TestingElevator.seteleData(request);
         notifyAll();
     }
 
