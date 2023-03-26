@@ -3,7 +3,7 @@ package ControlComp;
 import Config.ConfigInfo;
 import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
-import Testing.TestingElevator;
+import Testing.TestingElevatorFunctional;
 
 import java.io.IOException;
 import java.net.*;
@@ -155,9 +155,9 @@ public class Scheduler implements Runnable{
             //TODO check if request is valid
 
             RequestPacket req = RequestPacket.translateRequestBytes(request);
-            TestingElevator.setReqPak(req);
+            TestingElevatorFunctional.setReqPak(req);
             int chosenEl = algorithm(req);
-
+            TestingElevatorFunctional.addElevator(chosenEl);
             // Put into box and update the status of the chosen elevator
             //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
             Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");

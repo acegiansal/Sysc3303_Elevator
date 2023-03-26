@@ -52,7 +52,6 @@ public class ElevatorControl implements Runnable{
             Logging.info2("ElevatorControl", "Elevator Control is Waiting for something from the elevators...");
             //System.out.println("Elevator Control is Waiting for something from the elevators..."); // so we know we're waiting
             receiveSocket.receive(receivePacket);
-
         } catch (IOException e) {
             if (!stopped) {
                 e.printStackTrace();
@@ -63,6 +62,7 @@ public class ElevatorControl implements Runnable{
         //Get ID of the elevator then delegates to respective mediator
         int mediatorTarget = data[0];
         ElevatorIntermediate mediator = mediators.get(mediatorTarget);
+
         String medString = "Mediator " + mediatorTarget;
         mediator.setRunConfig(receivePacket.getPort(), data);
         Thread delegation = new Thread(mediator, medString);

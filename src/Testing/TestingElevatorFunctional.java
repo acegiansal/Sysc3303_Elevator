@@ -9,18 +9,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class TestingElevator {
+public class TestingElevatorFunctional {
 
     private static boolean idle = false, moving = false, checkFloor = false,
             open = false, close = false, lamp = false;
 
-    private static int elevator1 = 1, elevator2 = 0, e1Floor, e2Floor;
-
-    private static String direction, fileInput;
+    private static String fileInput;
 
     private static String[] inputParse;
 
@@ -31,6 +29,8 @@ public class TestingElevator {
     private FloorSend fs;
 
     private static RequestPacket rp;
+
+    private static ArrayList<Integer> elevatorList = new ArrayList();
 
     public static void checkFloorFlag(boolean test) {
         checkFloor = test;
@@ -50,26 +50,6 @@ public class TestingElevator {
 
     public static void closeFlag(boolean test) {
         close = test;
-    }
-
-    public static void setE1(boolean test) {
-        if (test) {
-            elevator1 = 0;
-        }
-    }
-
-    public static void setE2(boolean test) {
-        if (test) {
-            elevator2 = 1;
-        }
-    }
-
-    public static void e1Floor(int floor) {
-        e1Floor = floor;
-    }
-
-    public static void e2Floor(int floor) {
-        e2Floor = floor;
     }
 
     public static void lampPower(boolean test) {
@@ -93,6 +73,14 @@ public class TestingElevator {
         eleData = data;
     }
 
+    public static void addElevator(int ec){
+        elevatorList.add(ec);
+    }
+
+    /**
+     * Creates the necessary objects to run the program, then starts them as threads
+     * @throws Exception
+     */
     @BeforeEach
     public void setUp() throws Exception {
         eleCon = new ElevatorControl(ConfigInfo.NUM_ELEVATORS);
@@ -106,6 +94,10 @@ public class TestingElevator {
         fsT.start();
     }
 
+    /**
+     * Stops the threads by using a conditional flag and closes all sockets
+     * @throws Exception
+     */
     @AfterEach
     public void close() throws Exception{
         eleCon.stop();
@@ -113,6 +105,11 @@ public class TestingElevator {
         fs.stop();
     }
 
+    /**
+     * Testing for a successful read from the provided file
+     * Values used for testing: {14:25:15.0 1 Up 3 1}, {14:30:15.0 5 Down 2 0}
+     * @throws InterruptedException
+     */
     @Test
     public void testFloorReadFile() throws InterruptedException {
         String tester = "14:30:15.0 5 Down 2 0";
@@ -122,6 +119,11 @@ public class TestingElevator {
         assertEquals(tester2, inputParse);
     }
 
+    /**
+     * Testing for a successful send request from the floor
+     * Values used for testing: {14:25:15.0 1 Up 3 1}, {14:30:15.0 5 Down 2 0}
+     * @throws InterruptedException
+     */
     @Test
     public void testFloorSend() throws InterruptedException{
         RequestPacket requestTest = new RequestPacket(Integer.parseInt("5"), Integer.parseInt("2"), "d", Integer.parseInt("0"), "14:30:15.0");
@@ -133,6 +135,11 @@ public class TestingElevator {
         assertEquals(requestTest.getScenario(), rp.getScenario());
     }
 
+    /**
+     * Testing for a successful receive request from the elevator
+     * Values used for testing: {14:25:15.0 1 Up 3 1}, {14:30:15.0 5 Down 2 0}
+     * @throws InterruptedException
+     */
     @Test
     public void testElevatorReceive() throws InterruptedException{
         Thread.sleep(5000);
@@ -145,6 +152,11 @@ public class TestingElevator {
 
     }
 
+    /**
+     * Testing for if the hierarchical state machine completes all states after sucessfully sending an elevator
+     * Values used for testing: {14:25:15.0 1 Up 3 1}, {14:30:15.0 5 Down 2 0}
+     * @throws InterruptedException
+     */
     @Test
     public void checkStates() throws InterruptedException{
         Thread.sleep(20000);
@@ -156,6 +168,31 @@ public class TestingElevator {
         assertEquals(true, lamp);
     }
 
+    /**
+     * Testing for if more than 1 elevator is used concurrently
+     * Values used for testing: {14:25:15.0 1 Up 3 1}, {14:30:15.0 5 Down 2 0}
+     * @throws InterruptedException
+     */
+    @Test
+    public void multipleElevator() throws InterruptedException{
+        Thread.sleep(20000);
+        assertNotEquals(elevatorList.get(0), elevatorList.get(1));
+    }
+
+    /**
+     * Testing for if the same elevator is used since it is closer
+     * Values used for testing: {14:05:15.0 3 Up 6 2}, {14:15:15.0 2 Down 1 0}, {14:25:15.0 1 Up 3 1},
+     * {14:30:15.0 5 Down 2 0}, {14:30:15.0 3 Down 2 0}
+     * @throws InterruptedException
+     */
+    @Test
+    public void sameElevator() throws InterruptedException{
+        Thread.sleep(25000);
+        for (int i = 0; i < elevatorList.size(); i++){
+            System.out.println("The elevator IDs are: "+elevatorList.get(i));
+        }
+        assertEquals(elevatorList.get(2), elevatorList.get(0));
+    }
 
 }
 //    @Test
