@@ -90,7 +90,7 @@ public class ElevatorCommunications implements Runnable {
 
             // Pause before checking again
             try {
-                Thread.sleep(1000);
+                Thread.sleep(ConfigInfo.ELEVATOR_UPDATE_TIME);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
