@@ -71,12 +71,17 @@ public class ElevatorCommunications implements Runnable {
         while(true){
             // send packet
             ElevatorStatus status = elevator.getStatus();
-            byte[] transformed = ElevatorStatus.translateToBytes(status);
-            if(!elevator.isStatusUpdated()){
-                transformed[3] = 1;
-            }
+
+            byte statusUpdated = !elevator.isStatusUpdated() ? (byte)1 : (byte)0;
+
+            byte[] transformed = ElevatorStatus.translateToBytes(status, statusUpdated);
             sendData(transformed);
             elevator.setStatusUpdated(false);
+
+            // If elevator stuck, stop sending communications
+            if(status.getDirection().equals(ElevatorStatus.STUCK)){
+                break;
+            }
 
             //receive request
             byte[] request = receiveData();

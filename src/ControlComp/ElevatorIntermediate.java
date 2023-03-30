@@ -74,10 +74,15 @@ public class ElevatorIntermediate implements Runnable {
             Logging.info2("ElevatorIntermediate", "" + newStatus);
             //System.out.println(newStatus);
         }
-        // Get request
-        byte[] scheduleRequest = databox.getRequest(elevatorID);
-//        System.out.println("Sending to elevator: " + Arrays.toString(scheduleRequest));
-        // Send request
-        sendData(scheduleRequest);
+
+        if(newStatus.getDirection().equals(ElevatorStatus.STUCK)){
+            // POSSIBLE: if elevator stuck, set new requests with floor info and send to scheduler
+            Logging.info2("ElevatorIntermediate", newStatus.getId() + " got hard fault! Stop receiving");
+        } else {
+            // Get request
+            byte[] scheduleRequest = databox.getRequest(elevatorID);
+            // Send request
+            sendData(scheduleRequest);
+        }
     }
 }
