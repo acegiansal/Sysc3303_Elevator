@@ -1,6 +1,8 @@
 package ControlComp;
 
 import Config.ConfigInfo;
+import DataComp.ElevatorStatus;
+import Gui.ElevatorSubscriber;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,6 +17,7 @@ import static java.lang.System.exit;
 public class ElevatorControl implements Runnable{
 
     private ArrayList<ElevatorIntermediate> mediators;
+    private ArrayList<ElevatorSubscriber> subscribers;
     private ElevatorBox databox;
     private Scheduler scheduler;
     private DatagramSocket receiveSocket;
@@ -24,6 +27,7 @@ public class ElevatorControl implements Runnable{
     Logging logger = new Logging();
 
     public ElevatorControl(int elevatorNum){
+        subscribers = new ArrayList<>();
         mediators = new ArrayList<>();
         databox = new ElevatorBox(elevatorNum);
         scheduler = new Scheduler(databox, elevatorNum);
@@ -41,6 +45,20 @@ public class ElevatorControl implements Runnable{
 
         // Start scheduler
         new Thread(scheduler, "Scheduler").start();
+    }
+
+    public void notifyViews(ElevatorStatus status){
+        for(ElevatorSubscriber sub: subscribers){
+            sub.handleUpdate(status);
+        }
+    }
+
+    public void addView(ElevatorSubscriber sub){
+        this.subscribers.add(sub);
+    }
+
+    public void removeView(ElevatorSubscriber sub){
+        this.subscribers.remove(sub);
     }
 
     private void handleReceiveStatus(){

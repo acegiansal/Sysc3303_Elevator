@@ -1,12 +1,10 @@
-package Gui;
+package Gui.NumberPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import static Gui.NumberFrame.segments.*;
+import static Gui.NumberPanel.NumberFrame.segments.*;
 
 public class NumberFrame extends JPanel {
 
