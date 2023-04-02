@@ -1,6 +1,7 @@
 package ElevatorComp.NewElevatorStates;
 
 import Config.ConfigInfo;
+import DataComp.ElevatorStatus;
 import ElevatorComp.ElevatorCar;
 import ControlComp.Logging;
 
@@ -17,6 +18,8 @@ public class BrokenDoors extends DoorState{
     public void entry(){
         //System.out.println(elevator.getElevatorID() + " doors are stuck open! Trying to close...");
         Logging.info("BrokenDoors", ""+elevator.getElevatorID(), " doors are stuck open! Trying to close...");
+        elevator.setDoorStatus(ElevatorStatus.DOOR_STUCK);
+        updateStatus();
         this.setTimer(ConfigInfo.DOOR_CHECK_TIME);
     }
 

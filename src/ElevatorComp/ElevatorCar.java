@@ -18,6 +18,7 @@ public class ElevatorCar implements Runnable{
     private ElevatorState currentState;
     private int scenario;
     private int currentFloor;
+    private int currentDoorStatus;
     private String currentDirection;
     private boolean statusUpdated;
 
@@ -36,6 +37,7 @@ public class ElevatorCar implements Runnable{
         this.scenario = 0;
         this.currentFloor = 1;
         this.currentDirection = ElevatorStatus.IDLE;
+        this.currentDoorStatus = 0;
         this.statusUpdated = false;
 
         transFaulted = false;
@@ -58,6 +60,16 @@ public class ElevatorCar implements Runnable{
         status = newStatus;
         this.statusUpdated = true;
     }
+
+    public synchronized int getDoorStatus(){
+        return currentDoorStatus;
+    }
+
+    public synchronized void setDoorStatus(int newStatus){
+        currentDoorStatus = newStatus;
+        this.statusUpdated = true;
+    }
+
 
     public synchronized ArrayList<Integer> getFloorQueue(){
         while(queueIsEmpty()){
@@ -173,7 +185,7 @@ public class ElevatorCar implements Runnable{
         // Hard fault elevator
         //System.out.println("Elevator " + getElevatorID() + " has experienced a hard fault!");
         Logging.info("ElevatorCar", "" + getElevatorID()," has experienced a hard fault!"  );
-        ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK,getElevatorID());
+        ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK, ElevatorStatus.CLOSED, getElevatorID());
         setStatus(status);
     }
 

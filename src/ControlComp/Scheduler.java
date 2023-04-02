@@ -162,7 +162,7 @@ public class Scheduler implements Runnable{
             //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
             Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");
             ElevatorStatus prevStatus = databox.getStatus(chosenEl);
-            ElevatorStatus newStatus = new ElevatorStatus(prevStatus.getCurrentFloor(), req.getDirection(), prevStatus.getId());
+            ElevatorStatus newStatus = new ElevatorStatus(prevStatus.getCurrentFloor(), req.getDirection(), prevStatus.getDoorStatus(), prevStatus.getId());
             databox.setStatus(chosenEl, newStatus);
             databox.setRequest(chosenEl, request);
         }

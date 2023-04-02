@@ -21,18 +21,22 @@ public class ElevatorStatus {
     public static final String STUCK = "s";
     public static final int OPENING = 1;
     public static final int CLOSING = 2;
+    public static final int CLOSED = 0;
+    public static final int DOOR_STUCK = 3;
 
-    public ElevatorStatus(int currentFloor, String direction, int id) {
+    public ElevatorStatus(int currentFloor, String direction, int doorStatus, int id) {
         this.currentFloor = currentFloor;
         this.direction = direction;
         this.id = id;
+        this.doorStatus = doorStatus;
         floors = new ArrayList<>();
     }
 
-    public ElevatorStatus(int currentFloor, String direction, int id, ArrayList<Integer> floors) {
+    public ElevatorStatus(int currentFloor, String direction, int id, int doorStatus, ArrayList<Integer> floors) {
         this.currentFloor = currentFloor;
         this.direction = direction;
         this.id = id;
+        this.doorStatus = doorStatus;
         this.floors = new ArrayList<>(floors);
     }
 
@@ -91,6 +95,7 @@ public class ElevatorStatus {
     public static ElevatorStatus translateStatusBytes(byte[] data){
         int currentFloor = data[1];
         String direction = new String(data, 2, 1);
+        int doorStatus = data[4];
         ArrayList<Integer> floors = new ArrayList<>();
         for(int i=5; i<data.length; i++){
             if(data[i] == 0){
@@ -100,15 +105,16 @@ public class ElevatorStatus {
             }
         }
 
-        return new ElevatorStatus(currentFloor, direction, data[0], floors);
+        return new ElevatorStatus(currentFloor, direction, data[0], doorStatus, floors);
     }
 
     @Override
     public String toString() {
         return "ElevatorStatus{" +
-            "currentFloor=" + currentFloor +
+            "id=" + id +
+            ", currentFloor=" + currentFloor +
             ", direction='" + direction + '\'' +
-            ", id=" + id +
+            ", doorStatus=" + doorStatus +
             ", floors=" + floors +
             '}';
     }
