@@ -12,6 +12,7 @@ public class MultiNumberPanel extends JPanel {
         this.maxDigits = maxDigits;
 
         this.setLayout(new GridLayout(1, maxDigits));
+        this.setBackground(Color.black);
 
         numbers = new NumberFrame[maxDigits];
 
