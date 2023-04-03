@@ -11,8 +11,8 @@ public class NumberFrame extends JPanel {
     private static final int HEIGHT = 5;
     private static final int WIDTH = 3;
 
-    private static final Color OFF = Color.GRAY;
-    private static final Color ON = Color.ORANGE;
+    private static final Color OFF = new Color(30, 30, 44);
+    private static final Color ON = new Color(242, 159, 103);
 
     private static final segments[] ZERO = {T, TL, TR, BL, BR, B};
     private static final segments[] ONE = {TR, BR};
@@ -38,7 +38,6 @@ public class NumberFrame extends JPanel {
     public NumberFrame(){
 
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        this.setBackground(Color.BLACK);
 
         segmentMap = new HashMap<>();
         // Add all segments

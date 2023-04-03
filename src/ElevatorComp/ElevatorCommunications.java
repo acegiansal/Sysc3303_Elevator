@@ -6,6 +6,7 @@ import DataComp.ElevatorStatus;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 
 public class ElevatorCommunications implements Runnable {
 
@@ -75,6 +76,7 @@ public class ElevatorCommunications implements Runnable {
             byte statusUpdated = !elevator.isStatusUpdated() ? (byte)1 : (byte)0;
 
             byte[] transformed = ElevatorStatus.translateToBytes(status, statusUpdated);
+//            System.out.println("\n\nSending " + Arrays.toString(transformed) + "\nwhen status: " + status + "\n\n");
             sendData(transformed);
             elevator.setStatusUpdated(false);
 

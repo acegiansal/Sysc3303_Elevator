@@ -1,5 +1,7 @@
 package Gui.NumberPanel;
 
+import Gui.AppFrame;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,12 +14,12 @@ public class MultiNumberPanel extends JPanel {
         this.maxDigits = maxDigits;
 
         this.setLayout(new GridLayout(1, maxDigits));
-        this.setBackground(Color.black);
 
         numbers = new NumberFrame[maxDigits];
 
         for(int i = 0; i<maxDigits; i++){
             numbers[i] = new NumberFrame();
+            numbers[i].setBackground(AppFrame.PRIMARY);
             this.add(numbers[i]);
         }
     }

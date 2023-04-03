@@ -24,6 +24,7 @@ public class CloseDoors extends DoorState{
 
     @Override
     public void timeout(){
+        System.out.println("Closed doors timed out!");
 
         // State that doors are closed
         elevator.setDoorStatus(ElevatorStatus.CLOSED);

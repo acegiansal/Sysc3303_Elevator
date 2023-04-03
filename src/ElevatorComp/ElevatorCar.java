@@ -75,7 +75,7 @@ public class ElevatorCar implements Runnable{
         while(queueIsEmpty()){
             try {
                 //System.out.println("Elevator " + elevatorID + " is waiting for command in state " + currentState);
-                Logging.info("ElevatorCar", ""+ elevatorID, "is waiting for command in" + currentState);
+                Logging.info("ElevatorCar", ""+ elevatorID, "is waiting for command in " + currentState);
 
                 wait();
             } catch (InterruptedException e) {

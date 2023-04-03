@@ -32,7 +32,7 @@ public class ElevatorStatus {
         floors = new ArrayList<>();
     }
 
-    public ElevatorStatus(int currentFloor, String direction, int id, int doorStatus, ArrayList<Integer> floors) {
+    public ElevatorStatus(int currentFloor, String direction, int doorStatus, int id, ArrayList<Integer> floors) {
         this.currentFloor = currentFloor;
         this.direction = direction;
         this.id = id;
@@ -92,6 +92,8 @@ public class ElevatorStatus {
         return translated;
     }
 
+
+
     public static ElevatorStatus translateStatusBytes(byte[] data){
         int currentFloor = data[1];
         String direction = new String(data, 2, 1);
@@ -105,7 +107,7 @@ public class ElevatorStatus {
             }
         }
 
-        return new ElevatorStatus(currentFloor, direction, data[0], doorStatus, floors);
+        return new ElevatorStatus(currentFloor, direction, doorStatus, data[0], floors);
     }
 
     public static boolean isValidStatus(byte[] data){

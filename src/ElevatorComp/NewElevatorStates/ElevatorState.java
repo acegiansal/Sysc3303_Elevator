@@ -5,6 +5,8 @@ import DataComp.ElevatorStatus;
 import DataComp.RequestPacket;
 import ElevatorComp.ElevatorCar;
 
+import java.util.ArrayList;
+
 public abstract class ElevatorState {
 
     protected ElevatorCar elevator;
@@ -51,8 +53,14 @@ public abstract class ElevatorState {
     }
 
     protected void updateStatus(){
-        ElevatorStatus status = new ElevatorStatus(elevator.getCurrentFloor(), elevator.getDirection(), elevator.getDoorStatus(), elevator.getStatus().getId());
-        //System.out.println("Elevator " + elevator.getElevatorID() + " Setting status to " + status);
+        ElevatorStatus status;
+        if(elevator.queueIsEmpty()){
+            status = new ElevatorStatus(elevator.getCurrentFloor(), elevator.getDirection(), elevator.getDoorStatus(), elevator.getStatus().getId());
+        } else {
+            ArrayList<Integer> floorCopy = new ArrayList<>(elevator.getFloorQueue());
+            status = new ElevatorStatus(elevator.getCurrentFloor(), elevator.getDirection(), elevator.getDoorStatus(), elevator.getStatus().getId(), floorCopy);
+            //System.out.println("Elevator " + elevator.getElevatorID() + " Setting status to " + status);
+        }
         Logging.info("ElevatorState","" + elevator.getElevatorID()," Setting status to " + status);
         elevator.setStatus(status);
     }

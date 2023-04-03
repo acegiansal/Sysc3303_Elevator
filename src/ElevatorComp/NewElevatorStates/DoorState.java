@@ -34,7 +34,7 @@ public abstract class DoorState extends ElevatorState{
     @Override
     public void exit() {
         sendSocket.close();
-        this.killTimer();
+//        this.killTimer();
     }
 
     @Override

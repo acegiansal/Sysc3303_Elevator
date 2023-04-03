@@ -2,6 +2,7 @@ package ControlComp;
 
 import Config.ConfigInfo;
 import DataComp.ElevatorStatus;
+import Gui.AppFrame;
 import Gui.ElevatorSubscriber;
 
 import java.io.IOException;
@@ -42,6 +43,11 @@ public class ElevatorControl implements Runnable{
             se.printStackTrace();
             exit(1);
         }
+
+        // Start GUI
+        AppFrame frame = new AppFrame();
+        this.addView(frame);
+        frame.startTimer();
 
         // Start scheduler
         new Thread(scheduler, "Scheduler").start();
