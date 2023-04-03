@@ -108,6 +108,15 @@ public class ElevatorStatus {
         return new ElevatorStatus(currentFloor, direction, data[0], doorStatus, floors);
     }
 
+    public static boolean isValidStatus(byte[] data){
+        if(data[1] == 0){
+            return false;
+        }
+
+        String direction = new String(data, 2, 1);
+        return direction.equals(UP) || direction.equals(DOWN) || direction.equals(IDLE) || direction.equals(STUCK);
+    }
+
     @Override
     public String toString() {
         return "ElevatorStatus{" +

@@ -17,11 +17,13 @@ public class Scheduler implements Runnable{
     private DatagramSocket sendReceiveSocket;
 
     private boolean stopped = false;
+    private int maxFloor;
 
 
-    public Scheduler(ElevatorBox databox, int elevatorNum){
+    public Scheduler(ElevatorBox databox, int elevatorNum, int maxFloor){
         this.numOfElevators = elevatorNum;
         this.databox = databox;
+        this.maxFloor = maxFloor;
 
         try {
             sendReceiveSocket = new DatagramSocket(ConfigInfo.SCHEDULER_PORT);
@@ -152,19 +154,21 @@ public class Scheduler implements Runnable{
             // Receive floor request
             byte[] request = receiveData();
 
-            //TODO check if request is valid
-
-            RequestPacket req = RequestPacket.translateRequestBytes(request);
-            TestingElevator.setReqPak(req);
-            int chosenEl = algorithm(req);
-            TestingElevator.addElevator(chosenEl);
-            // Put into box and update the status of the chosen elevator
-            //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
-            Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");
-            ElevatorStatus prevStatus = databox.getStatus(chosenEl);
-            ElevatorStatus newStatus = new ElevatorStatus(prevStatus.getCurrentFloor(), req.getDirection(), prevStatus.getDoorStatus(), prevStatus.getId());
-            databox.setStatus(chosenEl, newStatus);
-            databox.setRequest(chosenEl, request);
+            if(RequestPacket.isValidRequest(request, maxFloor)){
+                RequestPacket req = RequestPacket.translateRequestBytes(request);
+                TestingElevator.setReqPak(req);
+                int chosenEl = algorithm(req);
+                TestingElevator.addElevator(chosenEl);
+                // Put into box and update the status of the chosen elevator
+                //System.out.println("Putting {" + Arrays.toString(request) + "} into elevator: [" + chosenEl + "]");
+                Logging.info("Scheduler",""+ chosenEl, "Putting " + Arrays.toString(request) + " into elevator");
+                ElevatorStatus prevStatus = databox.getStatus(chosenEl);
+                ElevatorStatus newStatus = new ElevatorStatus(prevStatus.getCurrentFloor(), req.getDirection(), prevStatus.getId());
+                databox.setStatus(chosenEl, newStatus);
+                databox.setRequest(chosenEl, request);
+            } else {
+                Logging.info2("Scheduler","Received invalid request! Dropping request" );
+            }
         }
         
     }
@@ -174,13 +178,13 @@ public class Scheduler implements Runnable{
         sendReceiveSocket.close();
     }
 
-    public static void main(String[] args){
-        int elNum = 2;
-        Scheduler test = new Scheduler(new ElevatorBox(elNum), elNum);
-        RequestPacket testPacket = new RequestPacket(1, 3,"u", 0, "10:00");
-
-        //System.out.println(test.algorithm(testPacket));
-        Logging.info2("Scheduler","" + test.algorithm(testPacket));
-    }
+//    public static void main(String[] args){
+//        int elNum = 2;
+//        Scheduler test = new Scheduler(new ElevatorBox(elNum), elNum);
+//        RequestPacket testPacket = new RequestPacket(1, 3,"u", 0, "10:00");
+//
+//        //System.out.println(test.algorithm(testPacket));
+//        Logging.info2("Scheduler","" + test.algorithm(testPacket));
+//    }
 
 }

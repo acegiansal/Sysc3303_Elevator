@@ -122,7 +122,16 @@ public class FloorSend implements Runnable{
     private void prepareSend(RequestPacket request) {
 
         byte[] toSend = RequestPacket.translateToBytes(request);
-        Floor selectedFloor = floors.get(request.getStartFloor());
+
+        Floor selectedFloor;
+
+        // Sending an invalid request!
+        if(request.getScenario() == 3){
+            selectedFloor = floors.get(1);
+        } else {
+            selectedFloor = floors.get(request.getStartFloor());
+        }
+
         // Push floor button
         if(selectedFloor.send(request.getDirection())){
             //System.out.println("Sending request " + request);

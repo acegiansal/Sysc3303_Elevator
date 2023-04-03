@@ -94,7 +94,7 @@ public class TestingElevator {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        eleCon = new ElevatorControl(ConfigInfo.NUM_ELEVATORS);
+        eleCon = new ElevatorControl(ConfigInfo.NUM_ELEVATORS, ConfigInfo.NUM_FLOORS);
         ecar = new ElevatorCar();
         fs = new FloorSend(ConfigInfo.NUM_FLOORS, ConfigInfo.SCHEDULER_PORT, ConfigInfo.NUM_ELEVATORS);
         Thread eleConT = new Thread(eleCon);

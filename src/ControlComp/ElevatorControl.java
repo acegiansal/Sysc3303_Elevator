@@ -26,11 +26,11 @@ public class ElevatorControl implements Runnable{
 
     Logging logger = new Logging();
 
-    public ElevatorControl(int elevatorNum){
+    public ElevatorControl(int elevatorNum, int maxFloor){
         subscribers = new ArrayList<>();
         mediators = new ArrayList<>();
         databox = new ElevatorBox(elevatorNum);
-        scheduler = new Scheduler(databox, elevatorNum);
+        scheduler = new Scheduler(databox, elevatorNum, maxFloor);
 
         for(int i = 0; i<elevatorNum; i++){
             mediators.add(i, new ElevatorIntermediate(this, databox, i));
@@ -67,7 +67,7 @@ public class ElevatorControl implements Runnable{
         DatagramPacket receivePacket = new DatagramPacket(data, data.length);
         // Block until a datagram packet is received from receiveSocket.
         try {
-            Logging.info2("ElevatorControl", "Elevator Control is Waiting for something from the elevators...");
+//            Logging.info2("ElevatorControl", "Elevator Control is Waiting for something from the elevators...");
             //System.out.println("Elevator Control is Waiting for something from the elevators..."); // so we know we're waiting
             receiveSocket.receive(receivePacket);
         } catch (IOException e) {
@@ -76,15 +76,20 @@ public class ElevatorControl implements Runnable{
                 exit(1);
             }
         }
-        //TODO check if packet is valid status upadte
-        //Get ID of the elevator then delegates to respective mediator
-        int mediatorTarget = data[0];
-        ElevatorIntermediate mediator = mediators.get(mediatorTarget);
 
-        String medString = "Mediator " + mediatorTarget;
-        mediator.setRunConfig(receivePacket.getPort(), data);
-        Thread delegation = new Thread(mediator, medString);
-        delegation.start();
+        if(ElevatorStatus.isValidStatus(data) && data[0] < mediators.size() && data[0] >= 0) {
+
+            //Get ID of the elevator then delegates to respective mediator
+            int mediatorTarget = data[0];
+            ElevatorIntermediate mediator = mediators.get(mediatorTarget);
+
+            String medString = "Mediator " + mediatorTarget;
+            mediator.setRunConfig(receivePacket.getPort(), data);
+            Thread delegation = new Thread(mediator, medString);
+            delegation.start();
+        } else {
+            Logging.info2("ElevatorControl", "INVALID STATUS, IGNORING");
+        }
     }
 
     public void controlElevator(){
@@ -109,7 +114,7 @@ public class ElevatorControl implements Runnable{
     }
 
     public static void main(String[] args){
-        ElevatorControl controller = new ElevatorControl(ConfigInfo.NUM_ELEVATORS);
+        ElevatorControl controller = new ElevatorControl(ConfigInfo.NUM_ELEVATORS, ConfigInfo.NUM_FLOORS);
         controller.controlElevator();
     }
 
