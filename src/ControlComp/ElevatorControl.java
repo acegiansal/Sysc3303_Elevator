@@ -33,7 +33,7 @@ public class ElevatorControl implements Runnable{
         scheduler = new Scheduler(databox, elevatorNum);
 
         for(int i = 0; i<elevatorNum; i++){
-            mediators.add(i, new ElevatorIntermediate(databox, i));
+            mediators.add(i, new ElevatorIntermediate(this, databox, i));
         }
 
         try {

@@ -14,11 +14,13 @@ public class ElevatorIntermediate implements Runnable {
     private int elevatorPort;
     private byte[] status;
     private int elevatorID;
+    private ElevatorControl controller;
 
     private boolean stopped = false;
 
-    public ElevatorIntermediate(ElevatorBox databox, int elevatorID) {
+    public ElevatorIntermediate(ElevatorControl controller, ElevatorBox databox, int elevatorID) {
         this.elevatorID = elevatorID;
+        this.controller = controller;
         this.databox = databox;
         this.status = new byte[ConfigInfo.PACKET_SIZE];
         try {
@@ -71,6 +73,7 @@ public class ElevatorIntermediate implements Runnable {
         // Set status IF the elevator has just been updated
         if (status[3] != 1) {
             databox.setStatus(elevatorID, newStatus);
+            controller.notifyViews(newStatus);
             Logging.info2("ElevatorIntermediate", "" + newStatus);
             //System.out.println(newStatus);
         }

@@ -64,6 +64,7 @@ public class NumberFrame extends JPanel {
 
                 panels[i][j].setEnabled(false);
                 panels[i][j].setBackground(OFF);
+                panels[i][j].setBorderPainted(false);
 
                 this.add(panels[i][j]);
             }

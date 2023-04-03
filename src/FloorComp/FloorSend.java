@@ -7,6 +7,7 @@ import java.net.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import Config.*;
 import ControlComp.Logging;
@@ -75,11 +76,9 @@ public class FloorSend implements Runnable{
                 //Split information (divided by spaces)
                 String[] splitData = data.split(" ");
                 TestingElevator.setInputParse(splitData);
-                //Data must be 4 items long
+                //Data must be 5 items long
                 if (splitData.length != 5){
-                    //System.out.println( "Floor" + "INPUT DATA INVALID!!");
                     Logging.info2("FloorSend", "Floor" + "INPUT DATA INVALID!!");
-                    //System.out.println("INPUT DATA INVALID!!");
                     TestingElevator.setInvalidInput();
                     break;
                 } else {
@@ -88,13 +87,13 @@ public class FloorSend implements Runnable{
                     RequestPacket request = new RequestPacket(Integer.parseInt(splitData[1]), Integer.parseInt(splitData[3]), direction, Integer.parseInt(splitData[4]), splitData[0]);
                     timestamp = (timestamp == 0) ? timeConversion(splitData[0]) : timestamp;
                     if (timeConversion(splitData[0]) == timestamp){
-                        //System.out.println("First: " + timestamp);
                         Logging.info2("FloorSend", "First: " + timestamp);
                         prepareSend(request);
                     } else if (timeConversion(splitData[0]) > timestamp){
-                        Thread.sleep((timeConversion(splitData[0]) - timestamp));
-                        //System.out.println("Slept: " + (timeConversion(splitData[0]) - timestamp));
-                        Logging.info2("FloorSend", "Slept: " + (timeConversion(splitData[0]) - timestamp));
+                        int pauseTime = timeConversion(splitData[0]) - timestamp + ConfigInfo.FLOOR_PAUSE_CONSTANT;
+
+                        Thread.sleep(pauseTime);
+                        Logging.info2("FloorSend", "Slept: " + pauseTime);
                         prepareSend(request);
                     }
                 }

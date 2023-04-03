@@ -17,4 +17,5 @@ public class ConfigInfo {
     public static final int FLOOR_TRAVERSAL_TIME = 2000;
     public static final int DOOR_CHECK_TIME = 500;
     public static final int ELEVATOR_UPDATE_TIME = 750;
+    public static final int FLOOR_PAUSE_CONSTANT = 0;
 }

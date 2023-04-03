@@ -120,7 +120,7 @@ public class ElevatorStatus {
     }
 
     public static void main(String[] args){
-        byte[] data = {0, 5, 117, 0, 6, 8, 10, 11, 0};
+        byte[] data = {0, 5, 117, 0, 1, 3, 5, 0};
         System.out.println(ElevatorStatus.translateStatusBytes(data));
     }
 }
