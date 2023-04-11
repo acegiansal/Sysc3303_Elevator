@@ -29,6 +29,9 @@ public class ElevatorCar implements Runnable{
 
     private boolean stopped = false;
 
+    private static final int HARD_FAULT = 2;
+    private static final int TRANS_FAULT = 1;
+
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
         floorQueue = new ArrayList<>();
@@ -123,9 +126,9 @@ public class ElevatorCar implements Runnable{
 
     public void setScenario(int scenario) {
         this.scenario = scenario;
-        if(scenario == 1){
+        if(scenario == TRANS_FAULT){
             transFaulted = true;
-        } else if (scenario == 2){
+        } else if (scenario == HARD_FAULT){
             hardFaulted = true;
         }
         TestingElevator.setFaulted(this);
