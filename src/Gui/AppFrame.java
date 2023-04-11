@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class AppFrame extends JFrame implements ElevatorSubscriber {
 
     private JPanel contentPane;
-    private TimerPanel timerPanel;
+    private FloorPanel floorPanel;
     private ArrayList<ElevatorPanel> elevatorPanels;
 
     public static final Color PRIMARY = new Color(37, 71, 106);
@@ -47,12 +47,12 @@ public class AppFrame extends JFrame implements ElevatorSubscriber {
         bottomPanel.setBackground(BACKGROUND);
         contentPane.add(bottomPanel, BorderLayout.SOUTH);
 
-        //Create timer panel
-        timerPanel = new TimerPanel();
-        timerPanel.setBackground(Color.pink);
-        bottomPanel.add(timerPanel);
+        //Create floor panel
+        floorPanel = new FloorPanel(ConfigInfo.NUM_FLOORS);
+        floorPanel.setBackground(PRIMARY);
+        bottomPanel.add(floorPanel);
 
-        this.setSize(500,425);
+        this.setSize(540,700);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -63,14 +63,7 @@ public class AppFrame extends JFrame implements ElevatorSubscriber {
         for(ElevatorPanel pane: elevatorPanels){
             pane.handleUpdate(status);
         }
-    }
-
-    public void startTimer(){
-        timerPanel.startTimer();
-    }
-
-    public void stopTimer(){
-        timerPanel.stopTimer();
+        floorPanel.handleUpdate(status);
     }
 
     public static void main(String[] args){

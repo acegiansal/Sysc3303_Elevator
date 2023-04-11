@@ -47,7 +47,6 @@ public class ElevatorControl implements Runnable{
         // Start GUI
         AppFrame frame = new AppFrame();
         this.addView(frame);
-        frame.startTimer();
 
         // Start scheduler
         new Thread(scheduler, "Scheduler").start();
