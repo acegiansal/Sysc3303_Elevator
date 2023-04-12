@@ -6,6 +6,7 @@ import DataComp.ElevatorStatus;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 
 public class ElevatorCommunications implements Runnable {
 
@@ -71,12 +72,18 @@ public class ElevatorCommunications implements Runnable {
         while(true){
             // send packet
             ElevatorStatus status = elevator.getStatus();
-            byte[] transformed = ElevatorStatus.translateToBytes(status);
-            if(!elevator.isStatusUpdated()){
-                transformed[3] = 1;
-            }
+
+            byte statusUpdated = !elevator.isStatusUpdated() ? (byte)1 : (byte)0;
+
+            byte[] transformed = ElevatorStatus.translateToBytes(status, statusUpdated);
+//            System.out.println("\n\nSending " + Arrays.toString(transformed) + "\nwhen status: " + status + "\n\n");
             sendData(transformed);
             elevator.setStatusUpdated(false);
+
+            // If elevator stuck, stop sending communications
+            if(status.getDirection().equals(ElevatorStatus.STUCK)){
+                break;
+            }
 
             //receive request
             byte[] request = receiveData();
@@ -90,7 +97,7 @@ public class ElevatorCommunications implements Runnable {
 
             // Pause before checking again
             try {
-                Thread.sleep(1000);
+                Thread.sleep(ConfigInfo.ELEVATOR_UPDATE_TIME);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

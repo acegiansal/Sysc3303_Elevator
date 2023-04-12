@@ -9,11 +9,13 @@ public class ConfigInfo {
 
 
     /* Basic Config */
-    public static final int NUM_FLOORS  = 10;
+    public static final int NUM_FLOORS  = 22;
     public static final int NUM_ELEVATORS = 4;
 
     /* Timing Config */
-    public static final int DOOR_OPEN_TIME = 1000;
-    public static final int FLOOR_TRAVERSAL_TIME = 2000;
-    public static final int DOOR_CHECK_TIME = 500;
+    public static final int DOOR_OPEN_TIME = 10230;
+    public static final int FLOOR_TRAVERSAL_TIME = 7060;
+    public static final int DOOR_CHECK_TIME = 1500;
+    public static final int ELEVATOR_UPDATE_TIME = 750;
+    public static final int FLOOR_PAUSE_CONSTANT = 0;
 }

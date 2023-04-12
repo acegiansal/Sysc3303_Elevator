@@ -14,11 +14,13 @@ public class ElevatorIntermediate implements Runnable {
     private int elevatorPort;
     private byte[] status;
     private int elevatorID;
+    private ElevatorControl controller;
 
     private boolean stopped = false;
 
-    public ElevatorIntermediate(ElevatorBox databox, int elevatorID) {
+    public ElevatorIntermediate(ElevatorControl controller, ElevatorBox databox, int elevatorID) {
         this.elevatorID = elevatorID;
+        this.controller = controller;
         this.databox = databox;
         this.status = new byte[ConfigInfo.PACKET_SIZE];
         try {
@@ -71,13 +73,19 @@ public class ElevatorIntermediate implements Runnable {
         // Set status IF the elevator has just been updated
         if (status[3] != 1) {
             databox.setStatus(elevatorID, newStatus);
+            controller.notifyViews(newStatus);
             Logging.info2("ElevatorIntermediate", "" + newStatus);
             //System.out.println(newStatus);
         }
-        // Get request
-        byte[] scheduleRequest = databox.getRequest(elevatorID);
-//        System.out.println("Sending to elevator: " + Arrays.toString(scheduleRequest));
-        // Send request
-        sendData(scheduleRequest);
+
+        if(newStatus.getDirection().equals(ElevatorStatus.STUCK)){
+            // POSSIBLE: if elevator stuck, set new requests with floor info and send to scheduler
+            Logging.info2("ElevatorIntermediate", newStatus.getId() + " got hard fault! Stop receiving");
+        } else {
+            // Get request
+            byte[] scheduleRequest = databox.getRequest(elevatorID);
+            // Send request
+            sendData(scheduleRequest);
+        }
     }
 }

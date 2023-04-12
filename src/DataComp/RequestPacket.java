@@ -84,6 +84,18 @@ public class RequestPacket {
         return new RequestPacket(startFloor, endFloor, direction, scenario, time);
     }
 
+    public static boolean isValidRequest(byte[] data, int maxFloors){
+        if(data[0] <= 0 || data[0] > maxFloors){
+            return false;
+        }
+
+        if(data[1] <= 0 || data[1] > maxFloors){
+            return false;
+        }
+
+        return data[2] <= 2;
+    }
+
     /**
      * Function to combine 2 byte arrays
      * @param start the start index

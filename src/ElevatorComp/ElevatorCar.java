@@ -18,6 +18,7 @@ public class ElevatorCar implements Runnable{
     private ElevatorState currentState;
     private int scenario;
     private int currentFloor;
+    private int currentDoorStatus;
     private String currentDirection;
     private boolean statusUpdated;
 
@@ -28,6 +29,9 @@ public class ElevatorCar implements Runnable{
 
     private boolean stopped = false;
 
+    private static final int HARD_FAULT = 2;
+    private static final int TRANS_FAULT = 1;
+
     public ElevatorCar(int elevatorID){
         this.elevatorID = elevatorID;
         floorQueue = new ArrayList<>();
@@ -36,6 +40,7 @@ public class ElevatorCar implements Runnable{
         this.scenario = 0;
         this.currentFloor = 1;
         this.currentDirection = ElevatorStatus.IDLE;
+        this.currentDoorStatus = 0;
         this.statusUpdated = false;
 
         transFaulted = false;
@@ -59,11 +64,21 @@ public class ElevatorCar implements Runnable{
         this.statusUpdated = true;
     }
 
+    public synchronized int getDoorStatus(){
+        return currentDoorStatus;
+    }
+
+    public synchronized void setDoorStatus(int newStatus){
+        currentDoorStatus = newStatus;
+        this.statusUpdated = true;
+    }
+
+
     public synchronized ArrayList<Integer> getFloorQueue(){
         while(queueIsEmpty()){
             try {
                 //System.out.println("Elevator " + elevatorID + " is waiting for command in state " + currentState);
-                Logging.info("ElevatorCar", ""+ elevatorID, "is waiting for command in" + currentState);
+                Logging.info("ElevatorCar", ""+ elevatorID, "is waiting for command in " + currentState);
 
                 wait();
             } catch (InterruptedException e) {
@@ -111,9 +126,9 @@ public class ElevatorCar implements Runnable{
 
     public void setScenario(int scenario) {
         this.scenario = scenario;
-        if(scenario == 1){
+        if(scenario == TRANS_FAULT){
             transFaulted = true;
-        } else if (scenario == 2){
+        } else if (scenario == HARD_FAULT){
             hardFaulted = true;
         }
         TestingElevator.setFaulted(this);
@@ -173,7 +188,7 @@ public class ElevatorCar implements Runnable{
         // Hard fault elevator
         //System.out.println("Elevator " + getElevatorID() + " has experienced a hard fault!");
         Logging.info("ElevatorCar", "" + getElevatorID()," has experienced a hard fault!"  );
-        ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK,getElevatorID());
+        ElevatorStatus status = new ElevatorStatus(getCurrentFloor(), ElevatorStatus.STUCK, ElevatorStatus.CLOSED, getElevatorID());
         setStatus(status);
     }
 
