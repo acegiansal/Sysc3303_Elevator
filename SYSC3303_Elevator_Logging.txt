@@ -1,0 +1,224 @@
+[Time:17:50:13.902] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:18.516] [Class: FloorSend] [Notification] First: 68774
+[Time:17:50:18.533] [Class: FloorSend] [Notification] Sending request RequestPacket{startFloor=3, endFloor=6, direction='u', scenario=1, time='14:06:14.0'}
+[Time:17:50:18.541] [Class: Scheduler] [Notification] All in same direction: [0, 1, 2, 3]
+[Time:17:50:18.542] [Class: Scheduler] [Notification] Elevators not ahead: [0, 1, 2, 3]
+[Time:17:50:18.542] [Class: Scheduler] [Notification] Closest elevators: [0, 1, 2, 3]
+[Time:17:50:18.543] [Class: FloorSend] [Notification] Slept: 1
+[Time:17:50:18.543] [Class: FloorSend] [Notification] Sending request RequestPacket{startFloor=2, endFloor=1, direction='d', scenario=0, time='14:06:15.0'}
+[Time:17:50:18.543] [Class: Scheduler] [Elevator: 0] [Notification] Putting [3, 6, 1, 117, 49, 52, 58, 48, 54, 58, 49, 52, 46, 48, 0] into elevator
+[Time:17:50:18.543] [Class: ElevatorBox] [Elevator: 0] [Notification] Setting Elevator   to [3, 6, 1, 117, 49, 52, 58, 48, 54, 58, 49, 52, 46, 48, 0]}
+[Time:17:50:18.544] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:18.544] [Class: Scheduler] [Notification] All in same direction: [1, 2, 3]
+[Time:17:50:18.544] [Class: Scheduler] [Notification] Elevators not ahead: [1, 2, 3]
+[Time:17:50:18.544] [Class: Scheduler] [Notification] Closest elevators: [1, 2, 3]
+[Time:17:50:18.544] [Class: Scheduler] [Elevator: 1] [Notification] Putting [2, 1, 0, 100, 49, 52, 58, 48, 54, 58, 49, 53, 46, 48, 0] into elevator
+[Time:17:50:18.544] [Class: ElevatorBox] [Elevator: 1] [Notification] Setting Elevator   to [2, 1, 0, 100, 49, 52, 58, 48, 54, 58, 49, 53, 46, 48, 0]}
+[Time:17:50:18.544] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:18.546] [Class: FloorSend] [Notification] Slept: 1
+[Time:17:50:18.546] [Class: FloorSend] [Notification] Sending request RequestPacket{startFloor=6, endFloor=3, direction='d', scenario=2, time='14:06:15.0'}
+[Time:17:50:18.546] [Class: Scheduler] [Notification] All in same direction: [1, 2, 3]
+[Time:17:50:18.546] [Class: Scheduler] [Notification] Elevators not ahead: [2, 3]
+[Time:17:50:18.547] [Class: Scheduler] [Notification] Closest elevators: [2, 3]
+[Time:17:50:18.547] [Class: Scheduler] [Elevator: 2] [Notification] Putting [6, 3, 2, 100, 49, 52, 58, 48, 54, 58, 49, 53, 46, 48, 0] into elevator
+[Time:17:50:18.547] [Class: ElevatorBox] [Elevator: 2] [Notification] Setting Elevator   to [6, 3, 2, 100, 49, 52, 58, 48, 54, 58, 49, 53, 46, 48, 0]}
+[Time:17:50:18.547] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:18.609] [Class: FloorSend] [Notification] Slept: 61
+[Time:17:50:18.609] [Class: FloorSend] [Notification] Sending request RequestPacket{startFloor=1, endFloor=5, direction='u', scenario=3, time='14:07:15.0'}
+[Time:17:50:18.609] [Class: Scheduler] [Notification] Received invalid request! Dropping request
+[Time:17:50:18.609] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:18.673] [Class: FloorSend] [Notification] Slept: 61
+[Time:17:50:18.673] [Class: FloorSend] [Notification] Sending request RequestPacket{startFloor=1, endFloor=5, direction='u', scenario=0, time='14:07:15.0'}
+[Time:17:50:18.673] [Class: Scheduler] [Notification] All in same direction: [0, 3]
+[Time:17:50:18.673] [Class: Scheduler] [Notification] Elevators not ahead: [0, 3]
+[Time:17:50:18.673] [Class: Scheduler] [Notification] Closest elevators: [0, 3]
+[Time:17:50:18.674] [Class: Scheduler] [Elevator: 0] [Notification] Putting [1, 5, 0, 117, 49, 52, 58, 48, 55, 58, 49, 53, 46, 48, 0] into elevator
+[Time:17:50:18.914] [Class: ElevatorBox] [Elevator: 0] [Notification] Setting Elevator   to [1, 5, 0, 117, 49, 52, 58, 48, 55, 58, 49, 53, 46, 48, 0]}
+[Time:17:50:18.914] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:18.939] [Class: ElevatorCar] [Elevator: 0] [Notification]  floor: 3 has button pushed and lamp turned on
+[Time:17:50:18.939] [Class: ElevatorCar] [Elevator: 1] [Notification]  floor: 2 has button pushed and lamp turned on
+[Time:17:50:18.939] [Class: ElevatorCar] [Elevator: 2] [Notification]  floor: 6 has button pushed and lamp turned on
+[Time:17:50:18.941] [Class: ElevatorCar] [Elevator: 1] [Notification]  floor: 1 has button pushed and lamp turned on
+[Time:17:50:18.941] [Class: ElevatorCar] [Elevator: 0] [Notification]  floor: 6 has button pushed and lamp turned on
+[Time:17:50:18.941] [Class: ElevatorCar] [Elevator: 2] [Notification]  floor: 3 has button pushed and lamp turned on
+[Time:17:50:18.952] [Class: ElevatorState] [Elevator: 2] [Notification]  Setting status to ElevatorStatus{id=2, currentFloor=1, direction='d', doorStatus=0, floors=[6, 3]}
+[Time:17:50:18.952] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=0, floors=[3, 6]}
+[Time:17:50:18.952] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=0, floors=[2, 1]}
+[Time:17:50:18.953] [Class: Idle] [Elevator: 0] [Notification] Elevator is now active
+[Time:17:50:18.953] [Class: Idle] [Elevator: 2] [Notification] Elevator is now active
+[Time:17:50:18.953] [Class: Idle] [Elevator: 1] [Notification] Elevator is now active
+[Time:17:50:18.953] [Class: MoveFloor] [Elevator: 1] [Notification] Motor Starting!
+[Time:17:50:18.953] [Class: MoveFloor] [Elevator: 0] [Notification] Motor Starting!
+[Time:17:50:18.953] [Class: MoveFloor] [Elevator: 2] [Notification] Motor Starting!
+[Time:17:50:19.720] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=0, floors=[3, 6]}
+[Time:17:50:19.720] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=2, currentFloor=1, direction='d', doorStatus=0, floors=[6, 3]}
+[Time:17:50:19.720] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=0, floors=[2, 1]}
+[Time:17:50:19.721] [Class: ElevatorCar] [Elevator: 0] [Notification]  floor: 1 has button pushed and lamp turned on
+[Time:17:50:19.721] [Class: ElevatorCar] [Elevator: 0] [Notification]  floor: 5 has button pushed and lamp turned on
+[Time:17:50:19.816] [Class: FloorSend] [Notification] Slept: 1141
+[Time:17:50:19.816] [Class: FloorSend] [Notification] Sending request RequestPacket{startFloor=4, endFloor=3, direction='d', scenario=0, time='14:25:15.0'}
+[Time:17:50:19.816] [Class: Scheduler] [Notification] All in same direction: [1, 2, 3]
+[Time:17:50:19.816] [Class: Scheduler] [Notification] Elevators not ahead: [3]
+[Time:17:50:19.816] [Class: Scheduler] [Notification] Closest elevators: [3]
+[Time:17:50:19.817] [Class: Scheduler] [Elevator: 3] [Notification] Putting [4, 3, 0, 100, 49, 52, 58, 50, 53, 58, 49, 53, 46, 48, 0] into elevator
+[Time:17:50:19.817] [Class: ElevatorBox] [Elevator: 3] [Notification] Setting Elevator   to [4, 3, 0, 100, 49, 52, 58, 50, 53, 58, 49, 53, 46, 48, 0]}
+[Time:17:50:19.817] [Class: Scheduler] [Notification] Scheduler is waiting for something
+[Time:17:50:20.434] [Class: ElevatorCar] [Elevator: 3] [Notification]  floor: 4 has button pushed and lamp turned on
+[Time:17:50:20.435] [Class: ElevatorCar] [Elevator: 3] [Notification]  floor: 3 has button pushed and lamp turned on
+[Time:17:50:20.435] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=1, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:20.435] [Class: Idle] [Elevator: 3] [Notification] Elevator is now active
+[Time:17:50:20.435] [Class: MoveFloor] [Elevator: 3] [Notification] Motor Starting!
+[Time:17:50:21.200] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=1, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:26.026] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=0, floors=[2, 1]}
+[Time:17:50:26.026] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=0, floors=[1, 3, 5, 6]}
+[Time:17:50:26.026] [Class: MoveFloor] [Elevator: 1] [Notification] Now on floor:2
+[Time:17:50:26.026] [Class: MoveFloor] [Elevator: 0] [Notification] Now on floor:1
+[Time:17:50:26.027] [Class: OpenDoors] [Elevator: 1] [Notification]  Doors opening for 10 seconds on floor 2
+[Time:17:50:26.027] [Class: OpenDoors] [Elevator: 0] [Notification]  Doors opening for 10 seconds on floor 1
+[Time:17:50:26.028] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=1, floors=[2, 1]}
+[Time:17:50:26.028] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=1, floors=[1, 3, 5, 6]}
+[Time:17:50:26.028] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:50:26.028] [Class: Floor] [Elevator: 0] [Notification] Elevator has ENTERED floor number 1
+[Time:17:50:26.028] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:50:26.028] [Class: Floor] [Elevator: 1] [Notification] Elevator has ENTERED floor number 2
+[Time:17:50:26.526] [Class: ArrivalSensor] [Elevator: 2] [Notification]  arrival sensor has timed out!!!
+[Time:17:50:26.526] [Class: ElevatorCar] [Elevator: 2] [Notification]  has experienced a hard fault!
+[Time:17:50:26.576] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=1, floors=[2, 1]}
+[Time:17:50:26.576] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=1, floors=[1, 3, 5, 6]}
+[Time:17:50:26.576] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=2, currentFloor=1, direction='s', doorStatus=0, floors=[]}
+[Time:17:50:26.576] [Class: ElevatorIntermediate] [Notification] 2 got hard fault! Stop receiving
+[Time:17:50:27.510] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=2, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:27.510] [Class: MoveFloor] [Elevator: 3] [Notification] Now on floor:2
+[Time:17:50:27.510] [Class: MoveFloor] [Elevator: 3] [Notification] Motor Starting!
+[Time:17:50:28.043] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=2, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:34.582] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:34.582] [Class: MoveFloor] [Elevator: 3] [Notification] Now on floor:3
+[Time:17:50:34.582] [Class: MoveFloor] [Elevator: 3] [Notification] Motor Starting!
+[Time:17:50:34.885] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:36.260] [Class: BrokenDoors] [Elevator: 0] [Notification]  doors are stuck open! Trying to close...
+[Time:17:50:36.260] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=3, floors=[1, 3, 5, 6]}
+[Time:17:50:36.260] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:50:36.260] [Class: CloseDoors] [Elevator: 1] [Notification]  Doors closing for 10 seconds on floor 2
+[Time:17:50:36.261] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=2, floors=[2, 1]}
+[Time:17:50:36.261] [Class: Floor] [Elevator: 1] [Notification] Elevator has LEFT floor number 2
+[Time:17:50:36.433] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=2, floors=[2, 1]}
+[Time:17:50:36.434] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=3, floors=[1, 3, 5, 6]}
+[Time:17:50:37.776] [Class: BrokenDoors] [Elevator: 0] [Notification]  doors are stuck open! Trying to close...
+[Time:17:50:37.776] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=3, floors=[1, 3, 5, 6]}
+[Time:17:50:37.949] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=3, floors=[1, 3, 5, 6]}
+[Time:17:50:39.291] [Class: BrokenDoors] [Elevator: 0] [Notification]  doors are stuck open! Trying to close...
+[Time:17:50:39.291] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=3, floors=[1, 3, 5, 6]}
+[Time:17:50:39.466] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=3, floors=[1, 3, 5, 6]}
+[Time:17:50:40.805] [Class: BrokenDoors] [Elevator: 0] [Notification]  doors fixed! Doors now closing
+[Time:17:50:40.805] [Class: CloseDoors] [Elevator: 0] [Notification]  Doors closing for 10 seconds on floor 1
+[Time:17:50:40.805] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:50:40.805] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=2, floors=[1, 3, 5, 6]}
+[Time:17:50:40.805] [Class: Floor] [Elevator: 0] [Notification] Elevator has LEFT floor number 1
+[Time:17:50:40.981] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=2, floors=[1, 3, 5, 6]}
+[Time:17:50:41.647] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:50:41.647] [Class: MoveFloor] [Elevator: 3] [Notification] Now on floor:4
+[Time:17:50:41.647] [Class: OpenDoors] [Elevator: 3] [Notification]  Doors opening for 10 seconds on floor 4
+[Time:17:50:41.647] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:50:41.647] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=1, floors=[4, 3]}
+[Time:17:50:41.648] [Class: Floor] [Elevator: 3] [Notification] Elevator has ENTERED floor number 4
+[Time:17:50:41.712] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=1, floors=[4, 3]}
+[Time:17:50:46.495] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=0, floors=[2, 1]}
+[Time:17:50:46.495] [Class: MoveFloor] [Elevator: 1] [Notification] Motor Starting!
+[Time:17:50:47.055] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=2, direction='d', doorStatus=0, floors=[2, 1]}
+[Time:17:50:51.043] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=0, floors=[1, 3, 5, 6]}
+[Time:17:50:51.043] [Class: MoveFloor] [Elevator: 0] [Notification] Motor Starting!
+[Time:17:50:51.601] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=1, direction='u', doorStatus=0, floors=[1, 3, 5, 6]}
+[Time:17:50:51.884] [Class: CloseDoors] [Elevator: 3] [Notification]  Doors closing for 10 seconds on floor 4
+[Time:17:50:51.884] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:50:51.884] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=2, floors=[4, 3]}
+[Time:17:50:51.884] [Class: Floor] [Elevator: 3] [Notification] Elevator has LEFT floor number 4
+[Time:17:50:52.322] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=2, floors=[4, 3]}
+[Time:17:50:53.558] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=0, floors=[1]}
+[Time:17:50:53.558] [Class: MoveFloor] [Elevator: 1] [Notification] Now on floor:1
+[Time:17:50:53.559] [Class: OpenDoors] [Elevator: 1] [Notification]  Doors opening for 10 seconds on floor 1
+[Time:17:50:53.559] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=1, floors=[1]}
+[Time:17:50:53.559] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:50:53.559] [Class: Floor] [Elevator: 1] [Notification] Elevator has ENTERED floor number 1
+[Time:17:50:53.868] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=1, floors=[1]}
+[Time:17:50:58.104] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=2, direction='u', doorStatus=0, floors=[3, 5, 6]}
+[Time:17:50:58.104] [Class: MoveFloor] [Elevator: 0] [Notification] Now on floor:2
+[Time:17:50:58.104] [Class: MoveFloor] [Elevator: 0] [Notification] Motor Starting!
+[Time:17:50:58.431] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=2, direction='u', doorStatus=0, floors=[3, 5, 6]}
+[Time:17:51:02.128] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:51:02.128] [Class: MoveFloor] [Elevator: 3] [Notification] Motor Starting!
+[Time:17:51:02.193] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=4, direction='d', doorStatus=0, floors=[4, 3]}
+[Time:17:51:03.791] [Class: CloseDoors] [Elevator: 1] [Notification]  Doors closing for 10 seconds on floor 1
+[Time:17:51:03.791] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=2, floors=[1]}
+[Time:17:51:03.791] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:51:03.791] [Class: Floor] [Elevator: 1] [Notification] Elevator has LEFT floor number 1
+[Time:17:51:04.480] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=2, floors=[1]}
+[Time:17:51:05.166] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=0, floors=[3, 5, 6]}
+[Time:17:51:05.166] [Class: MoveFloor] [Elevator: 0] [Notification] Now on floor:3
+[Time:17:51:05.166] [Class: OpenDoors] [Elevator: 0] [Notification]  Doors opening for 10 seconds on floor 3
+[Time:17:51:05.166] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=1, floors=[3, 5, 6]}
+[Time:17:51:05.166] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:51:05.167] [Class: Floor] [Elevator: 0] [Notification] Elevator has ENTERED floor number 3
+[Time:17:51:05.278] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=1, floors=[3, 5, 6]}
+[Time:17:51:09.193] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=0, floors=[3]}
+[Time:17:51:09.193] [Class: MoveFloor] [Elevator: 3] [Notification] Now on floor:3
+[Time:17:51:09.193] [Class: OpenDoors] [Elevator: 3] [Notification]  Doors opening for 10 seconds on floor 3
+[Time:17:51:09.193] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=1, floors=[3]}
+[Time:17:51:09.193] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:51:09.194] [Class: Floor] [Elevator: 3] [Notification] Elevator has ENTERED floor number 3
+[Time:17:51:09.792] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=1, floors=[3]}
+[Time:17:51:14.025] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=1, direction='d', doorStatus=0, floors=[1]}
+[Time:17:51:14.025] [Class: Idle] [Elevator: 1] [Notification] Elevator is now idle
+[Time:17:51:14.025] [Class: ElevatorState] [Elevator: 1] [Notification]  Setting status to ElevatorStatus{id=1, currentFloor=1, direction='i', doorStatus=0, floors=[]}
+[Time:17:51:14.339] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=1, currentFloor=1, direction='i', doorStatus=0, floors=[]}
+[Time:17:51:15.397] [Class: CloseDoors] [Elevator: 0] [Notification]  Doors closing for 10 seconds on floor 3
+[Time:17:51:15.397] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:51:15.397] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=2, floors=[3, 5, 6]}
+[Time:17:51:15.397] [Class: Floor] [Elevator: 0] [Notification] Elevator has LEFT floor number 3
+[Time:17:51:15.911] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=2, floors=[3, 5, 6]}
+[Time:17:51:19.427] [Class: CloseDoors] [Elevator: 3] [Notification]  Doors closing for 10 seconds on floor 3
+[Time:17:51:19.427] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:51:19.427] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=2, floors=[3]}
+[Time:17:51:19.427] [Class: Floor] [Elevator: 3] [Notification] Elevator has LEFT floor number 3
+[Time:17:51:19.662] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=2, floors=[3]}
+[Time:17:51:25.629] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=0, floors=[3, 5, 6]}
+[Time:17:51:25.629] [Class: MoveFloor] [Elevator: 0] [Notification] Motor Starting!
+[Time:17:51:25.800] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=3, direction='u', doorStatus=0, floors=[3, 5, 6]}
+[Time:17:51:29.658] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=3, direction='d', doorStatus=0, floors=[3]}
+[Time:17:51:29.658] [Class: Idle] [Elevator: 3] [Notification] Elevator is now idle
+[Time:17:51:29.658] [Class: ElevatorState] [Elevator: 3] [Notification]  Setting status to ElevatorStatus{id=3, currentFloor=3, direction='i', doorStatus=0, floors=[]}
+[Time:17:51:30.284] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=3, currentFloor=3, direction='i', doorStatus=0, floors=[]}
+[Time:17:51:32.693] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=4, direction='u', doorStatus=0, floors=[5, 6]}
+[Time:17:51:32.693] [Class: MoveFloor] [Elevator: 0] [Notification] Now on floor:4
+[Time:17:51:32.693] [Class: MoveFloor] [Elevator: 0] [Notification] Motor Starting!
+[Time:17:51:33.387] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=4, direction='u', doorStatus=0, floors=[5, 6]}
+[Time:17:51:39.770] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=0, floors=[5, 6]}
+[Time:17:51:39.770] [Class: MoveFloor] [Elevator: 0] [Notification] Now on floor:5
+[Time:17:51:39.770] [Class: OpenDoors] [Elevator: 0] [Notification]  Doors opening for 10 seconds on floor 5
+[Time:17:51:39.770] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:51:39.770] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=1, floors=[5, 6]}
+[Time:17:51:39.771] [Class: Floor] [Elevator: 0] [Notification] Elevator has ENTERED floor number 5
+[Time:17:51:40.224] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=1, floors=[5, 6]}
+[Time:17:51:50.008] [Class: CloseDoors] [Elevator: 0] [Notification]  Doors closing for 10 seconds on floor 5
+[Time:17:51:50.008] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:51:50.008] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=2, floors=[5, 6]}
+[Time:17:51:50.008] [Class: Floor] [Elevator: 0] [Notification] Elevator has LEFT floor number 5
+[Time:17:51:50.088] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=2, floors=[5, 6]}
+[Time:17:52:00.251] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=0, floors=[5, 6]}
+[Time:17:52:00.251] [Class: MoveFloor] [Elevator: 0] [Notification] Motor Starting!
+[Time:17:52:00.707] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=5, direction='u', doorStatus=0, floors=[5, 6]}
+[Time:17:52:07.320] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=6, direction='u', doorStatus=0, floors=[6]}
+[Time:17:52:07.320] [Class: MoveFloor] [Elevator: 0] [Notification] Now on floor:6
+[Time:17:52:07.320] [Class: OpenDoors] [Elevator: 0] [Notification]  Doors opening for 10 seconds on floor 6
+[Time:17:52:07.320] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=6, direction='u', doorStatus=1, floors=[6]}
+[Time:17:52:07.320] [Class: DirectionLamp] [Notification] Lamp is now On
+[Time:17:52:07.320] [Class: Floor] [Elevator: 0] [Notification] Elevator has ENTERED floor number 6
+[Time:17:52:07.522] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=6, direction='u', doorStatus=1, floors=[6]}
+[Time:17:52:17.556] [Class: CloseDoors] [Elevator: 0] [Notification]  Doors closing for 10 seconds on floor 6
+[Time:17:52:17.556] [Class: DirectionLamp] [Notification] Lamp is now OFF
+[Time:17:52:17.556] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=6, direction='u', doorStatus=2, floors=[6]}
+[Time:17:52:17.556] [Class: Floor] [Elevator: 0] [Notification] Elevator has LEFT floor number 6
+[Time:17:52:18.145] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=6, direction='u', doorStatus=2, floors=[6]}
+[Time:17:52:27.789] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=6, direction='u', doorStatus=0, floors=[6]}
+[Time:17:52:27.789] [Class: Idle] [Elevator: 0] [Notification] Elevator is now idle
+[Time:17:52:27.789] [Class: ElevatorState] [Elevator: 0] [Notification]  Setting status to ElevatorStatus{id=0, currentFloor=6, direction='i', doorStatus=0, floors=[]}
+[Time:17:52:28.042] [Class: ElevatorIntermediate] [Notification] ElevatorStatus{id=0, currentFloor=6, direction='i', doorStatus=0, floors=[]}
